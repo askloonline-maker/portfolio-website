@@ -1,1 +1,0 @@
-export default function Home(){return <main><h1>Asklo.online</h1><p>Share Knowledge. Ask Anything.</p></main>}
