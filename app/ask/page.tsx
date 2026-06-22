@@ -37,11 +37,30 @@ export default function AskQuestion() {
               <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
                 Choose a Space
               </label>
-              <select className="block w-full md:w-64 bg-gray-50 border border-gray-300 text-gray-700 py-2 px-3 rounded-lg text-sm focus:outline-none focus:border-blue-600 focus:bg-white transition-colors">
+              <select className="block w-full bg-gray-50 border border-gray-300 text-gray-700 py-2.5 px-3 rounded-lg text-sm focus:outline-none focus:border-blue-600 focus:bg-white transition-colors">
                 <option value="">Select a community...</option>
-                <option value="webdev">r/WebDevelopment</option>
-                <option value="asktech">r/AskTech</option>
-                <option value="philosophy">r/Philosophy</option>
+                <option value="ai-ml">🤖 Artificial Intelligence & Machine Learning</option>
+                <option value="programming">💻 Programming & Software Development</option>
+                <option value="startups">🚀 Startups & Entrepreneurship</option>
+                <option value="finance">📈 Finance & Investing</option>
+                <option value="crypto">🪙 Cryptocurrency & Blockchain</option>
+                <option value="marketing">🎯 Digital Marketing</option>
+                <option value="health">🌱 Health & Wellness</option>
+                <option value="fitness">💪 Fitness & Bodybuilding</option>
+                <option value="education">🎓 Education & Learning</option>
+                <option value="career">💼 Career & Jobs</option>
+                <option value="relationships">❤️ Relationships & Dating</option>
+                <option value="travel">✈️ Travel</option>
+                <option value="food">🍳 Food & Cooking</option>
+                <option value="gaming">🎮 Gaming</option>
+                <option value="entertainment">🎬 Movies & Entertainment</option>
+                <option value="books">📚 Books & Writing</option>
+                <option value="science">🔬 Science</option>
+                <option value="automotive">🚗 Automotive</option>
+                <option value="realestate">🏠 Real Estate</option>
+                <option value="pets">🐶 Pets & Animals</option>
+                <option value="fashion">✨ Fashion & Beauty</option>
+                <option value="local">📍 Local Communities</option>
               </select>
             </div>
 
@@ -51,7 +70,7 @@ export default function AskQuestion() {
               </label>
               <input 
                 type="text" 
-                placeholder="Be specific and imagine you’re asking a person..." 
+                placeholder="Be specific and imagine you&apos;re asking a person..." 
                 required
                 className="w-full px-4 py-2.5 bg-gray-50 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-blue-600 focus:bg-white transition-colors placeholder:text-gray-400"
               />
