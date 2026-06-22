@@ -3,8 +3,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "BlueSpace - Knowledge & Community",
-  description: "A platform like Quora and Reddit built with a royal blue theme.",
+  title: "Asklo.Online - The World's Living Room",
+  description: "A fast-paced knowledge sharing and community platform.",
 };
 
 export default function RootLayout({
