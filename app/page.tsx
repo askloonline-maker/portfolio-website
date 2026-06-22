@@ -3,7 +3,6 @@ import React from 'react';
 export default function AskQuestion() {
   return (
     <div className="min-h-screen bg-slate-100 font-sans text-gray-900">
-      {/* NAVBAR */}
       <nav className="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
         <div className="max-w-3xl mx-auto px-4 h-14 flex items-center justify-between">
           <div className="flex items-center gap-2 font-bold text-2xl text-blue-700 tracking-tight cursor-pointer">
@@ -16,20 +15,16 @@ export default function AskQuestion() {
         </div>
       </nav>
 
-      {/* MAIN CONTENT AREA */}
       <main className="max-w-3xl mx-auto px-4 py-8">
         <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-6">
           
-          {/* Header */}
           <div className="border-b border-gray-100 pb-4 mb-6">
             <h1 className="text-2xl font-bold text-gray-950">Create a Post</h1>
             <p className="text-sm text-gray-500 mt-1">Share a question or link with the BlueSpace community.</p>
           </div>
 
-          {/* Form */}
           <form className="space-y-5">
             
-            {/* Choose Community / Space Dropdown */}
             <div>
               <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
                 Choose a Space
@@ -42,7 +37,6 @@ export default function AskQuestion() {
               </select>
             </div>
 
-            {/* Title / Question input */}
             <div>
               <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
                 Title / Question *
@@ -55,7 +49,6 @@ export default function AskQuestion() {
               />
             </div>
 
-            {/* Description / Body text */}
             <div>
               <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
                 Details & Context (Optional)
@@ -67,7 +60,6 @@ export default function AskQuestion() {
               />
             </div>
 
-            {/* Tags Input (Reddit/Quora style categorization) */}
             <div>
               <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
                 Tags (Comma separated)
@@ -79,7 +71,6 @@ export default function AskQuestion() {
               />
             </div>
 
-            {/* Action Buttons */}
             <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-100">
               <a 
                 href="/" 
