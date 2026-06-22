@@ -1,1 +1,0 @@
-export default function RecentQuestions(){return <div>Recent Questions</div>}

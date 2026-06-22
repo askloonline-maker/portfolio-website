@@ -1,1 +1,0 @@
-export default function CategoryGrid(){return <div>Categories</div>}
