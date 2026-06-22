@@ -1,1 +1,15 @@
-export default function Home(){return <h1>Asklo.online</h1>}
+import Navbar from "@/components/Navbar";
+import Hero from "@/components/Hero";
+import SearchBar from "@/components/SearchBar";
+import CategoryGrid from "@/components/CategoryGrid";
+
+export default function Home() {
+  return (
+    <>
+      <Navbar />
+      <Hero />
+      <SearchBar />
+      <CategoryGrid />
+    </>
+  );
+}
