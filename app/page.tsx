@@ -5,16 +5,23 @@ export default function Home() {
     <div className="min-h-screen bg-slate-100 font-sans text-gray-900">
       <nav className="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
         <div className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between gap-4">
-          <div className="flex items-center gap-2 font-bold text-2xl text-blue-700 tracking-tight cursor-pointer">
-            <span className="text-xl">💬</span>
-            <span>BlueSpace</span>
+          
+          {/* Logo & Tagline */}
+          <div className="flex flex-col justify-center cursor-pointer">
+            <div className="flex items-center gap-2 font-bold text-2xl text-blue-700 tracking-tight leading-none">
+              <span>💬</span>
+              <span>Asklo.Online</span>
+            </div>
+            <span className="text-[10px] font-semibold text-gray-400 mt-1 tracking-wide uppercase">
+              The World&apos;s Living Room
+            </span>
           </div>
 
           <div className="flex-1 max-w-2xl relative">
             <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">🔍</span>
             <input 
               type="text" 
-              placeholder="Search BlueSpace..." 
+              placeholder="Search Asklo..." 
               className="w-full pl-10 pr-4 py-1.5 bg-gray-50 border border-gray-300 rounded-full focus:outline-none focus:border-blue-600 focus:bg-white transition-colors text-sm"
             />
           </div>
@@ -79,39 +86,4 @@ export default function Home() {
               </p>
             </div>
             
-            <div className="bg-gray-50 px-4 py-2 flex items-center justify-between border-t border-gray-100 text-sm">
-              <div className="flex items-center gap-1 bg-gray-200/60 rounded-full p-0.5">
-                <button className="px-3 py-1 rounded-full text-gray-600 hover:bg-blue-100 hover:text-blue-600 transition">
-                  ▲ <span className="font-medium ml-1">142</span>
-                </button>
-                <button className="px-3 py-1 rounded-full text-gray-600 hover:bg-red-100 hover:text-red-600 transition">
-                  ▼
-                </button>
-              </div>
-              <button className="flex items-center gap-2 text-gray-500 hover:bg-gray-200/60 px-3 py-1.5 rounded-full transition">
-                💬 <span className="font-medium">38 Comments</span>
-              </button>
-            </div>
-          </article>
-        </main>
-
-        <aside className="hidden md:block col-span-1 space-y-4 sticky top-20 h-fit">
-          <div className="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
-            <h3 className="font-bold text-sm text-gray-800 mb-3 uppercase tracking-wider">Trending Topics</h3>
-            <div className="space-y-3">
-              <div>
-                <a href="#" className="text-sm font-semibold text-gray-900 hover:text-blue-600 transition block">#TailwindCSS</a>
-                <span className="text-xs text-gray-500">12.4k posts</span>
-              </div>
-              <div>
-                <a href="#" className="text-sm font-semibold text-gray-900 hover:text-blue-600 transition block">#NextJS_Updates</a>
-                <span className="text-xs text-gray-500">8.1k posts</span>
-              </div>
-            </div>
-          </div>
-        </aside>
-
-      </div>
-    </div>
-  );
-}
+            <div className="bg-gray-50 px-4 py-2 flex items-center
