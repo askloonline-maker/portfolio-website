@@ -3,9 +3,11 @@ import React from 'react';
 export default function Home() {
   return (
     <div className="min-h-screen bg-slate-100 font-sans text-gray-900">
+      {/* GLOBAL HEADER NAV */}
       <nav className="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
         <div className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between gap-4">
           
+          {/* Logo & Slogan */}
           <div className="flex flex-col justify-center cursor-pointer">
             <div className="flex items-center gap-2 font-bold text-2xl text-blue-700 tracking-tight leading-none">
               <span>💬</span>
@@ -16,6 +18,7 @@ export default function Home() {
             </span>
           </div>
 
+          {/* Search Input Bar */}
           <div className="flex-1 max-w-2xl relative">
             <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">🔍</span>
             <input 
@@ -25,26 +28,41 @@ export default function Home() {
             />
           </div>
 
-          <div className="flex items-center gap-4">
-            <button className="text-gray-600 hover:text-blue-600 text-xl p-2 rounded-full hover:bg-gray-100 transition">
-              🔔
-            </button>
-            <a href="/ask" className="bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 py-1.5 rounded-full text-sm transition-all shadow-sm">
-              Add Post
+          {/* Premium Right Side CTA Navigation Buttons */}
+          <div className="flex items-center gap-3">
+            <a 
+              href="/categories" 
+              className="text-sm font-semibold text-gray-600 hover:text-blue-600 px-3 py-1.5 rounded-full hover:bg-gray-50 transition"
+            >
+              Spaces
             </a>
-            <div className="w-8 h-8 rounded-full bg-blue-100 border border-blue-600 flex items-center justify-center font-bold text-blue-800 cursor-pointer text-sm">
-              U
-            </div>
+            <a 
+              href="/login" 
+              className="text-sm font-semibold text-gray-600 hover:text-blue-600 px-3 py-1.5 rounded-full hover:bg-gray-50 transition"
+            >
+              Log In
+            </a>
+            <a 
+              href="/signup" 
+              className="bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 py-1.5 rounded-full text-sm transition-all shadow-sm"
+            >
+              Sign Up
+            </a>
           </div>
         </div>
       </nav>
 
+      {/* THREE-COLUMN BODY FEED */}
       <div className="max-w-6xl mx-auto px-4 py-6 grid grid-cols-1 md:grid-cols-4 gap-6">
         
+        {/* LEFT COLUMN: NAVIGATION MENU */}
         <aside className="hidden md:block col-span-1 space-y-2 sticky top-20 h-fit">
           <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider px-3 mb-2">Feeds & Spaces</p>
           <a href="#" className="flex items-center gap-3 px-3 py-2 rounded-lg bg-blue-50 text-blue-700 font-medium transition">
             🏠 Home
+          </a>
+          <a href="/categories" className="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-50 hover:text-blue-600 transition">
+            📂 All Categories
           </a>
           <a href="#" className="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-50 hover:text-blue-600 transition">
             🔥 Popular
@@ -59,8 +77,10 @@ export default function Home() {
           </a>
         </aside>
 
+        {/* CENTER COLUMN: LIVE POSTS MAIN DISCUSSION FEED */}
         <main className="col-span-1 md:col-span-2 space-y-4">
           
+          {/* Quick Create Prompt Field Trigger */}
           <div className="bg-white border border-gray-200 rounded-xl p-4 shadow-sm flex gap-3 items-center">
             <div className="w-9 h-9 rounded-full bg-blue-100 flex items-center justify-center font-bold text-blue-700 shrink-0">U</div>
             <a href="/ask" className="w-full bg-gray-50 border border-gray-200 rounded-full py-2 px-4 text-sm text-gray-400 hover:bg-gray-100 transition cursor-pointer">
@@ -68,6 +88,7 @@ export default function Home() {
             </a>
           </div>
 
+          {/* Sample Forum Thread Block card 1 */}
           <article className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
             <div className="p-4">
               <div className="flex items-center gap-2 text-xs text-gray-500 mb-2">
@@ -101,17 +122,22 @@ export default function Home() {
           </article>
         </main>
 
+        {/* RIGHT COLUMN: SIDEBAR METRICS / TOPICS */}
         <aside className="hidden md:block col-span-1 space-y-4 sticky top-20 h-fit">
           <div className="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
             <h3 className="font-bold text-sm text-gray-800 mb-3 uppercase tracking-wider">Trending Topics</h3>
             <div className="space-y-3">
               <div>
-                <a href="#" className="text-sm font-semibold text-gray-900 hover:text-blue-600 transition block">#TailwindCSS</a>
+                <a href="/categories" className="text-sm font-semibold text-gray-900 hover:text-blue-600 transition block">#TailwindCSS</a>
                 <span className="text-xs text-gray-500">12.4k posts</span>
               </div>
               <div>
-                <a href="#" className="text-sm font-semibold text-gray-900 hover:text-blue-600 transition block">#NextJS_Updates</a>
+                <a href="/categories" className="text-sm font-semibold text-gray-900 hover:text-blue-600 transition block">#NextJS_Updates</a>
                 <span className="text-xs text-gray-500">8.1k posts</span>
+              </div>
+              <div>
+                <a href="/categories" className="text-sm font-semibold text-gray-900 hover:text-blue-600 transition block">#ArtificialIntelligence</a>
+                <span className="text-xs text-gray-500">24.7k posts</span>
               </div>
             </div>
           </div>
