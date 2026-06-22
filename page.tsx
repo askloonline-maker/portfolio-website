@@ -1,8 +1,8 @@
 export default function Home() {
   return (
-    <main style={{background:'#fff',minHeight:'100vh',padding:'40px'}}>
-      <h1 style={{color:'#1e3a8a'}}>Asklo Community</h1>
-      <p>Share knowledge like Quora.</p>
+    <main style={{padding:'40px',fontFamily:'Arial'}}>
+      <h1 style={{color:'#2563EB'}}>Welcome to Asklo.online</h1>
+      <p>Share Knowledge. Ask Anything.</p>
     </main>
-  )
+  );
 }
