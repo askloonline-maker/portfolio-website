@@ -1,34 +1,32 @@
+"use html";
 import React from "react";
 import Link from "next/link";
-import SearchBar from "./SearchBar";
 
 export default function Navbar() {
   return (
-    <header className="sticky top-0 z-40 bg-white border-b border-[#e2e8f0] shadow-sm">
-      <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between gap-4">
-        {/* Branding Target */}
-        <Link href="/" className="text-xl font-black text-[#1d4ed8] tracking-tight flex items-center gap-1">
-          Asklo<span className="text-[#64748b]">.Online</span>
+    <nav className="bg-white border-b border-slate-200 sticky top-0 z-50 w-full">
+      <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+        {/* Logo */}
+        <Link href="/" className="text-2xl font-bold text-red-600 tracking-tight">
+          Asklo<span className="text-slate-800">.Online</span>
         </Link>
-        
-        {/* Central Search Routing Anchor */}
-        <div className="flex-1 max-w-xl">
-          <SearchBar />
+
+        {/* Global Search Bar like Quora */}
+        <div className="flex-1 max-w-lg mx-8 hidden sm:block">
+          <input
+            type="text"
+            placeholder="Search Asklo..."
+            className="w-full bg-slate-100 border border-slate-200 rounded-full px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:bg-white transition"
+          />
         </div>
 
-        {/* Dynamic Action Controls */}
-        <div className="flex items-center gap-3">
-          <Link href="/ask" className="bg-[#1d4ed8] hover:bg-[#1e40af] text-white text-xs font-semibold px-4 py-2.5 rounded-full transition shadow-sm">
-            + Ask or Post
-          </Link>
-          <Link href="/login" className="text-xs font-bold text-[#64748b] hover:text-[#1d4ed8] px-2 py-1 transition">
-            Login
-          </Link>
-          <Link href="/signup" className="bg-[#eff6ff] hover:bg-blue-100 text-[#1d4ed8] text-xs font-bold px-4 py-2.5 rounded-full transition">
-            Sign Up
-          </Link>
+        {/* Public Action Controls */}
+        <div className="flex items-center gap-4">
+          <span className="text-xs font-medium text-slate-500 bg-slate-100 px-3 py-1.5 rounded-full">
+            🌐 Public Mode
+          </span>
         </div>
       </div>
-    </header>
+    </nav>
   );
 }
