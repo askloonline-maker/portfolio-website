@@ -9,8 +9,6 @@ export default function LoginPage() {
           <h2 className="text-xl font-black text-[#0f172a] tracking-tight">Welcome Back</h2>
           <p className="text-xs text-[#64748b]">Sign in to interact with the Living Room.</p>
         </div>
-
-        {/* Clerk sign-in instance targeting your custom routing path */}
         <SignIn routing="path" path="/login" signUpUrl="/signup" />
       </div>
     </div>
