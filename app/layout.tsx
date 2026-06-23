@@ -13,7 +13,7 @@ export const metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <ClerkProvider publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}>
+    <ClerkProvider publishableKey="pk_live_Y2xlbXN1YXNrbG8ub25saW5lLndlYm1hbmlmZXN0LmluZm86M21wOWhzcTV0MXMwodH8RAFKX0E">
       <html lang="en">
         <body className="bg-[#f8fafc] text-[#0f172a] min-h-screen flex flex-col antialiased font-sans">
           <Navbar />
