@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 
 interface SpaceItem {
   name: string;
@@ -52,7 +52,7 @@ export default function HomePage() {
   // Hydrated Global Posts State
   const [posts, setPosts] = useState<PostItem[]>([
     {
-      id: 1,
+      id: 1718000000001,
       title: "Is Artificial Intelligence hitting an architectural plateau with current transformers?",
       content: "We are putting massive energy into scaling parameters, but contextual logical deduction remains heavily simulated. Do you think we need a complete shift away from deep neural webs to hit true artificial generalized systems?",
       category: "Artificial Intelligence",
@@ -64,7 +64,7 @@ export default function HomePage() {
       created_at: "34 minutes ago"
     },
     {
-      id: 2,
+      id: 1718000000002,
       title: "What are your alternative side hustles that have zero dependencies on software engineering?",
       content: "Looking to split my mental time investment entirely away from screens. Curious if anyone here runs real-world operations like premium micro-agriculture or specialty local physical fabrication setups.",
       category: "Side Hustles",
@@ -77,10 +77,12 @@ export default function HomePage() {
     }
   ]);
 
-  // View States
+  // Dynamic View & Sharing States
   const [selectedGroup, setSelectedGroup] = useState<string>("All Spaces");
   const [selectedSubTopic, setSelectedSubTopic] = useState<string>("All Topics");
   const [groupSearchQuery, setGroupSearchQuery] = useState("");
+  const [copiedId, setCopiedId] = useState<number | null>(null);
+  const [generatedLinkModal, setGeneratedLinkModal] = useState<string | null>(null);
   
   // Input Form Controls
   const [titleInput, setTitleInput] = useState("");
@@ -88,13 +90,26 @@ export default function HomePage() {
   const [postGroup, setPostGroup] = useState("Technology");
   const [postSubTopic, setPostSubTopic] = useState("Artificial Intelligence");
 
-  // Dynamic composition target selection
+  // Filter linked content items if a post ID is in the address bar parameters
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const postParam = params.get("post");
+      if (postParam) {
+        const foundPost = posts.find(p => p.id === Number(postParam));
+        if (foundPost) {
+          setSelectedGroup(foundPost.groupName);
+          setSelectedSubTopic(foundPost.category);
+        }
+      }
+    }
+  }, [posts]);
+
   const activeFormSubTopics = useMemo(() => {
     const matching = communityGroups.find(g => g.name === postGroup);
     return matching ? matching.subTopics : [];
   }, [postGroup, communityGroups]);
 
-  // Filtered Post Processing
   const filteredPosts = useMemo(() => {
     return posts.filter(post => {
       const matchGroup = selectedGroup === "All Spaces" || post.groupName === selectedGroup;
@@ -103,7 +118,6 @@ export default function HomePage() {
     });
   }, [posts, selectedGroup, selectedSubTopic]);
 
-  // Search Filter Handler
   const filteredSidebarGroups = useMemo(() => {
     if (!groupSearchQuery.trim()) return communityGroups;
     return communityGroups.filter(g => 
@@ -112,13 +126,26 @@ export default function HomePage() {
     );
   }, [groupSearchQuery, communityGroups]);
 
+  // Copy Execution Routine
+  const handleCopyLink = (postId: number) => {
+    if (typeof window !== "undefined") {
+      const shareUrl = `${window.location.origin}${window.location.pathname}?post=${postId}`;
+      navigator.clipboard.writeText(shareUrl).then(() => {
+        setCopiedId(postId);
+        setTimeout(() => setCopiedId(null), 2000);
+      });
+    }
+  };
+
   const submitPostHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!titleInput.trim()) return;
 
+    const currentTimestampId = Date.now();
     const randomizedId = Math.floor(1000 + Math.random() * 9000);
+    
     const dynamicPost: PostItem = {
-      id: Date.now(),
+      id: currentTimestampId,
       title: titleInput,
       content: contentInput,
       category: postSubTopic,
@@ -133,6 +160,12 @@ export default function HomePage() {
     setPosts([dynamicPost, ...posts]);
     setTitleInput("");
     setContentInput("");
+
+    // Trigger instant visibility link modal generator
+    if (typeof window !== "undefined") {
+      const generatedLink = `${window.location.origin}${window.location.pathname}?post=${currentTimestampId}`;
+      setGeneratedLinkModal(generatedLink);
+    }
   };
 
   const incrementVote = (id: number) => {
@@ -144,8 +177,46 @@ export default function HomePage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-800 font-sans">
+    <div className="min-h-screen bg-slate-50 text-slate-800 font-sans relative">
       
+      {/* SHARABLE LINK SUCCESS MODAL POPUP */}
+      {generatedLinkModal && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4 animate-fadeIn">
+          <div className="w-full max-w-md bg-white border border-blue-100 rounded-2xl p-6 shadow-2xl text-center">
+            <div className="h-12 w-12 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center text-xl mx-auto mb-3">
+              🚀
+            </div>
+            <h3 className="text-lg font-black text-slate-900 mb-1">Broadcast Live!</h3>
+            <p className="text-xs text-slate-500 mb-4">Your anonymous post is live. Anyone can access it using this tracking link:</p>
+            
+            <div className="flex gap-2 mb-4 bg-slate-50 p-2 rounded-xl border border-slate-200">
+              <input 
+                type="text" 
+                readOnly 
+                value={generatedLinkModal} 
+                className="bg-transparent text-xs text-blue-700 font-mono flex-1 outline-none px-2 select-all"
+              />
+              <button
+                onClick={() => {
+                  navigator.clipboard.writeText(generatedLinkModal);
+                  alert("Link copied directly to your clipboard!");
+                }}
+                className="bg-blue-600 hover:bg-blue-700 text-white text-[11px] font-bold px-3 py-1.5 rounded-lg transition-colors"
+              >
+                Copy
+              </button>
+            </div>
+            
+            <button 
+              onClick={() => setGeneratedLinkModal(null)}
+              className="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-2 rounded-xl text-xs transition-colors"
+            >
+              Continue to Feed
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* NAVBAR */}
       <header className="sticky top-0 z-50 border-b border-blue-100 bg-white/90 backdrop-blur-md px-6 py-4 flex flex-col sm:flex-row justify-between items-center gap-4 shadow-sm">
         <div className="flex items-center gap-3">
@@ -172,14 +243,14 @@ export default function HomePage() {
       <div className="bg-white border-b border-slate-200 px-6 py-3 flex flex-wrap items-center gap-2 text-xs">
         <span className="text-slate-500 font-medium">Viewing Stream:</span>
         <button 
-          onClick={() => { setSelectedGroup("All Spaces"); setSelectedSubTopic("All Topics"); }}
+          onClick={() => { setSelectedGroup("All Spaces"); setSelectedSubTopic("All Topics"); if(typeof window !== "undefined") window.history.replaceState({}, '', window.location.pathname); }}
           className="bg-blue-50 text-blue-700 border border-blue-200 px-2.5 py-1 rounded font-bold"
         >
           {selectedGroup} {selectedSubTopic !== "All Topics" && `👉 ${selectedSubTopic}`}
         </button>
         {(selectedGroup !== "All Spaces" || selectedSubTopic !== "All Topics") && (
           <button 
-            onClick={() => { setSelectedGroup("All Spaces"); setSelectedSubTopic("All Topics"); }}
+            onClick={() => { setSelectedGroup("All Spaces"); setSelectedSubTopic("All Topics"); if(typeof window !== "undefined") window.history.replaceState({}, '', window.location.pathname); }}
             className="text-slate-400 hover:text-slate-900 transition-colors pl-1 font-semibold"
           >
             Clear Filter ×
@@ -209,7 +280,7 @@ export default function HomePage() {
             <div className="space-y-1 pt-1 max-h-[50vh] overflow-y-auto">
               <button
                 type="button"
-                onClick={() => { setSelectedGroup("All Spaces"); setSelectedSubTopic("All Topics"); }}
+                onClick={() => { setSelectedGroup("All Spaces"); setSelectedSubTopic("All Topics"); if(typeof window !== "undefined") window.history.replaceState({}, '', window.location.pathname); }}
                 className={`w-full text-left px-3 py-2 rounded-lg text-xs font-bold tracking-wide transition-all mb-2 ${
                   selectedGroup === "All Spaces" 
                     ? "bg-blue-600 text-white shadow-md shadow-blue-600/10" 
@@ -374,11 +445,22 @@ export default function HomePage() {
                       {post.content}
                     </p>
                     
+                    {/* UPDATED ACTION METADATA ACCORDING TO image_363ee3.png */}
                     <div className="flex gap-4 text-[11px] text-slate-400 border-t border-slate-100 pt-2.5">
                       <button type="button" className="hover:text-blue-600 flex items-center gap-1 transition-colors font-semibold">
                         💬 {post.commentsCount} Conversations
                       </button>
-                      <button type="button" className="hover:text-blue-600 transition-colors font-semibold">🔗 DeepLink Share</button>
+                      <button 
+                        type="button" 
+                        onClick={() => handleCopyLink(post.id)}
+                        className={`transition-all font-bold flex items-center gap-1 px-2 py-0.5 rounded border ${
+                          copiedId === post.id 
+                            ? "bg-emerald-50 text-emerald-600 border-emerald-200" 
+                            : "text-blue-600 hover:bg-blue-50 border-transparent hover:border-blue-200"
+                        }`}
+                      >
+                        🔗 {copiedId === post.id ? "Copied Link!" : "DeepLink Share"}
+                      </button>
                     </div>
                   </div>
                 </article>
