@@ -1,11 +1,17 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
+
+interface SpaceItem {
+  name: string;
+  subTopics: string[];
+}
 
 interface PostItem {
   id: number;
   title: string;
   content: string;
   category: string;
+  groupName: string;
   upvotes: number;
   commentsCount: number;
   author: string;
@@ -14,47 +20,112 @@ interface PostItem {
 }
 
 export default function HomePage() {
+  // Complete 25 Groups Matrix Setup
+  const communityGroups: SpaceItem[] = useMemo(() => [
+    { name: "Technology", subTopics: ["Artificial Intelligence", "Programming", "Gadgets", "Cybersecurity", "Cloud Computing", "Web Development", "Mobile Apps", "Software Reviews"] },
+    { name: "Business", subTopics: ["Entrepreneurship", "Startups", "Small Business", "Leadership", "Management", "Freelancing", "E-commerce", "Business Ideas"] },
+    { name: "Finance", subTopics: ["Personal Finance", "Investing", "Stock Market", "Mutual Funds", "Insurance", "Credit Cards", "Taxes", "Loans"] },
+    { name: "Cryptocurrency", subTopics: ["Bitcoin", "Ethereum", "Altcoins", "Blockchain", "NFTs", "Web3", "DeFi", "Crypto Trading"] },
+    { name: "Marketing", subTopics: ["SEO", "Content Marketing", "Social Media Marketing", "Email Marketing", "Affiliate Marketing", "Branding", "Advertising", "Analytics"] },
+    { name: "Career & Jobs", subTopics: ["Resume Tips", "Interview Preparation", "Remote Jobs", "Government Jobs", "Career Growth", "Salary Negotiation", "Workplace Skills", "Side Hustles"] },
+    { name: "Education", subTopics: ["Online Learning", "Study Tips", "Exams", "Scholarships", "Language Learning", "Colleges", "Certifications", "Competitive Exams"] },
+    { name: "Health", subTopics: ["Diabetes", "Yoga", "Weight Loss", "Sleep", "Meditation", "Heart Health", "Nutrition", "Mental Wellness"] },
+    { name: "Fitness", subTopics: ["Gym Workouts", "Home Exercise", "Running", "Bodybuilding", "Cardio", "Strength Training", "Weight Gain", "Supplements"] },
+    { name: "Food", subTopics: ["Recipes", "Healthy Eating", "Vegetarian Food", "Vegan Food", "Desserts", "Street Food", "Cooking Tips", "Kitchen Appliances"] },
+    { name: "Travel", subTopics: ["Solo Travel", "Budget Travel", "Luxury Travel", "Visas", "Hotels", "Road Trips", "Backpacking", "Travel Tips"] },
+    { name: "Relationships", subTopics: ["Dating", "Marriage", "Family", "Friendships", "Parenting", "Breakups", "Communication", "Emotional Health"] },
+    { name: "Lifestyle", subTopics: ["Minimalism", "Habits", "Productivity", "Time Management", "Self-Improvement", "Happiness", "Motivation", "Daily Routines"] },
+    { name: "Fashion & Beauty", subTopics: ["Men's Fashion", "Women's Fashion", "Skincare", "Haircare", "Makeup", "Grooming", "Accessories", "Luxury Brands"] },
+    { name: "Entertainment", subTopics: ["Movies", "TV Shows", "Celebrities", "Streaming Platforms", "Music", "Podcasts", "Anime", "Comics"] },
+    { name: "Sports", subTopics: ["Cricket", "Football", "Basketball", "Tennis", "Badminton", "Olympics", "Fitness Sports", "Esports"] },
+    { name: "Gaming", subTopics: ["PC Gaming", "Mobile Gaming", "PlayStation", "Xbox", "Game Reviews", "Esports", "RPG Games", "Indie Games"] },
+    { name: "Science", subTopics: ["Physics", "Chemistry", "Biology", "Space", "Astronomy", "Climate Science", "Genetics", "Innovations"] },
+    { name: "History", subTopics: ["Ancient History", "Medieval History", "World Wars", "Indian History", "Historical Figures", "Civilizations", "Archaeology", "Historical Mysteries"] },
+    { name: "Politics", subTopics: ["Indian Politics", "US Politics", "International Relations", "Elections", "Government Policies", "Democracy", "Political History", "Geopolitics"] },
+    { name: "Home & Living", subTopics: ["Home Decor", "Interior Design", "Gardening", "Smart Home", "DIY Projects", "Furniture", "Cleaning Tips", "Organization"] },
+    { name: "Automotive", subTopics: ["Cars", "Bikes", "Electric Vehicles", "Car Reviews", "Maintenance", "Road Safety", "Luxury Cars", "Motorsports"] },
+    { name: "Pets & Animals", subTopics: ["Dogs", "Cats", "Birds", "Fish", "Pet Care", "Animal Behavior", "Wildlife", "Veterinary Advice"] },
+    { name: "Religion & Spirituality", subTopics: ["Hinduism", "Buddhism", "Christianity", "Islam", "Meditation", "Astrology", "Philosophy", "Spiritual Growth"] },
+    { name: "Environment & Agriculture", subTopics: ["Climate Change", "Sustainability", "Organic Farming", "Gardening", "Renewable Energy", "Water Conservation", "Agriculture Technology", "Rural Development"] }
+  ], []);
+
+  // Premium Hydrated Global Posts State
   const [posts, setPosts] = useState<PostItem[]>([
     {
       id: 1,
-      title: "What are the core technical architectures behind building high-scale anonymous routing fabrics?",
-      content: "Most distributed fabrics heavily rely on multi-hop layered encryption or basic mixnets where packets are shuffled across independent staging nodes. For standard web apps, separating identity objects entirely from post schemas at the database layer usually achieves absolute software anonymity.",
-      category: "q/architecture",
-      upvotes: 84,
-      commentsCount: 23,
-      author: "Anonymous Guest",
-      avatarSeed: "tech88",
-      created_at: "2 hours ago"
+      title: "Is Artificial Intelligence hitting an architectural plateau with current transformers?",
+      content: "We are putting massive energy into scaling parameters, but contextual logical deduction remains heavily simulated. Do you think we need a complete shift away from deep neural webs to hit true artificial generalized systems?",
+      category: "Artificial Intelligence",
+      groupName: "Technology",
+      upvotes: 142,
+      commentsCount: 38,
+      author: "Guest_2901",
+      avatarSeed: "ai99",
+      created_at: "34 minutes ago"
     },
     {
       id: 2,
-      title: "Unpopular opinion: Framework abstraction layers are moving way too fast for local testing configurations.",
-      content: "Setting up local Docker databases along with mock engines for key-value pipelines shouldn't require a master's degree in cloud engineering. Simplicity always wins over over-engineered local environments.",
-      category: "r/webdev",
-      upvotes: 214,
-      commentsCount: 67,
-      author: "Anonymous Guest",
-      avatarSeed: "dev42",
-      created_at: "6 hours ago"
+      title: "What are your alternative side hustles that have zero dependencies on software engineering?",
+      content: "Looking to split my mental time investment entirely away from screens. Curious if anyone here runs real-world operations like premium micro-agriculture or specialty local physical fabrication setups.",
+      category: "Side Hustles",
+      groupName: "Career & Jobs",
+      upvotes: 89,
+      commentsCount: 19,
+      author: "Guest_8410",
+      avatarSeed: "hustle3",
+      created_at: "2 hours ago"
     }
   ]);
 
+  // View States
+  const [selectedGroup, setSelectedGroup] = useState<string>("All Spaces");
+  const [selectedSubTopic, setSelectedSubTopic] = useState<string>("All Topics");
+  const [groupSearchQuery, setGroupSearchQuery] = useState("");
+  
+  // Input Form Controls
   const [titleInput, setTitleInput] = useState("");
   const [contentInput, setContentInput] = useState("");
-  const [selectedFeed, setSelectedFeed] = useState("all-spaces");
+  const [postGroup, setPostGroup] = useState("Technology");
+  const [postSubTopic, setPostSubTopic] = useState("Artificial Intelligence");
+
+  // Filter Subtopics dropdown mapping dynamically based on composition choice
+  const activeFormSubTopics = useMemo(() => {
+    const matching = communityGroups.find(g => g.name === postGroup);
+    return matching ? matching.subTopics : [];
+  }, [postGroup, communityGroups]);
+
+  // Filtered Post Views
+  const filteredPosts = useMemo(() => {
+    return posts.filter(post => {
+      const matchGroup = selectedGroup === "All Spaces" || post.groupName === selectedGroup;
+      const matchSub = selectedSubTopic === "All Topics" || post.category === selectedSubTopic;
+      return matchGroup && matchSub;
+    });
+  }, [posts, selectedGroup, selectedSubTopic]);
+
+  // Handle Search Filtering on Sidebar Categories
+  const filteredSidebarGroups = useMemo(() => {
+    if (!groupSearchQuery.trim()) return communityGroups;
+    return communityGroups.filter(g => 
+      g.name.toLowerCase().includes(groupSearchQuery.toLowerCase()) ||
+      g.subTopics.some(s => s.toLowerCase().includes(groupSearchQuery.toLowerCase()))
+    );
+  }, [groupSearchQuery, communityGroups]);
 
   const submitPostHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!titleInput.trim()) return;
 
+    const randomizedId = Math.floor(1000 + Math.random() * 9000);
     const dynamicPost: PostItem = {
       id: Date.now(),
       title: titleInput,
       content: contentInput,
-      category: selectedFeed === "all-spaces" ? "q/general" : selectedFeed,
+      category: postSubTopic,
+      groupName: postGroup,
       upvotes: 1,
       commentsCount: 0,
-      author: "Anonymous Guest",
+      author: `Guest_${randomizedId}`,
       avatarSeed: Math.random().toString(36).substring(7),
       created_at: "Just now"
     };
@@ -73,54 +144,114 @@ export default function HomePage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950">
+    <div className="min-h-screen bg-slate-950 text-slate-100 font-sans">
+      
       {/* NAVBAR */}
-      <header className="sticky top-0 z-50 border-b border-blue-900/40 bg-slate-950/80 backdrop-blur-md px-6 py-4 flex justify-between items-center">
+      <header className="sticky top-0 z-50 border-b border-blue-900/30 bg-slate-950/80 backdrop-blur-md px-6 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
         <div className="flex items-center gap-3">
-          <div className="h-9 w-9 rounded-lg bg-gradient-to-tr from-blue-700 to-indigo-500 shadow-md shadow-blue-500/30 flex items-center justify-center font-black text-white text-lg tracking-wider">
-            Ω
+          <div className="h-10 w-10 rounded-xl bg-gradient-to-tr from-blue-700 to-blue-500 shadow-lg shadow-blue-600/20 flex items-center justify-center font-black text-white text-xl tracking-tight">
+            A
           </div>
-          <span className="text-xl font-bold tracking-tight bg-gradient-to-r from-white via-blue-200 to-blue-500 bg-clip-text text-transparent">
-            RoyalSphere
-          </span>
+          <div>
+            <h1 className="text-2xl font-black tracking-tight text-white flex items-center gap-2">
+              Asklo<span className="text-blue-500 text-lg">.Online</span>
+            </h1>
+            <p className="text-[11px] uppercase tracking-widest font-bold text-slate-400">
+              &ldquo;The World&apos;s Living Room&rdquo;
+            </p>
+          </div>
         </div>
         
-        <div className="flex items-center gap-2 bg-blue-950/50 border border-blue-800/30 px-4 py-1.5 rounded-full text-xs font-semibold text-blue-400">
+        <div className="flex items-center gap-2 bg-blue-950/40 border border-blue-800/40 px-4 py-2 rounded-full text-xs font-semibold text-blue-400 shadow-inner">
           <span className="h-2 w-2 rounded-full bg-blue-500 animate-pulse" />
-          Open Guest Platform
+          Secure Anonymous Network (No Registration Required)
         </div>
       </header>
 
-      {/* BODY WRAPPER */}
+      {/* FILTER CONTROLLER TOP BAR DISPLAY */}
+      <div className="bg-slate-900/30 border-b border-slate-900 px-6 py-3 flex flex-wrap items-center gap-2 text-xs">
+        <span className="text-slate-400 font-medium">Viewing Stream:</span>
+        <button 
+          onClick={() => { setSelectedGroup("All Spaces"); setSelectedSubTopic("All Topics"); }}
+          className="bg-blue-950/80 text-blue-400 border border-blue-900/40 px-2.5 py-1 rounded font-semibold"
+        >
+          {selectedGroup} {selectedSubTopic !== "All Topics" && `👉 ${selectedSubTopic}`}
+        </button>
+        {(selectedGroup !== "All Spaces" || selectedSubTopic !== "All Topics") && (
+          <button 
+            onClick={() => { setSelectedGroup("All Spaces"); setSelectedSubTopic("All Topics"); }}
+            className="text-slate-500 hover:text-white transition-colors pl-1"
+          >
+            Clear Filter ×
+          </button>
+        )}
+      </div>
+
+      {/* MAIN LAYOUT WRAPPER */}
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-4 gap-8 p-6">
         
-        {/* SIDEBAR NAVIGATION */}
-        <aside className="lg:col-span-1 space-y-4">
-          <div className="premium-card">
-            <h3 className="text-xs font-bold text-blue-400 uppercase tracking-widest mb-3">Active Communities</h3>
-            <ul className="space-y-1.5">
-              {[
-                { label: "🌐 All Feeds", id: "all-spaces" },
-                { label: "🚀 q/architecture", id: "q/architecture" },
-                { label: "💻 r/webdev", id: "r/webdev" },
-                { label: "📈 q/markets", id: "q/markets" },
-                { label: "🎮 r/gaming", id: "r/gaming" }
-              ].map((categoryItem) => (
-                <li key={categoryItem.id}>
+        {/* SIDEBAR NAVIGATION (25 GROUPS MAPPED) */}
+        <aside className="lg:col-span-1 space-y-4 max-h-[85vh] overflow-y-auto pr-2 custom-scrollbar">
+          <div className="p-4 bg-slate-900/60 border border-slate-900 rounded-xl space-y-3 shadow-sm">
+            <div className="flex items-center justify-between">
+              <h3 className="text-xs font-bold text-blue-400 uppercase tracking-widest">Global Rooms</h3>
+              <span className="text-[10px] bg-blue-950 text-blue-400 px-1.5 py-0.5 rounded font-mono font-bold">25 Rooms</span>
+            </div>
+            
+            <input 
+              type="text"
+              placeholder="Search Rooms or Spaces..."
+              value={groupSearchQuery}
+              onChange={(e) => setGroupSearchQuery(e.target.value)}
+              className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-1.5 text-xs text-slate-300 focus:outline-none focus:border-blue-600 transition-colors placeholder-slate-600"
+            />
+
+            <div className="space-y-1 pt-1 max-h-[50vh] overflow-y-auto space-y-2">
+              <button
+                type="button"
+                onClick={() => { setSelectedGroup("All Spaces"); setSelectedSubTopic("All Topics"); }}
+                className={`w-full text-left px-3 py-2 rounded-lg text-xs font-bold tracking-wide transition-all ${
+                  selectedGroup === "All Spaces" 
+                    ? "bg-blue-600 text-white shadow-md shadow-blue-600/20" 
+                    : "text-slate-400 hover:bg-slate-900 hover:text-white"
+                }`}
+              >
+                🌐 Show All Channels
+              </button>
+
+              {filteredSidebarGroups.map((group) => (
+                <div key={group.name} className="space-y-1 pt-1 border-t border-slate-900">
                   <button
                     type="button"
-                    onClick={() => setSelectedFeed(categoryItem.id)}
-                    className={`w-full text-left px-3 py-2 rounded-lg text-sm font-medium transition-all ${
-                      selectedFeed === categoryItem.id 
-                        ? "bg-blue-600/90 text-white shadow-md shadow-blue-600/20" 
-                        : "text-slate-400 hover:bg-slate-900/80 hover:text-white"
+                    onClick={() => { setSelectedGroup(group.name); setSelectedSubTopic("All Topics"); }}
+                    className={`w-full text-left px-2 py-1.5 rounded text-xs font-bold flex justify-between items-center transition-colors ${
+                      selectedGroup === group.name ? "text-blue-400 bg-blue-950/30" : "text-slate-300 hover:text-white"
                     }`}
                   >
-                    {categoryItem.label}
+                    <span>🎯 {group.name}</span>
+                    <span className="text-[9px] bg-slate-950 text-slate-500 px-1 rounded">{group.subTopics.length}</span>
                   </button>
-                </li>
+
+                  {/* Nested rendering if parent room highlighted */}
+                  {selectedGroup === group.name && (
+                    <div className="pl-3 space-y-0.5 border-l border-blue-900/30 ml-2 animate-fadeIn">
+                      {group.subTopics.map(sub => (
+                        <button
+                          key={sub}
+                          type="button"
+                          onClick={() => setSelectedSubTopic(sub)}
+                          className={`w-full text-left block px-2 py-1 text-[11px] rounded transition-colors ${
+                            selectedSubTopic === sub ? "text-white bg-blue-600 font-medium" : "text-slate-500 hover:text-slate-300"
+                          }`}
+                        >
+                          # {sub}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
               ))}
-            </ul>
+            </div>
           </div>
         </aside>
 
@@ -128,117 +259,155 @@ export default function HomePage() {
         <main className="lg:col-span-2 space-y-6">
           
           {/* COMPOSER FORM */}
-          <form onSubmit={submitPostHandler} className="premium-card bg-gradient-to-br from-slate-900/80 to-slate-950/80 border-blue-900/30">
+          <form onSubmit={submitPostHandler} className="p-5 bg-gradient-to-br from-slate-900 to-slate-950 border border-blue-900/20 rounded-xl shadow-xl">
             <div className="flex items-center gap-3 mb-4">
-              <img 
-                src="https://api.dicebear.com/7.x/bottts-neutral/svg?seed=globalGuest" 
-                alt="Guest Avatar" 
-                className="h-8 w-8 rounded-full bg-blue-950 border border-blue-800/40"
-              />
-              <span className="text-sm font-medium text-slate-300">
-                Authorized as <span className="text-blue-400 font-semibold">Anonymous Guest</span>
+              <div className="h-8 w-8 rounded-full bg-blue-950 border border-blue-800/40 flex items-center justify-center font-bold text-xs text-blue-400">
+                AG
+              </div>
+              <span className="text-xs font-medium text-slate-400">
+                Streaming live context as <span className="text-blue-400 font-mono font-bold">Anonymous Guest</span>
               </span>
             </div>
             
             <input
               type="text"
-              placeholder="What question or topic do you want to explore?"
+              placeholder="What question or narrative would you like to present?"
               value={titleInput}
               onChange={(e) => setTitleInput(e.target.value)}
-              className="w-full bg-slate-950/80 border border-slate-800 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-blue-500 transition-colors mb-3 placeholder-slate-500"
+              className="w-full bg-slate-950 border border-slate-800/80 rounded-lg px-4 py-2.5 text-sm font-semibold focus:outline-none focus:border-blue-600 transition-colors mb-3 placeholder-slate-600 text-white"
               required
             />
             
             <textarea
-              placeholder="Provide background context, logs, or structured explanations..."
+              placeholder="Elaborate your premise, append technical insights, or submit logs freely..."
               value={contentInput}
               onChange={(e) => setContentInput(e.target.value)}
-              className="w-full bg-slate-950/80 border border-slate-800 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-blue-500 transition-colors h-24 resize-none placeholder-slate-500"
+              className="w-full bg-slate-950 border border-slate-800/80 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-blue-600 transition-colors h-24 resize-none placeholder-slate-600 text-slate-200 mb-4"
             />
             
-            <div className="flex justify-end mt-1">
-              <button type="submit" className="btn-premium text-sm">
-                Publish Stream
+            {/* COMPOSER ROUTING SELECTORS */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-slate-950 p-3 rounded-lg border border-slate-900 mb-4">
+              <div>
+                <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Target Room</label>
+                <select 
+                  value={postGroup}
+                  onChange={(e) => {
+                    setPostGroup(e.target.value);
+                    const matching = communityGroups.find(g => g.name === e.target.value);
+                    if(matching && matching.subTopics.length > 0) {
+                      setPostSubTopic(matching.subTopics[0]);
+                    }
+                  }}
+                  className="w-full bg-slate-900 text-xs text-slate-300 border border-slate-800 rounded px-2.5 py-1.5 focus:outline-none focus:border-blue-600"
+                >
+                  {communityGroups.map(g => <option key={g.name} value={g.name}>{g.name}</option>)}
+                </select>
+              </div>
+              <div>
+                <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Specific Space Category</label>
+                <select 
+                  value={postSubTopic}
+                  onChange={(e) => setPostSubTopic(e.target.value)}
+                  className="w-full bg-slate-900 text-xs text-slate-300 border border-slate-800 rounded px-2.5 py-1.5 focus:outline-none focus:border-blue-600"
+                >
+                  {activeFormSubTopics.map(sub => <option key={sub} value={sub}>{sub}</option>)}
+                </select>
+              </div>
+            </div>
+
+            <div className="flex justify-end pt-1 border-t border-slate-900">
+              <button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white font-bold px-5 py-2 rounded-lg text-xs tracking-wide transition-all shadow-md shadow-blue-600/10">
+                Broadcast Anonymously
               </button>
             </div>
           </form>
 
           {/* STREAM ITERATOR */}
           <div className="space-y-4">
-            {posts
-              .filter(p => selectedFeed === "all-spaces" || p.category === selectedFeed)
-              .map((post) => (
-                <article key={post.id} className="premium-card flex gap-4 items-start">
+            {filteredPosts.length === 0 ? (
+              <div className="p-8 text-center bg-slate-900/20 border border-slate-900 rounded-xl">
+                <span className="text-xl">📭</span>
+                <p className="text-sm text-slate-500 mt-2 font-medium">No live transmissions found in this specific subspace yet.</p>
+              </div>
+            ) : (
+              filteredPosts.map((post) => (
+                <article key={post.id} className="p-5 bg-slate-900/40 border border-slate-900 rounded-xl flex gap-4 items-start transition-all hover:border-blue-900/20">
                   
-                  {/* Voting System */}
-                  <div className="flex flex-col items-center bg-slate-950/60 p-1.5 rounded-lg border border-slate-800/50 min-w-[38px]">
+                  {/* Voting Engine */}
+                  <div className="flex flex-col items-center bg-slate-950 p-1.5 rounded-lg border border-slate-800 min-w-[38px] shadow-sm">
                     <button 
                       type="button"
                       onClick={() => incrementVote(post.id)}
-                      className="text-slate-500 hover:text-blue-400 font-bold transition-colors p-0.5"
+                      className="text-slate-500 hover:text-blue-500 font-bold transition-colors p-0.5 text-xs"
                     >
                       ▲
                     </button>
-                    <span className="text-xs font-bold my-0.5 text-blue-400">{post.upvotes}</span>
+                    <span className="text-xs font-mono font-bold my-0.5 text-blue-400">{post.upvotes}</span>
                     <button 
                       type="button"
                       onClick={() => decrementVote(post.id)}
-                      className="text-slate-500 hover:text-indigo-400 font-bold transition-colors p-0.5"
+                      className="text-slate-500 hover:text-blue-500 font-bold transition-colors p-0.5 text-xs"
                     >
                       ▼
                     </button>
                   </div>
 
-                  {/* Main Content Container */}
+                  {/* Article Structure Container */}
                   <div className="flex-1">
-                    <div className="flex items-center gap-2 text-xs text-slate-400 mb-2">
-                      <span className="bg-blue-950/80 text-blue-400 px-2 py-0.5 rounded font-mono border border-blue-900/40 text-[11px]">
-                        {post.category}
+                    <div className="flex flex-wrap items-center gap-2 text-[11px] text-slate-500 mb-2">
+                      <span className="bg-blue-950 text-blue-400 px-2 py-0.5 rounded font-mono border border-blue-900/30 text-[10px] font-bold">
+                        {post.groupName} / {post.category}
                       </span>
                       <img 
                         src={`https://api.dicebear.com/7.x/identicon/svg?seed=${post.avatarSeed}`} 
-                        alt="Author Icon" 
-                        className="h-3.5 w-3.5 bg-slate-800 rounded-sm"
+                        alt="Author Matrix Symbol" 
+                        className="h-4 w-4 bg-slate-800 rounded-full border border-slate-700"
                       />
-                      <span>• <span className="text-slate-300 font-medium">{post.author}</span></span>
-                      <span>{post.created_at}</span>
+                      <span>• <span className="text-slate-300 font-mono font-semibold">{post.author}</span></span>
+                      <span>• {post.created_at}</span>
                     </div>
                     
-                    <h2 className="text-lg font-semibold text-white tracking-tight hover:text-blue-300 transition-colors duration-200 mb-2">
+                    <h2 className="text-base font-bold text-white tracking-tight hover:text-blue-400 transition-colors duration-200 mb-1.5">
                       {post.title}
                     </h2>
                     
-                    <p className="text-sm text-slate-300 leading-relaxed font-normal mb-3 whitespace-pre-wrap">
+                    <p className="text-xs text-slate-300 leading-relaxed mb-3 whitespace-pre-wrap font-normal">
                       {post.content}
                     </p>
                     
-                    <div className="flex gap-4 text-xs text-slate-400 border-t border-slate-900 pt-3">
-                      <button type="button" className="hover:text-blue-400 flex items-center gap-1 transition-colors">
-                        💬 {post.commentsCount} Comments
+                    <div className="flex gap-4 text-[11px] text-slate-500 border-t border-slate-900/60 pt-2.5">
+                      <button type="button" className="hover:text-blue-400 flex items-center gap-1 transition-colors font-medium">
+                        💬 {post.commentsCount} Conversations
                       </button>
-                      <button type="button" className="hover:text-blue-400 transition-colors">🔗 Share Content</button>
+                      <button type="button" className="hover:text-blue-400 transition-colors font-medium">🔗 DeepLink Share</button>
                     </div>
                   </div>
                 </article>
-              ))}
+              ))
+            )}
           </div>
         </main>
 
-        {/* RIGHT DETAILS PANEL */}
-        <aside className="lg:col-span-1">
-          <div className="premium-card bg-gradient-to-b from-blue-950/20 to-transparent border-blue-900/20">
-            <h3 className="text-sm font-bold text-white tracking-wide mb-2">Platform Manifest</h3>
-            <p className="text-xs text-slate-400 leading-relaxed mb-4">
-              Welcome to an unfettered forum engine combining the logical layout of Quora spaces with the voting system of Subreddits. No registration gates or global tracking metrics required.
+        {/* RIGHT METRIC DETAILS PANEL */}
+        <aside className="lg:col-span-1 space-y-4">
+          <div className="p-4 bg-gradient-to-b from-blue-950/20 to-slate-950 border border-blue-900/10 rounded-xl space-y-3">
+            <h3 className="text-xs font-bold text-white uppercase tracking-wider">Asklo Matrix Manifest</h3>
+            <p className="text-xs text-slate-400 leading-relaxed">
+              Welcome to the internet&apos;s ultimate decentralized dialogue layer. A balanced combination of Quora structure and Reddit mechanics designed to guarantee raw exchange without social profiling barriers.
             </p>
-            <div className="border-t border-blue-900/20 pt-3 space-y-2">
-              <div className="flex justify-between text-[11px]">
-                <span className="text-slate-500">Live Active Feeds</span>
-                <span className="text-blue-400 font-mono font-bold">100% Operational</span>
+            
+            <div className="border-t border-slate-900 pt-3 space-y-2 text-[11px]">
+              <div className="flex justify-between">
+                <span className="text-slate-500">Access Framework</span>
+                <span className="text-blue-400 font-mono font-bold">Open Gateway</span>
               </div>
-              <div className="flex justify-between text-[11px]">
-                <span className="text-slate-500">Database Context</span>
-                <span className="text-indigo-400 font-mono font-bold">Isolated Memory</span>
+              <div className="flex justify-between">
+                <span className="text-slate-500">Global Encryption</span>
+                <span className="text-blue-400 font-mono font-bold">Enforced</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-slate-500">Tracking Scripts</span>
+                <span className="text-slate-600 font-mono">0% Detected</span>
               </div>
             </div>
           </div>
