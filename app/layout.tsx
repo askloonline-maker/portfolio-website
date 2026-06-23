@@ -43,7 +43,7 @@ export default function RootLayout({
 
               {/* Dynamic Authentication Actions */}
               <div className="flex items-center gap-4 shrink-0">
-                {/* Visible when logged out */}
+                {/* Logged Out View */}
                 <SignedOut>
                   <a href="/login" className="text-xs font-semibold text-gray-500 hover:text-gray-900 transition">
                     Login
@@ -53,7 +53,7 @@ export default function RootLayout({
                   </a>
                 </SignedOut>
 
-                {/* Visible when logged in */}
+                {/* Logged In View */}
                 <SignedIn>
                   <a href="/ask" className="bg-[#1d4ed8] hover:bg-[#1e40af] text-white font-medium px-4 py-1.5 rounded-full text-xs transition-all shadow-sm">
                     Add Question
@@ -67,7 +67,7 @@ export default function RootLayout({
             </div>
           </header>
 
-          {/* PAGE CONTENT MOUNT POINT */}
+          {/* MAIN MOUNT POINT */}
           <div className="max-w-[1000px] mx-auto px-4 py-4">
             {children}
           </div>
