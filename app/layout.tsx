@@ -2,8 +2,8 @@ import React from "react";
 import "./globals.css";
 
 export const metadata = {
-  title: "RoyalSphere | Anonymous Discussion Forum",
-  description: "The premium combined platform for anonymous questions and community curation.",
+  title: "Asklo.Online | The World's Living Room",
+  description: "The premium anonymous combined platform for free-flowing conversation, questions, and community curation.",
 };
 
 interface RootLayoutProps {
