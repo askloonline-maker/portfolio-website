@@ -6,14 +6,14 @@ import Footer from "../components/Footer";
 import "./globals.css";
 
 export const metadata = {
-  title: "Asklo.Online - The World's Living Room",
-  description: "A premium hybrid Q&A and discussion platform open to everyone.",
+  title: "Asklo.Online | The Public Town Square",
+  description: "An open, premium Q&A and discussion community.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className="bg-[#f8fafc] text-[#0f172a] min-h-screen flex flex-col antialiased font-sans">
+      <body className="bg-[#f0f4f8] text-[#1e293b] min-h-screen flex flex-col antialiased font-sans">
         <Navbar />
         <div className="max-w-7xl mx-auto w-full px-4 py-6 flex-1 grid grid-cols-1 md:grid-cols-4 gap-6">
           <aside className="hidden md:block self-start sticky top-20">
