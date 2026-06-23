@@ -77,12 +77,15 @@ export default function HomePage() {
     }
   ]);
 
-  // Dynamic View & Sharing States
+  // View States
   const [selectedGroup, setSelectedGroup] = useState<string>("All Spaces");
   const [selectedSubTopic, setSelectedSubTopic] = useState<string>("All Topics");
   const [groupSearchQuery, setGroupSearchQuery] = useState("");
   const [copiedId, setCopiedId] = useState<number | null>(null);
   const [generatedLinkModal, setGeneratedLinkModal] = useState<string | null>(null);
+  
+  // NEW: Dedicated Targeted Popup View State
+  const [focusedPopupPost, setFocusedPopupPost] = useState<PostItem | null>(null);
   
   // Input Form Controls
   const [titleInput, setTitleInput] = useState("");
@@ -90,7 +93,7 @@ export default function HomePage() {
   const [postGroup, setPostGroup] = useState("Technology");
   const [postSubTopic, setPostSubTopic] = useState("Artificial Intelligence");
 
-  // Filter linked content items if a post ID is in the address bar parameters
+  // Hook to handle active dynamic deep-linking popups safely on target load
   useEffect(() => {
     if (typeof window !== "undefined") {
       const params = new URLSearchParams(window.location.search);
@@ -98,12 +101,19 @@ export default function HomePage() {
       if (postParam) {
         const foundPost = posts.find(p => p.id === Number(postParam));
         if (foundPost) {
-          setSelectedGroup(foundPost.groupName);
-          setSelectedSubTopic(foundPost.category);
+          setFocusedPopupPost(foundPost);
         }
       }
     }
   }, [posts]);
+
+  // Clean URL string adjustments when removing explicit popup layers
+  const closePopupHandler = () => {
+    setFocusedPopupPost(null);
+    if (typeof window !== "undefined") {
+      window.history.replaceState({}, "", window.location.pathname);
+    }
+  };
 
   const activeFormSubTopics = useMemo(() => {
     const matching = communityGroups.find(g => g.name === postGroup);
@@ -126,7 +136,6 @@ export default function HomePage() {
     );
   }, [groupSearchQuery, communityGroups]);
 
-  // Copy Execution Routine
   const handleCopyLink = (postId: number) => {
     if (typeof window !== "undefined") {
       const shareUrl = `${window.location.origin}${window.location.pathname}?post=${postId}`;
@@ -161,7 +170,6 @@ export default function HomePage() {
     setTitleInput("");
     setContentInput("");
 
-    // Trigger instant visibility link modal generator
     if (typeof window !== "undefined") {
       const generatedLink = `${window.location.origin}${window.location.pathname}?post=${currentTimestampId}`;
       setGeneratedLinkModal(generatedLink);
@@ -179,6 +187,68 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-slate-50 text-slate-800 font-sans relative">
       
+      {/* NEW: DYNAMIC DEEPLINK TARGET POPUP OVERLAY */}
+      {focusedPopupPost && (
+        <div className="fixed inset-0 z-[110] flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4 animate-fadeIn">
+          <div className="w-full max-w-2xl bg-white border border-blue-200 rounded-2xl shadow-2xl overflow-hidden relative max-h-[90vh] flex flex-col">
+            
+            {/* Modal Header */}
+            <div className="px-6 py-4 bg-slate-50 border-b border-slate-100 flex items-center justify-between">
+              <span className="text-xs bg-blue-50 text-blue-600 px-2.5 py-0.5 rounded-full border border-blue-100 font-bold font-mono">
+                🎯 Shared Live Post Entry
+              </span>
+              <button 
+                onClick={closePopupHandler}
+                className="text-slate-400 hover:text-slate-900 font-black text-lg transition-colors p-1"
+                type="button"
+                aria-label="Close Popup Window"
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* Modal Scrollable Core Content */}
+            <div className="p-6 overflow-y-auto space-y-4 flex-1">
+              <div className="flex items-center gap-2 text-[11px] text-slate-400">
+                <span className="bg-slate-100 text-slate-700 px-2 py-0.5 rounded font-mono font-bold">
+                  {focusedPopupPost.groupName} / {focusedPopupPost.category}
+                </span>
+                <img 
+                  src={`https://api.dicebear.com/7.x/identicon/svg?seed=${focusedPopupPost.avatarSeed}`} 
+                  alt="Author Matrix Symbol" 
+                  className="h-4 w-4 bg-slate-100 rounded-full border border-slate-200"
+                />
+                <span>• Posted by <span className="text-slate-700 font-mono font-bold">{focusedPopupPost.author}</span></span>
+                <span>• {focusedPopupPost.created_at}</span>
+              </div>
+
+              <h2 className="text-xl font-black text-slate-900 tracking-tight leading-snug">
+                {focusedPopupPost.title}
+              </h2>
+
+              <p className="text-sm text-slate-600 leading-relaxed bg-slate-50/50 p-4 rounded-xl border border-slate-100 whitespace-pre-wrap font-normal">
+                {focusedPopupPost.content}
+              </p>
+            </div>
+
+            {/* Modal Action Footnotes Footer */}
+            <div className="px-6 py-3.5 bg-slate-50 border-t border-slate-100 flex justify-between items-center text-xs">
+              <div className="flex gap-2 items-center">
+                <span className="text-slate-400 font-medium">Upvotes:</span>
+                <span className="font-mono font-black text-blue-600 bg-white px-2 py-0.5 rounded border border-slate-200 shadow-sm">{focusedPopupPost.upvotes}</span>
+              </div>
+              <button 
+                onClick={closePopupHandler}
+                className="bg-blue-600 hover:bg-blue-700 text-white font-bold px-4 py-1.5 rounded-lg transition-all"
+              >
+                Explore Living Room Feed
+              </button>
+            </div>
+
+          </div>
+        </div>
+      )}
+
       {/* SHARABLE LINK SUCCESS MODAL POPUP */}
       {generatedLinkModal && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4 animate-fadeIn">
@@ -187,7 +257,7 @@ export default function HomePage() {
               🚀
             </div>
             <h3 className="text-lg font-black text-slate-900 mb-1">Broadcast Live!</h3>
-            <p className="text-xs text-slate-500 mb-4">Your anonymous post is live. Anyone can access it using this tracking link:</p>
+            <p className="text-xs text-slate-500 mb-4">Your anonymous post is live. Anyone can access it directly as a focused popup using this tracking link:</p>
             
             <div className="flex gap-2 mb-4 bg-slate-50 p-2 rounded-xl border border-slate-200">
               <input 
@@ -445,7 +515,7 @@ export default function HomePage() {
                       {post.content}
                     </p>
                     
-                    {/* UPDATED ACTION METADATA ACCORDING TO image_363ee3.png */}
+                    {/* ACTION METADATA ACCORDING TO image_363ee3.png */}
                     <div className="flex gap-4 text-[11px] text-slate-400 border-t border-slate-100 pt-2.5">
                       <button type="button" className="hover:text-blue-600 flex items-center gap-1 transition-colors font-semibold">
                         💬 {post.commentsCount} Conversations
