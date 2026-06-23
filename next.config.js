@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  /* config options here */
+  reactStrictMode: true,
+  /* All authentication overrides removed */
 };
 
 module.exports = nextConfig;
