@@ -1,9 +1,15 @@
-import { SignUp } from "@clerk/nextjs";
+import React from "react";
+import Hero from "../components/Hero";
+import RecentQuestions from "../components/RecentQuestions";
 
-export default function SignUpPage() {
+export default function HomePage() {
   return (
-    <div className="min-h-[80vh] flex items-center justify-center">
-      <SignUp signInUrl="/login" routing="hash" />
+    <div className="space-y-5">
+      {/* Top Value Banner */}
+      <Hero />
+
+      {/* Live Content Query Stream */}
+      <RecentQuestions />
     </div>
   );
 }
