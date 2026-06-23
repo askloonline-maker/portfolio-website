@@ -6,8 +6,9 @@ export default function Hero() {
     <div className="bg-white border border-[#e2e8f0] rounded-xl p-6 shadow-sm relative overflow-hidden">
       <div className="absolute right-0 top-0 text-7xl opacity-10 p-4 select-none">🌐</div>
       <div className="max-w-md space-y-3">
+        {/* Safely escaped apostrophe using string evaluation */}
         <h1 className="text-2xl font-black text-[#0f172a] tracking-tight leading-tight">
-          Welcome to the World's Living Room
+          Welcome to the World{"'"}s Living Room
         </h1>
         <p className="text-sm text-[#64748b] leading-relaxed">
           Asklo.Online brings global answers and conversations together. Share knowledge, track analytics, and build trusted topics.
