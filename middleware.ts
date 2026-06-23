@@ -1,6 +1,6 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 
-// This tells Clerk that the home page, login, and signup pages don't require you to be logged in
+// Define public routes that anyone can visit without logging in
 const isPublicRoute = createRouteMatcher(['/', '/login', '/signup']);
 
 export default clerkMiddleware((auth, request) => {
@@ -10,10 +10,6 @@ export default clerkMiddleware((auth, request) => {
 });
 
 export const config = {
-  matcher: [
-    // Skip Next.js internals and all static files, unless found in search params
-    '/((?!_next|[^?]*\\.(?:html|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest))).*',
-    // Always run for API routes
-    '/(api|trpc)(.*)',
-  ],
+  // A clean, simple matcher that Next.js perfectly understands
+  matcher: ["/((?!.+.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"],
 };
