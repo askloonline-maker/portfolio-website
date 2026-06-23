@@ -1,64 +1,63 @@
-import React from "react";
-import Link from "next/link";
+"use client";
+import React, { useState } from "react";
 
-interface QuestionCardProps {
+interface PostProps {
   post: {
     id: string;
-    title: string;
+    title?: string;
     content: string;
-    type: "QUESTION" | "DISCUSSION";
-    score: number;
-    category: string;
-    author: string;
-    replies: number;
+    author_name?: string;
+    created_at: string;
+    upvotes?: number;
   };
 }
 
-export default function QuestionCard({ post }: QuestionCardProps) {
-  const isQuestion = post.type === "QUESTION";
+export default function QuestionCard({ post }: PostProps) {
+  const [votes, setVotes] = useState(post.upvotes || 0);
+  const [hasVoted, setHasVoted] = useState(false);
+
+  const handleUpvote = () => {
+    if (hasVoted) {
+      setVotes(prev => prev - 1);
+      setHasVoted(false);
+    } else {
+      setVotes(prev => prev + 1);
+      setHasVoted(true);
+    }
+  };
 
   return (
-    <div className="bg-white border border-[#e2e8f0] rounded-xl shadow-sm hover:border-slate-300 transition overflow-hidden flex">
-      {/* Vote Pillar Container */}
-      <div className="bg-slate-50/50 w-12 flex flex-col items-center py-3 border-r border-[#e2e8f0] select-none text-center">
-        <button className="text-[#64748b] hover:text-[#1d4ed8] text-sm font-bold p-1 transition">▲</button>
-        <span className="text-xs font-black text-[#0f172a] my-0.5">{post.score}</span>
-        <button className="text-[#64748b] hover:text-[#dc2626] text-sm font-bold p-1 transition">▼</button>
+    <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm hover:shadow-md transition flex gap-4">
+      {/* Reddit-style sidebar vote column */}
+      <div className="flex flex-col items-center bg-slate-50 rounded-lg p-2 h-fit min-w-[44px]">
+        <button 
+          onClick={handleUpvote}
+          className={`text-lg transition ${hasVoted ? "text-[#1d4ed8] font-bold" : "text-slate-400 hover:text-slate-600"}`}
+        >
+          ▲
+        </button>
+        <span className="text-xs font-bold text-slate-700 my-1">{votes}</span>
       </div>
 
-      {/* Main Metadata Text Pane */}
-      <div className="p-4 flex-1 space-y-2">
-        <div className="flex items-center flex-wrap gap-2 text-[11px] text-[#64748b]">
-          {isQuestion ? (
-            <span className="bg-[#eff6ff] text-[#1d4ed8] font-extrabold px-2 py-0.5 rounded-full uppercase tracking-wide text-[9px] border border-blue-100">
-              ❓ Question
-            </span>
-          ) : (
-            <span className="bg-emerald-50 text-emerald-700 font-extrabold px-2 py-0.5 rounded-full uppercase tracking-wide text-[9px] border border-emerald-100">
-              💬 Discussion
-            </span>
-          )}
-          <span className="font-bold text-[#0f172a]">#{post.category}</span>
+      {/* Primary content area */}
+      <div className="flex-1 space-y-2">
+        <div className="flex items-center gap-2 text-xs text-slate-400">
+          <span className="font-semibold text-[#1d4ed8] bg-[#eff6ff] px-2 py-0.5 rounded-md">
+            {post.author_name || "Anonymous Guest"}
+          </span>
           <span>•</span>
-          <span>Posted by @{post.author}</span>
+          <span>{new Date(post.created_at).toLocaleDateString()}</span>
         </div>
-
-        <h2 className="text-base font-bold text-[#0f172a] hover:text-[#1d4ed8] tracking-tight leading-snug transition cursor-pointer">
-          {post.title}
-        </h2>
-
-        <p className="text-sm text-[#64748b] line-clamp-2 leading-relaxed">
+        
+        {post.title && (
+          <h2 className="text-lg font-bold text-slate-900 leading-snug hover:text-[#1d4ed8] cursor-pointer transition">
+            {post.title}
+          </h2>
+        )}
+        
+        <p className="text-sm text-slate-600 whitespace-pre-wrap leading-relaxed">
           {post.content}
         </p>
-
-        <div className="pt-2 flex items-center gap-4 text-xs text-[#64748b] font-semibold">
-          <span className="flex items-center gap-1.5 hover:bg-slate-100 px-2.5 py-1.5 rounded-lg transition cursor-pointer">
-            💬 {post.replies} Answers & Comments
-          </span>
-          <span className="flex items-center gap-1.5 hover:bg-slate-100 px-2.5 py-1.5 rounded-lg transition cursor-pointer">
-            🔖 Save
-          </span>
-        </div>
       </div>
     </div>
   );
