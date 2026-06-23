@@ -7,7 +7,7 @@ import "./globals.css";
 
 export const metadata = {
   title: "Asklo.Online - The World's Living Room",
-  description: "A premium hybrid Q&A and discussion platform.",
+  description: "A premium hybrid Q&A and discussion platform open to everyone.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -25,7 +25,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <aside className="hidden md:block self-start sticky top-20">
             <RightSidebar />
           </aside>
-          </div>
+        </div>
         <Footer />
       </body>
     </html>
