@@ -9,8 +9,6 @@ export default function SignUpPage() {
           <h2 className="text-xl font-black text-[#0f172a] tracking-tight">Create an Account</h2>
           <p className="text-xs text-[#64748b]">Join Asklo.Online to start sharing knowledge.</p>
         </div>
-
-        {/* Clerk sign-up instance targeting your custom routing path */}
         <SignUp routing="path" path="/signup" signInUrl="/login" />
       </div>
     </div>
