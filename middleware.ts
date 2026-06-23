@@ -4,8 +4,9 @@ export default clerkMiddleware();
 
 export const config = {
   matcher: [
-    // This simple match avoids complex regex backslashes that break Vercel at runtime
-    "/((?!_next/static|_next/image|favicon.ico|.*\\.).*)",
-    "/(api|trpc)(.*)"
+    // Skip Next.js internals and all static files, unless found in search params
+    '/((?!_next|[^?]*\\.[^?]*$$).*)',
+    // Always run for API routes
+    '/(api|trpc)(.*)',
   ],
 };
