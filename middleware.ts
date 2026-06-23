@@ -1,15 +1,14 @@
-import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
+import { clerkMiddleware } from "@clerk/nextjs/server";
 
-// Define public routes that anyone can visit without logging in
-const isPublicRoute = createRouteMatcher(['/', '/login', '/signup']);
+export default clerkMiddleware();
 
-export default clerkMiddleware((auth, request) => {
-  if (!isPublicRoute(request)) {
-    auth().protect();
-  }
-});
+// Force Vercel to compile this using the standard Node.js server engine instead of Edge
+export const runtime = 'nodejs';
 
 export const config = {
-  // A clean, simple matcher that Next.js perfectly understands
-  matcher: ["/((?!.+.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"],
+  matcher: [
+    // Runs middleware on every single page except static files and assets
+    '/((?!_next|[^?]*\\.(?:html|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest))).*',
+    '/(api|trpc)(.*)',
+  ],
 };
