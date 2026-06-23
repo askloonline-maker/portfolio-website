@@ -1,3 +1,15 @@
+"use client";
+import React from "react";
+
 export default function SearchBar() {
-  return <input type="text" placeholder="Search questions..." className="w-full p-4 border rounded-2xl" />;
+  return (
+    <div className="w-full relative">
+      <span className="absolute left-4 top-2.5 text-sm text-[#64748b]">🔍</span>
+      <input 
+        type="text" 
+        placeholder="Search posts, queries, or topics..." 
+        className="w-full bg-[#f1f5f9] border border-[#e2e8f0] rounded-full pl-10 pr-5 py-2 text-sm focus:outline-none focus:border-[#1d4ed8] focus:bg-white transition"
+      />
+    </div>
+  );
 }
