@@ -13,7 +13,7 @@ interface RootLayoutProps {
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en" className="scroll-smooth">
-      <body className="bg-slate-950 text-slate-100 antialiased selection:bg-blue-600 selection:text-white">
+      <body className="bg-slate-50 text-slate-900 antialiased selection:bg-blue-600 selection:text-white">
         {children}
       </body>
     </html>
