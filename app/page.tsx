@@ -49,7 +49,7 @@ export default function HomePage() {
     { name: "Environment & Agriculture", subTopics: ["Climate Change", "Sustainability", "Organic Farming", "Gardening", "Renewable Energy", "Water Conservation", "Agriculture Technology", "Rural Development"] }
   ], []);
 
-  // Premium Hydrated Global Posts State
+  // Hydrated Global Posts State
   const [posts, setPosts] = useState<PostItem[]>([
     {
       id: 1,
@@ -88,13 +88,13 @@ export default function HomePage() {
   const [postGroup, setPostGroup] = useState("Technology");
   const [postSubTopic, setPostSubTopic] = useState("Artificial Intelligence");
 
-  // Filter Subtopics dropdown mapping dynamically based on composition choice
+  // Dynamic composition target selection
   const activeFormSubTopics = useMemo(() => {
     const matching = communityGroups.find(g => g.name === postGroup);
     return matching ? matching.subTopics : [];
   }, [postGroup, communityGroups]);
 
-  // Filtered Post Views
+  // Filtered Post Processing
   const filteredPosts = useMemo(() => {
     return posts.filter(post => {
       const matchGroup = selectedGroup === "All Spaces" || post.groupName === selectedGroup;
@@ -103,7 +103,7 @@ export default function HomePage() {
     });
   }, [posts, selectedGroup, selectedSubTopic]);
 
-  // Handle Search Filtering on Sidebar Categories
+  // Search Filter Handler
   const filteredSidebarGroups = useMemo(() => {
     if (!groupSearchQuery.trim()) return communityGroups;
     return communityGroups.filter(g => 
@@ -144,58 +144,58 @@ export default function HomePage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 font-sans">
+    <div className="min-h-screen bg-slate-50 text-slate-800 font-sans">
       
       {/* NAVBAR */}
-      <header className="sticky top-0 z-50 border-b border-blue-900/30 bg-slate-950/80 backdrop-blur-md px-6 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+      <header className="sticky top-0 z-50 border-b border-blue-100 bg-white/90 backdrop-blur-md px-6 py-4 flex flex-col sm:flex-row justify-between items-center gap-4 shadow-sm">
         <div className="flex items-center gap-3">
-          <div className="h-10 w-10 rounded-xl bg-gradient-to-tr from-blue-700 to-blue-500 shadow-lg shadow-blue-600/20 flex items-center justify-center font-black text-white text-xl tracking-tight">
+          <div className="h-10 w-10 rounded-xl bg-blue-600 shadow-md shadow-blue-600/20 flex items-center justify-center font-black text-white text-xl tracking-tight">
             A
           </div>
           <div>
-            <h1 className="text-2xl font-black tracking-tight text-white flex items-center gap-2">
-              Asklo<span className="text-blue-500 text-lg">.Online</span>
+            <h1 className="text-2xl font-black tracking-tight text-slate-900 flex items-center gap-1">
+              Asklo<span className="text-blue-600 text-lg">.Online</span>
             </h1>
-            <p className="text-[11px] uppercase tracking-widest font-bold text-slate-400">
+            <p className="text-[11px] uppercase tracking-widest font-extrabold text-blue-600/80">
               &ldquo;The World&apos;s Living Room&rdquo;
             </p>
           </div>
         </div>
         
-        <div className="flex items-center gap-2 bg-blue-950/40 border border-blue-800/40 px-4 py-2 rounded-full text-xs font-semibold text-blue-400 shadow-inner">
-          <span className="h-2 w-2 rounded-full bg-blue-500 animate-pulse" />
+        <div className="flex items-center gap-2 bg-blue-50 border border-blue-200 px-4 py-2 rounded-full text-xs font-semibold text-blue-700">
+          <span className="h-2 w-2 rounded-full bg-blue-600 animate-pulse" />
           Secure Anonymous Network (No Registration Required)
         </div>
       </header>
 
-      {/* FILTER CONTROLLER TOP BAR DISPLAY */}
-      <div className="bg-slate-900/30 border-b border-slate-900 px-6 py-3 flex flex-wrap items-center gap-2 text-xs">
-        <span className="text-slate-400 font-medium">Viewing Stream:</span>
+      {/* FILTER TOP BAR SUBDISPLAY */}
+      <div className="bg-white border-b border-slate-200 px-6 py-3 flex flex-wrap items-center gap-2 text-xs">
+        <span className="text-slate-500 font-medium">Viewing Stream:</span>
         <button 
           onClick={() => { setSelectedGroup("All Spaces"); setSelectedSubTopic("All Topics"); }}
-          className="bg-blue-950/80 text-blue-400 border border-blue-900/40 px-2.5 py-1 rounded font-semibold"
+          className="bg-blue-50 text-blue-700 border border-blue-200 px-2.5 py-1 rounded font-bold"
         >
           {selectedGroup} {selectedSubTopic !== "All Topics" && `👉 ${selectedSubTopic}`}
         </button>
         {(selectedGroup !== "All Spaces" || selectedSubTopic !== "All Topics") && (
           <button 
             onClick={() => { setSelectedGroup("All Spaces"); setSelectedSubTopic("All Topics"); }}
-            className="text-slate-500 hover:text-white transition-colors pl-1"
+            className="text-slate-400 hover:text-slate-900 transition-colors pl-1 font-semibold"
           >
             Clear Filter ×
           </button>
         )}
       </div>
 
-      {/* MAIN LAYOUT WRAPPER */}
+      {/* BODY CONFIGURATION */}
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-4 gap-8 p-6">
         
-        {/* SIDEBAR NAVIGATION (25 GROUPS MAPPED) */}
-        <aside className="lg:col-span-1 space-y-4 max-h-[85vh] overflow-y-auto pr-2 custom-scrollbar">
-          <div className="p-4 bg-slate-900/60 border border-slate-900 rounded-xl space-y-3 shadow-sm">
+        {/* SIDEBAR NAVIGATION */}
+        <aside className="lg:col-span-1 space-y-4 max-h-[85vh] overflow-y-auto pr-2">
+          <div className="p-4 bg-white border border-slate-200 rounded-xl space-y-3 shadow-sm">
             <div className="flex items-center justify-between">
-              <h3 className="text-xs font-bold text-blue-400 uppercase tracking-widest">Global Rooms</h3>
-              <span className="text-[10px] bg-blue-950 text-blue-400 px-1.5 py-0.5 rounded font-mono font-bold">25 Rooms</span>
+              <h3 className="text-xs font-bold text-blue-600 uppercase tracking-widest">Global Rooms</h3>
+              <span className="text-[10px] bg-blue-50 text-blue-600 px-2 py-0.5 rounded font-mono font-bold border border-blue-100">25 Rooms</span>
             </div>
             
             <input 
@@ -203,45 +203,44 @@ export default function HomePage() {
               placeholder="Search Rooms or Spaces..."
               value={groupSearchQuery}
               onChange={(e) => setGroupSearchQuery(e.target.value)}
-              className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-1.5 text-xs text-slate-300 focus:outline-none focus:border-blue-600 transition-colors placeholder-slate-600"
+              className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs text-slate-700 focus:outline-none focus:border-blue-600 focus:bg-white transition-all placeholder-slate-400"
             />
 
-            <div className="space-y-1 pt-1 max-h-[50vh] overflow-y-auto space-y-2">
+            <div className="space-y-1 pt-1 max-h-[50vh] overflow-y-auto">
               <button
                 type="button"
                 onClick={() => { setSelectedGroup("All Spaces"); setSelectedSubTopic("All Topics"); }}
-                className={`w-full text-left px-3 py-2 rounded-lg text-xs font-bold tracking-wide transition-all ${
+                className={`w-full text-left px-3 py-2 rounded-lg text-xs font-bold tracking-wide transition-all mb-2 ${
                   selectedGroup === "All Spaces" 
-                    ? "bg-blue-600 text-white shadow-md shadow-blue-600/20" 
-                    : "text-slate-400 hover:bg-slate-900 hover:text-white"
+                    ? "bg-blue-600 text-white shadow-md shadow-blue-600/10" 
+                    : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
                 }`}
               >
                 🌐 Show All Channels
               </button>
 
               {filteredSidebarGroups.map((group) => (
-                <div key={group.name} className="space-y-1 pt-1 border-t border-slate-900">
+                <div key={group.name} className="space-y-1 pt-1 border-t border-slate-100">
                   <button
                     type="button"
                     onClick={() => { setSelectedGroup(group.name); setSelectedSubTopic("All Topics"); }}
                     className={`w-full text-left px-2 py-1.5 rounded text-xs font-bold flex justify-between items-center transition-colors ${
-                      selectedGroup === group.name ? "text-blue-400 bg-blue-950/30" : "text-slate-300 hover:text-white"
+                      selectedGroup === group.name ? "text-blue-600 bg-blue-50" : "text-slate-700 hover:text-slate-950 hover:bg-slate-50"
                     }`}
                   >
                     <span>🎯 {group.name}</span>
-                    <span className="text-[9px] bg-slate-950 text-slate-500 px-1 rounded">{group.subTopics.length}</span>
+                    <span className="text-[9px] bg-slate-100 text-slate-500 px-1.5 py-0.5 rounded border border-slate-200 font-semibold">{group.subTopics.length}</span>
                   </button>
 
-                  {/* Nested rendering if parent room highlighted */}
                   {selectedGroup === group.name && (
-                    <div className="pl-3 space-y-0.5 border-l border-blue-900/30 ml-2 animate-fadeIn">
+                    <div className="pl-3 space-y-0.5 border-l-2 border-blue-200 ml-2 animate-fadeIn">
                       {group.subTopics.map(sub => (
                         <button
                           key={sub}
                           type="button"
                           onClick={() => setSelectedSubTopic(sub)}
                           className={`w-full text-left block px-2 py-1 text-[11px] rounded transition-colors ${
-                            selectedSubTopic === sub ? "text-white bg-blue-600 font-medium" : "text-slate-500 hover:text-slate-300"
+                            selectedSubTopic === sub ? "text-white bg-blue-600 font-bold" : "text-slate-500 hover:text-slate-800 hover:bg-slate-50"
                           }`}
                         >
                           # {sub}
@@ -255,17 +254,17 @@ export default function HomePage() {
           </div>
         </aside>
 
-        {/* FEED COMPONENT */}
+        {/* FEED TRACK */}
         <main className="lg:col-span-2 space-y-6">
           
           {/* COMPOSER FORM */}
-          <form onSubmit={submitPostHandler} className="p-5 bg-gradient-to-br from-slate-900 to-slate-950 border border-blue-900/20 rounded-xl shadow-xl">
+          <form onSubmit={submitPostHandler} className="p-5 bg-white border border-slate-200 rounded-xl shadow-sm">
             <div className="flex items-center gap-3 mb-4">
-              <div className="h-8 w-8 rounded-full bg-blue-950 border border-blue-800/40 flex items-center justify-center font-bold text-xs text-blue-400">
+              <div className="h-8 w-8 rounded-full bg-blue-50 border border-blue-200 flex items-center justify-center font-bold text-xs text-blue-600">
                 AG
               </div>
-              <span className="text-xs font-medium text-slate-400">
-                Streaming live context as <span className="text-blue-400 font-mono font-bold">Anonymous Guest</span>
+              <span className="text-xs font-medium text-slate-500">
+                Streaming live context as <span className="text-blue-600 font-mono font-bold">Anonymous Guest</span>
               </span>
             </div>
             
@@ -274,7 +273,7 @@ export default function HomePage() {
               placeholder="What question or narrative would you like to present?"
               value={titleInput}
               onChange={(e) => setTitleInput(e.target.value)}
-              className="w-full bg-slate-950 border border-slate-800/80 rounded-lg px-4 py-2.5 text-sm font-semibold focus:outline-none focus:border-blue-600 transition-colors mb-3 placeholder-slate-600 text-white"
+              className="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-2.5 text-sm font-semibold focus:outline-none focus:border-blue-600 focus:bg-white transition-all mb-3 placeholder-slate-400 text-slate-900"
               required
             />
             
@@ -282,13 +281,13 @@ export default function HomePage() {
               placeholder="Elaborate your premise, append technical insights, or submit logs freely..."
               value={contentInput}
               onChange={(e) => setContentInput(e.target.value)}
-              className="w-full bg-slate-950 border border-slate-800/80 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-blue-600 transition-colors h-24 resize-none placeholder-slate-600 text-slate-200 mb-4"
+              className="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-blue-600 focus:bg-white transition-all h-24 resize-none placeholder-slate-400 text-slate-700 mb-4"
             />
             
-            {/* COMPOSER ROUTING SELECTORS */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-slate-950 p-3 rounded-lg border border-slate-900 mb-4">
+            {/* CONTAINER DROPDOWNS */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-slate-50 p-3 rounded-lg border border-slate-200 mb-4">
               <div>
-                <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Target Room</label>
+                <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Target Room</label>
                 <select 
                   value={postGroup}
                   onChange={(e) => {
@@ -298,24 +297,24 @@ export default function HomePage() {
                       setPostSubTopic(matching.subTopics[0]);
                     }
                   }}
-                  className="w-full bg-slate-900 text-xs text-slate-300 border border-slate-800 rounded px-2.5 py-1.5 focus:outline-none focus:border-blue-600"
+                  className="w-full bg-white text-xs text-slate-700 border border-slate-200 rounded px-2.5 py-1.5 focus:outline-none focus:border-blue-600"
                 >
                   {communityGroups.map(g => <option key={g.name} value={g.name}>{g.name}</option>)}
                 </select>
               </div>
               <div>
-                <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Specific Space Category</label>
+                <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Specific Space Category</label>
                 <select 
                   value={postSubTopic}
                   onChange={(e) => setPostSubTopic(e.target.value)}
-                  className="w-full bg-slate-900 text-xs text-slate-300 border border-slate-800 rounded px-2.5 py-1.5 focus:outline-none focus:border-blue-600"
+                  className="w-full bg-white text-xs text-slate-700 border border-slate-200 rounded px-2.5 py-1.5 focus:outline-none focus:border-blue-600"
                 >
                   {activeFormSubTopics.map(sub => <option key={sub} value={sub}>{sub}</option>)}
                 </select>
               </div>
             </div>
 
-            <div className="flex justify-end pt-1 border-t border-slate-900">
+            <div className="flex justify-end pt-3 border-t border-slate-100">
               <button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white font-bold px-5 py-2 rounded-lg text-xs tracking-wide transition-all shadow-md shadow-blue-600/10">
                 Broadcast Anonymously
               </button>
@@ -325,61 +324,61 @@ export default function HomePage() {
           {/* STREAM ITERATOR */}
           <div className="space-y-4">
             {filteredPosts.length === 0 ? (
-              <div className="p-8 text-center bg-slate-900/20 border border-slate-900 rounded-xl">
+              <div className="p-8 text-center bg-white border border-slate-200 rounded-xl shadow-sm">
                 <span className="text-xl">📭</span>
-                <p className="text-sm text-slate-500 mt-2 font-medium">No live transmissions found in this specific subspace yet.</p>
+                <p className="text-sm text-slate-400 mt-2 font-medium">No live transmissions found in this specific subspace yet.</p>
               </div>
             ) : (
               filteredPosts.map((post) => (
-                <article key={post.id} className="p-5 bg-slate-900/40 border border-slate-900 rounded-xl flex gap-4 items-start transition-all hover:border-blue-900/20">
+                <article key={post.id} className="p-5 bg-white border border-slate-200 rounded-xl flex gap-4 items-start transition-all shadow-sm hover:border-blue-300">
                   
                   {/* Voting Engine */}
-                  <div className="flex flex-col items-center bg-slate-950 p-1.5 rounded-lg border border-slate-800 min-w-[38px] shadow-sm">
+                  <div className="flex flex-col items-center bg-slate-50 p-1.5 rounded-lg border border-slate-200 min-w-[38px] shadow-sm">
                     <button 
                       type="button"
                       onClick={() => incrementVote(post.id)}
-                      className="text-slate-500 hover:text-blue-500 font-bold transition-colors p-0.5 text-xs"
+                      className="text-slate-400 hover:text-blue-600 font-bold transition-colors p-0.5 text-xs"
                     >
                       ▲
                     </button>
-                    <span className="text-xs font-mono font-bold my-0.5 text-blue-400">{post.upvotes}</span>
+                    <span className="text-xs font-mono font-bold my-0.5 text-blue-600">{post.upvotes}</span>
                     <button 
                       type="button"
                       onClick={() => decrementVote(post.id)}
-                      className="text-slate-500 hover:text-blue-500 font-bold transition-colors p-0.5 text-xs"
+                      className="text-slate-400 hover:text-blue-600 font-bold transition-colors p-0.5 text-xs"
                     >
                       ▼
                     </button>
                   </div>
 
-                  {/* Article Structure Container */}
+                  {/* Article Content Grid */}
                   <div className="flex-1">
-                    <div className="flex flex-wrap items-center gap-2 text-[11px] text-slate-500 mb-2">
-                      <span className="bg-blue-950 text-blue-400 px-2 py-0.5 rounded font-mono border border-blue-900/30 text-[10px] font-bold">
+                    <div className="flex flex-wrap items-center gap-2 text-[11px] text-slate-400 mb-2">
+                      <span className="bg-blue-50 text-blue-600 px-2 py-0.5 rounded font-mono border border-blue-100 text-[10px] font-bold">
                         {post.groupName} / {post.category}
                       </span>
                       <img 
                         src={`https://api.dicebear.com/7.x/identicon/svg?seed=${post.avatarSeed}`} 
                         alt="Author Matrix Symbol" 
-                        className="h-4 w-4 bg-slate-800 rounded-full border border-slate-700"
+                        className="h-4 w-4 bg-slate-100 rounded-full border border-slate-200"
                       />
-                      <span>• <span className="text-slate-300 font-mono font-semibold">{post.author}</span></span>
+                      <span>• <span className="text-slate-600 font-mono font-semibold">{post.author}</span></span>
                       <span>• {post.created_at}</span>
                     </div>
                     
-                    <h2 className="text-base font-bold text-white tracking-tight hover:text-blue-400 transition-colors duration-200 mb-1.5">
+                    <h2 className="text-base font-bold text-slate-900 tracking-tight hover:text-blue-600 transition-colors duration-200 mb-1.5">
                       {post.title}
                     </h2>
                     
-                    <p className="text-xs text-slate-300 leading-relaxed mb-3 whitespace-pre-wrap font-normal">
+                    <p className="text-xs text-slate-600 leading-relaxed mb-3 whitespace-pre-wrap font-normal">
                       {post.content}
                     </p>
                     
-                    <div className="flex gap-4 text-[11px] text-slate-500 border-t border-slate-900/60 pt-2.5">
-                      <button type="button" className="hover:text-blue-400 flex items-center gap-1 transition-colors font-medium">
+                    <div className="flex gap-4 text-[11px] text-slate-400 border-t border-slate-100 pt-2.5">
+                      <button type="button" className="hover:text-blue-600 flex items-center gap-1 transition-colors font-semibold">
                         💬 {post.commentsCount} Conversations
                       </button>
-                      <button type="button" className="hover:text-blue-400 transition-colors font-medium">🔗 DeepLink Share</button>
+                      <button type="button" className="hover:text-blue-600 transition-colors font-semibold">🔗 DeepLink Share</button>
                     </div>
                   </div>
                 </article>
@@ -388,26 +387,26 @@ export default function HomePage() {
           </div>
         </main>
 
-        {/* RIGHT METRIC DETAILS PANEL */}
+        {/* RIGHT SIDEBAR */}
         <aside className="lg:col-span-1 space-y-4">
-          <div className="p-4 bg-gradient-to-b from-blue-950/20 to-slate-950 border border-blue-900/10 rounded-xl space-y-3">
-            <h3 className="text-xs font-bold text-white uppercase tracking-wider">Asklo Matrix Manifest</h3>
-            <p className="text-xs text-slate-400 leading-relaxed">
+          <div className="p-4 bg-white border border-slate-200 rounded-xl space-y-3 shadow-sm">
+            <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider border-b border-slate-100 pb-2">Asklo Matrix Manifest</h3>
+            <p className="text-xs text-slate-500 leading-relaxed">
               Welcome to the internet&apos;s ultimate decentralized dialogue layer. A balanced combination of Quora structure and Reddit mechanics designed to guarantee raw exchange without social profiling barriers.
             </p>
             
-            <div className="border-t border-slate-900 pt-3 space-y-2 text-[11px]">
+            <div className="pt-2 space-y-2 text-[11px]">
               <div className="flex justify-between">
-                <span className="text-slate-500">Access Framework</span>
-                <span className="text-blue-400 font-mono font-bold">Open Gateway</span>
+                <span className="text-slate-400">Access Framework</span>
+                <span className="text-blue-600 font-mono font-bold">Open Gateway</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-slate-500">Global Encryption</span>
-                <span className="text-blue-400 font-mono font-bold">Enforced</span>
+                <span className="text-slate-400">Global Encryption</span>
+                <span className="text-blue-600 font-mono font-bold">Enforced</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-slate-500">Tracking Scripts</span>
-                <span className="text-slate-600 font-mono">0% Detected</span>
+                <span className="text-slate-400">Tracking Scripts</span>
+                <span className="text-emerald-600 font-mono font-bold">0% Detected</span>
               </div>
             </div>
           </div>
