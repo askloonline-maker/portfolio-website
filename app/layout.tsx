@@ -1,32 +1,23 @@
-import React from "react";
-import Navbar from "../components/Navbar";
-import Sidebar from "../components/Sidebar";
-import RightSidebar from "../components/RightSidebar";
-import Footer from "../components/Footer";
 import "./globals.css";
+import type { Metadata } from "next";
 
-export const metadata = {
-  title: "Asklo.Online | The Public Town Square",
-  description: "An open, premium Q&A and discussion community.",
+export const metadata: Metadata = {
+  title: "AskLo - Ask Anything Anonymously",
+  description:
+    "A Quora + Reddit inspired community where everyone posts as Anonymous Guest.",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en">
-      <body className="bg-[#f0f4f8] text-[#1e293b] min-h-screen flex flex-col antialiased font-sans">
-        <Navbar />
-        <div className="max-w-7xl mx-auto w-full px-4 py-6 flex-1 grid grid-cols-1 md:grid-cols-4 gap-6">
-          <aside className="hidden md:block self-start sticky top-20">
-            <Sidebar />
-          </aside>
-          <main className="md:col-span-2 space-y-4">
-            {children}
-          </main>
-          <aside className="hidden md:block self-start sticky top-20">
-            <RightSidebar />
-          </aside>
+      <body className="bg-slate-100 text-slate-900">
+        <div className="min-h-screen flex flex-col">
+          {children}
         </div>
-        <Footer />
       </body>
     </html>
   );
