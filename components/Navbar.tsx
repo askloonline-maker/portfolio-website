@@ -22,7 +22,7 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* Status indicator showing authentication is disabled */}
+        {/* Status indicator showing public guest mode */}
         <div className="flex items-center gap-3">
           <span className="flex items-center gap-1.5 text-xs font-semibold text-[#1d4ed8] bg-[#eff6ff] px-3 py-1.5 rounded-full border border-[#bfdbfe]">
             <span className="h-2 w-2 rounded-full bg-[#3b82f6] animate-pulse"></span>
