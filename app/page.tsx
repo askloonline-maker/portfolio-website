@@ -19,6 +19,34 @@ interface PostItem {
   created_at: string;
 }
 
+// Default initial posts if localStorage is completely empty
+const DEFAULT_POSTS: PostItem[] = [
+  {
+    id: 1718000000001,
+    title: "Is Artificial Intelligence hitting an architectural plateau with current transformers?",
+    content: "We are putting massive energy into scaling parameters, but contextual logical deduction remains heavily simulated. Do you think we need a complete shift away from deep neural webs to hit true artificial generalized systems?",
+    category: "Artificial Intelligence",
+    groupName: "Technology",
+    upvotes: 142,
+    commentsCount: 38,
+    author: "Guest_2901",
+    avatarSeed: "ai99",
+    created_at: "34 minutes ago"
+  },
+  {
+    id: 1718000000002,
+    title: "What are your alternative side hustles that have zero dependencies on software engineering?",
+    content: "Looking to split my mental time investment entirely away from screens. Curious if anyone here runs real-world operations like premium micro-agriculture or specialty local physical fabrication setups.",
+    category: "Side Hustles",
+    groupName: "Career & Jobs",
+    upvotes: 89,
+    commentsCount: 19,
+    author: "Guest_8410",
+    avatarSeed: "hustle3",
+    created_at: "2 hours ago"
+  }
+];
+
 export default function HomePage() {
   // Complete 25 Groups Matrix Setup
   const communityGroups: SpaceItem[] = useMemo(() => [
@@ -49,34 +77,9 @@ export default function HomePage() {
     { name: "Environment & Agriculture", subTopics: ["Climate Change", "Sustainability", "Organic Farming", "Gardening", "Renewable Energy", "Water Conservation", "Agriculture Technology", "Rural Development"] }
   ], []);
 
-  // Hydrated Global Posts State
-  const [posts, setPosts] = useState<PostItem[]>([
-    {
-      id: 1718000000001,
-      title: "Is Artificial Intelligence hitting an architectural plateau with current transformers?",
-      content: "We are putting massive energy into scaling parameters, but contextual logical deduction remains heavily simulated. Do you think we need a complete shift away from deep neural webs to hit true artificial generalized systems?",
-      category: "Artificial Intelligence",
-      groupName: "Technology",
-      upvotes: 142,
-      commentsCount: 38,
-      author: "Guest_2901",
-      avatarSeed: "ai99",
-      created_at: "34 minutes ago"
-    },
-    {
-      id: 1718000000002,
-      title: "What are your alternative side hustles that have zero dependencies on software engineering?",
-      content: "Looking to split my mental time investment entirely away from screens. Curious if anyone here runs real-world operations like premium micro-agriculture or specialty local physical fabrication setups.",
-      category: "Side Hustles",
-      groupName: "Career & Jobs",
-      upvotes: 89,
-      commentsCount: 19,
-      author: "Guest_8410",
-      avatarSeed: "hustle3",
-      created_at: "2 hours ago"
-    }
-  ]);
-
+  // Hydrated Global Posts State initialized safely to prevent Next.js SSR hydration mismatches
+  const [posts, setPosts] = useState<PostItem[]>([]);
+  
   // View States
   const [selectedGroup, setSelectedGroup] = useState<string>("All Spaces");
   const [selectedSubTopic, setSelectedSubTopic] = useState<string>("All Topics");
@@ -84,7 +87,7 @@ export default function HomePage() {
   const [copiedId, setCopiedId] = useState<number | null>(null);
   const [generatedLinkModal, setGeneratedLinkModal] = useState<string | null>(null);
   
-  // NEW: Dedicated Targeted Popup View State
+  // Dedicated Targeted Popup View State
   const [focusedPopupPost, setFocusedPopupPost] = useState<PostItem | null>(null);
   
   // Input Form Controls
@@ -93,9 +96,26 @@ export default function HomePage() {
   const [postGroup, setPostGroup] = useState("Technology");
   const [postSubTopic, setPostSubTopic] = useState("Artificial Intelligence");
 
-  // Hook to handle active dynamic deep-linking popups safely on target load
+  // Load posts securely from LocalStorage on mount
   useEffect(() => {
     if (typeof window !== "undefined") {
+      const stored = localStorage.getItem("asklo_posts");
+      if (stored) {
+        try {
+          setPosts(JSON.parse(stored));
+        } catch (e) {
+          setPosts(DEFAULT_POSTS);
+        }
+      } else {
+        setPosts(DEFAULT_POSTS);
+        localStorage.setItem("asklo_posts", JSON.stringify(DEFAULT_POSTS));
+      }
+    }
+  }, []);
+
+  // Hook to handle active dynamic deep-linking popups safely on target load
+  useEffect(() => {
+    if (typeof window !== "undefined" && posts.length > 0) {
       const params = new URLSearchParams(window.location.search);
       const postParam = params.get("post");
       if (postParam) {
@@ -166,7 +186,12 @@ export default function HomePage() {
       created_at: "Just now"
     };
 
-    setPosts([dynamicPost, ...posts]);
+    const updatedPosts = [dynamicPost, ...posts];
+    setPosts(updatedPosts);
+    if (typeof window !== "undefined") {
+      localStorage.setItem("asklo_posts", JSON.stringify(updatedPosts));
+    }
+
     setTitleInput("");
     setContentInput("");
 
@@ -177,19 +202,23 @@ export default function HomePage() {
   };
 
   const incrementVote = (id: number) => {
-    setPosts(posts.map(p => p.id === id ? { ...p, upvotes: p.upvotes + 1 } : p));
+    const updated = posts.map(p => p.id === id ? { ...p, upvotes: p.upvotes + 1 } : p);
+    setPosts(updated);
+    localStorage.setItem("asklo_posts", JSON.stringify(updated));
   };
 
   const decrementVote = (id: number) => {
-    setPosts(posts.map(p => p.id === id ? { ...p, upvotes: p.upvotes - 1 } : p));
+    const updated = posts.map(p => p.id === id ? { ...p, upvotes: p.upvotes - 1 } : p);
+    setPosts(updated);
+    localStorage.setItem("asklo_posts", JSON.stringify(updated));
   };
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-800 font-sans relative">
       
-      {/* NEW: DYNAMIC DEEPLINK TARGET POPUP OVERLAY */}
+      {/* DYNAMIC DEEPLINK TARGET POPUP OVERLAY */}
       {focusedPopupPost && (
-        <div className="fixed inset-0 z-[110] flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4 animate-fadeIn">
+        <div className="fixed inset-0 z-[110] flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
           <div className="w-full max-w-2xl bg-white border border-blue-200 rounded-2xl shadow-2xl overflow-hidden relative max-h-[90vh] flex flex-col">
             
             {/* Modal Header */}
@@ -251,7 +280,7 @@ export default function HomePage() {
 
       {/* SHARABLE LINK SUCCESS MODAL POPUP */}
       {generatedLinkModal && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4 animate-fadeIn">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4">
           <div className="w-full max-w-md bg-white border border-blue-100 rounded-2xl p-6 shadow-2xl text-center">
             <div className="h-12 w-12 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center text-xl mx-auto mb-3">
               🚀
@@ -374,7 +403,7 @@ export default function HomePage() {
                   </button>
 
                   {selectedGroup === group.name && (
-                    <div className="pl-3 space-y-0.5 border-l-2 border-blue-200 ml-2 animate-fadeIn">
+                    <div className="pl-3 space-y-0.5 border-l-2 border-blue-200 ml-2 overflow-hidden">
                       {group.subTopics.map(sub => (
                         <button
                           key={sub}
@@ -515,7 +544,7 @@ export default function HomePage() {
                       {post.content}
                     </p>
                     
-                    {/* ACTION METADATA ACCORDING TO image_363ee3.png */}
+                    {/* ACTION METADATA */}
                     <div className="flex gap-4 text-[11px] text-slate-400 border-t border-slate-100 pt-2.5">
                       <button type="button" className="hover:text-blue-600 flex items-center gap-1 transition-colors font-semibold">
                         💬 {post.commentsCount} Conversations
