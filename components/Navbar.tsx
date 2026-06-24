@@ -4,29 +4,31 @@ import Link from "next/link";
 
 export default function Navbar() {
   return (
-    <nav className="bg-white border-b border-slate-200 sticky top-0 z-50 w-full shadow-sm">
-      <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
-        {/* Brand Identity / Logo */}
-        <Link href="/" className="text-2xl font-black text-[#1d4ed8] tracking-tight hover:opacity-90 transition">
-          Asklo<span className="text-slate-800 font-medium">.Online</span>
+    <nav className="sticky top-0 z-50 w-full border-b border-blue-100 bg-white/95 shadow-sm shadow-blue-950/5 backdrop-blur-xl">
+      <div className="mx-auto flex h-18 max-w-7xl items-center gap-4 px-4 py-3">
+        <Link href="/" className="group flex items-center gap-2">
+          <span className="grid h-10 w-10 place-items-center rounded-2xl bg-gradient-to-br from-[#0f2f88] to-[#2563eb] text-lg font-black text-white shadow-lg shadow-blue-900/20">A</span>
+          <span className="text-2xl font-black tracking-tight text-[#123c9c]">Asklo<span className="text-slate-900">.Online</span></span>
         </Link>
 
-        {/* Global Search Interface */}
-        <div className="flex-1 max-w-xl mx-6 hidden sm:block">
-          <div className="relative">
+        <div className="hidden flex-1 md:block">
+          <label className="relative block">
+            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-blue-500">⌕</span>
             <input
               type="text"
-              placeholder="Search questions, topics, or trends..."
-              className="w-full bg-slate-50 border border-slate-200 rounded-full pl-5 pr-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2563eb] focus:bg-white transition"
+              placeholder="Search questions, answers, topics..."
+              className="w-full rounded-full border border-blue-100 bg-blue-50/70 py-3 pl-10 pr-4 text-sm font-medium text-slate-700 outline-none transition focus:border-blue-400 focus:bg-white focus:ring-4 focus:ring-blue-100"
             />
-          </div>
+          </label>
         </div>
 
-        {/* Status indicator showing public guest mode */}
-        <div className="flex items-center gap-3">
-          <span className="flex items-center gap-1.5 text-xs font-semibold text-[#1d4ed8] bg-[#eff6ff] px-3 py-1.5 rounded-full border border-[#bfdbfe]">
-            <span className="h-2 w-2 rounded-full bg-[#3b82f6] animate-pulse"></span>
-            Anonymous Guest Mode
+        <div className="ml-auto flex items-center gap-2">
+          <Link href="/ask" className="hidden rounded-full border border-blue-200 px-4 py-2 text-xs font-black text-blue-700 transition hover:bg-blue-50 sm:inline-flex">
+            Ask
+          </Link>
+          <span className="inline-flex items-center gap-2 rounded-full bg-[#0f2f88] px-4 py-2 text-xs font-black text-white shadow-lg shadow-blue-950/20">
+            <span className="h-2 w-2 rounded-full bg-white/90" />
+            Anonymous On
           </span>
         </div>
       </div>
