@@ -1,6 +1,6 @@
 import React from "react";
 import "./globals.css";
-import { GoogleAnalytics } from "@next/third-parties/google";
+import Script from "next/script";
 
 export const metadata = {
   title: "Asklo.Online | The World's Living Room",
@@ -14,11 +14,23 @@ interface RootLayoutProps {
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en" className="scroll-smooth">
+      <head>
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-HVE82D63F5"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-HVE82D63F5');
+          `}
+        </Script>
+      </head>
       <body className="bg-slate-50 text-slate-900 antialiased selection:bg-blue-600 selection:text-white">
         {children}
       </body>
-      {/* 🟢 REPLACE G-XXXXXXXXXX WITH YOUR ACTUAL MEASUREMENT ID FROM GOOGLE ANALYTICS */}
-      <GoogleAnalytics gaId="G-HVE82D63F5" />
     </html>
   );
 }
