@@ -5,65 +5,79 @@ export default function CreatePost() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!content.trim()) return;
 
     setLoading(true);
+    setError("");
 
     try {
       const res = await fetch("/api/posts", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          title: title || "Untitled Question",
-          content: content,
-          author_name: "Anonymous Guest",
-          user_id: "00000000-0000-0000-0000-000000000000" // Fallback static guest UUID
+          title: title.trim() || "Anonymous question",
+          content: content.trim(),
+          author_name: "Anonymous",
+          user_id: "00000000-0000-0000-0000-000000000000",
         }),
       });
 
-      if (res.ok) {
-        setTitle("");
-        setContent("");
-        window.location.reload(); // Instantly update view
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || "Unable to publish anonymously");
       }
+
+      setTitle("");
+      setContent("");
+      window.location.reload();
     } catch (err) {
-      console.error("Failed to post message:", err);
+      setError(err instanceof Error ? err.message : "Unable to publish anonymously");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-sm hover:border-slate-300 transition">
+    <section className="rounded-[2rem] border border-blue-100 bg-white p-5 shadow-xl shadow-blue-950/10">
+      <div className="mb-4 flex items-center gap-3">
+        <div className="grid h-12 w-12 place-items-center rounded-2xl bg-blue-50 text-2xl">🕶️</div>
+        <div>
+          <h2 className="text-lg font-black text-slate-950">Post anonymously</h2>
+          <p className="text-xs font-medium text-slate-500">Your post is published as Anonymous. No sign-up, profile, or identity field.</p>
+        </div>
+      </div>
+
       <form onSubmit={handleSubmit} className="space-y-3">
-        <input 
+        <input
           type="text"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          placeholder="Title or main question (optional)"
-          className="w-full text-base font-semibold placeholder-slate-400 focus:outline-none border-b border-slate-100 pb-2 focus:border-[#bfdbfe]"
+          placeholder="What do you want to ask or discuss?"
+          className="w-full rounded-2xl border border-blue-100 bg-blue-50/50 px-4 py-3 text-base font-bold text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-400 focus:bg-white focus:ring-4 focus:ring-blue-100"
         />
         <textarea
           value={content}
           onChange={(e) => setContent(e.target.value)}
-          placeholder="What are your thoughts? Ask anything or post helpful information legal..."
-          rows={3}
-          className="w-full resize-none border-none focus:ring-0 text-sm placeholder-slate-400 focus:outline-none pt-1"
+          placeholder="Add context, details, opinions, or helpful information..."
+          rows={4}
+          className="w-full resize-none rounded-2xl border border-blue-100 bg-white px-4 py-3 text-sm leading-6 text-slate-700 outline-none transition placeholder:text-slate-400 focus:border-blue-400 focus:ring-4 focus:ring-blue-100"
         />
-        <div className="flex justify-between items-center pt-2 border-t border-slate-100">
-          <span className="text-xs text-slate-400 italic">Posting anonymously without sign up</span>
+        {error && <p className="rounded-2xl bg-rose-50 px-4 py-2 text-xs font-bold text-rose-700">{error}</p>}
+        <div className="flex flex-wrap items-center justify-between gap-3 border-t border-blue-50 pt-3">
+          <span className="text-xs font-bold text-blue-700">Anonymous by default · public feed · be respectful</span>
           <button
             type="submit"
-            disabled={loading}
-            className="bg-[#1d4ed8] hover:bg-[#1e40af] text-white font-semibold text-xs px-5 py-2.5 rounded-full shadow-sm transition disabled:opacity-50"
+            disabled={loading || !content.trim()}
+            className="rounded-full bg-gradient-to-r from-[#0f2f88] to-[#2563eb] px-6 py-3 text-xs font-black text-white shadow-lg shadow-blue-950/20 transition hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-50"
           >
-            {loading ? "Publishing..." : "Post to Square"}
+            {loading ? "Publishing..." : "Publish anonymously"}
           </button>
         </div>
       </form>
-    </div>
+    </section>
   );
 }

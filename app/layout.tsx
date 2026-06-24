@@ -3,7 +3,7 @@ import "./globals.css";
 
 export const metadata = {
   title: "Asklo.Online | The World's Living Room",
-  description: "The premium anonymous combined platform for free-flowing conversation, questions, and community curation.",
+  description: "A royal-blue anonymous questions and answers platform where everyone can post freely without an account.",
 };
 
 interface RootLayoutProps {

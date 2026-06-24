@@ -2,22 +2,34 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  background-color: #f0f4f8;
-  color: #1e293b;
+:root {
+  color-scheme: light;
 }
 
-/* Custom smooth transition scrollbar for a premium Reddit/Quora feel */
+body {
+  background: #f8fafc;
+  color: #0f172a;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+::selection {
+  background: #1d4ed8;
+  color: white;
+}
+
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 10px;
 }
+
 ::-webkit-scrollbar-track {
-  background: #f1f5f9;
+  background: #eff6ff;
 }
+
 ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
-  border-radius: 4px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+  background: linear-gradient(180deg, #1d4ed8, #0f2f88);
+  border: 2px solid #eff6ff;
+  border-radius: 999px;
 }
