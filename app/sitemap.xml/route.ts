@@ -1,6 +1,7 @@
 import { createClient } from "@supabase/supabase-js";
 
-// Force Next.js to always fetch fresh database records whenever Google reads this sitemap
+// Ensure Next.js builds this dynamically on request instead of statically caching empty/stale logs
+export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 const BASE_URL = "https://www.asklo.online";
@@ -16,7 +17,6 @@ export async function GET() {
   const supabase = getSupabaseClient();
   let posts: any[] = [];
 
-  // Fetch all posts from Supabase to extract their IDs
   if (supabase) {
     const { data } = await supabase
       .from("posts")
@@ -25,49 +25,32 @@ export async function GET() {
     posts = data || [];
   }
 
-  // 1. Start building the XML layout structure
-  let xml = `<?xml version="1.0" encoding="UTF-8"?>
-  <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`;
+  // 1. Build the XML map headers with strict line returns and no leading tabs/spaces
+  let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
+  xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
 
-  // 2. Add static links (Your Home and Categories pages)
-  xml += `
-    <url>
-      <loc>${BASE_URL}</loc>
-      <changefreq>always</changefreq>
-      <priority>1.0</priority>
-    </url>
-    <url>
-      <loc>${BASE_URL}/categories</loc>
-      <changefreq>daily</changefreq>
-      <priority>0.8</priority>
-    </url>
-    <url>
-      <loc>${BASE_URL}/ask</loc>
-      <changefreq>monthly</changefreq>
-      <priority>0.5</priority>
-    </url>
-  `;
+  // 2. Add core static pages (No manual formatting indents inside strings)
+  xml += `  <url>\n    <loc>${BASE_URL}</loc>\n    <changefreq>always</changefreq>\n    <priority>1.0</priority>\n  </url>\n`;
+  xml += `  <url>\n    <loc>${BASE_URL}/categories</loc>\n    <changefreq>daily</changefreq>\n    <priority>0.8</priority>\n  </url>\n`;
+  xml += `  <url>\n    <loc>${BASE_URL}/ask</loc>\n    <changefreq>monthly</changefreq>\n    <priority>0.5</priority>\n  </url>\n`;
 
-  // 3. Dynamically loop through your Supabase posts and add their unique URLs
+  // 3. Dynamically append loop strings cleanly
   posts.forEach((post) => {
-    const postDate = post.created_at ? new Date(post.created_at).toISOString().split('T')[0] : new Date().toISOString().split('T')[0];
-    xml += `
-    <url>
-      <loc>${BASE_URL}/?post=${post.id}</loc>
-      <lastmod>${postDate}</lastmod>
-      <changefreq>weekly</changefreq>
-      <priority>0.7</priority>
-    </url>
-    `;
+    const postDate = post.created_at 
+      ? new Date(post.created_at).toISOString().split('T')[0] 
+      : new Date().toISOString().split('T')[0];
+    
+    xml += `  <url>\n    <loc>${BASE_URL}/?post=${post.id}</loc>\n    <lastmod>${postDate}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.7</priority>\n  </url>\n`;
   });
 
-  xml += `</urlset>`;
+  xml += "</urlset>";
 
-  // Return the raw text as a proper browser-readable XML file map
+  // 4. Return clean context validation parameters explicitly back to Google
   return new Response(xml, {
+    status: 200,
     headers: {
-      "Content-Type": "application/xml",
-      "Cache-Control": "public, s-maxage=60, stale-while-revalidate=30"
+      "Content-Type": "application/xml; charset=utf-8",
+      "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
     },
   });
 }
