@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import Link from "next/link";
+import Image from "next/image"; // Added for image rendering
 
 export default function Navbar() {
   return (
@@ -9,9 +10,18 @@ export default function Navbar() {
         
         {/* LOGO LINK CONTAINER */}
         <Link href="/" className="group flex items-center gap-2">
-          <span className="grid h-10 w-10 place-items-center rounded-2xl bg-gradient-to-br from-[#0f2f88] to-[#2563eb] text-lg font-black text-white shadow-lg shadow-blue-900/20">
-            A
-          </span>
+          {/* 🖼️ Replaced your <span> box with your real root image asset */}
+          <div className="relative h-10 w-10 overflow-hidden rounded-xl">
+            <Image
+              src="/LOGO.png"
+              alt="Asklo.Online Logo"
+              width={40}
+              height={40}
+              className="object-contain"
+              priority
+            />
+          </div>
+
           <div className="flex flex-col justify-center">
             <span className="text-2xl font-black tracking-tight text-[#123c9c] leading-none">
               Asklo<span className="text-slate-900">.Online</span>
