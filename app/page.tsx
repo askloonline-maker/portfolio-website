@@ -1,22 +1,16 @@
 import React from "react";
 import { createClient } from "@supabase/supabase-js";
 import CreatePost from "../components/CreatePost";
-import Navbar from "../components/Navbar";
 import QuestionCard from "../components/QuestionCard";
 import RightSidebar from "../components/RightSidebar";
 import Sidebar from "../components/Sidebar";
 
-// Force Next.js to bypass caching and load fresh data on every request
 export const revalidate = 0;
 
 function getSupabaseClient() {
   const supabaseUrl = process.env.SUPABASE_URL;
   const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-
-  if (!supabaseUrl || !serviceRoleKey) {
-    return null;
-  }
-
+  if (!supabaseUrl || !serviceRoleKey) return null;
   return createClient(supabaseUrl, serviceRoleKey);
 }
 
@@ -24,7 +18,6 @@ async function checkDatabaseConnection() {
   try {
     const supabase = getSupabaseClient();
     if (!supabase) return { connected: false, message: "Supabase environment variables are missing" };
-
     const { error } = await supabase.from("posts").select("id").limit(1);
     if (error) return { connected: false, message: error.message };
     return { connected: true, message: "Anonymous posting is live" };
@@ -37,12 +30,10 @@ async function getAllPublicPosts() {
   try {
     const supabase = getSupabaseClient();
     if (!supabase) return [];
-
     const { data, error } = await supabase
       .from("posts")
       .select("*")
       .order("created_at", { ascending: false });
-
     if (error) return [];
     return data || [];
   } catch (err) {
@@ -58,23 +49,25 @@ export default async function HomePage({ searchParams }: PageProps) {
   const dbStatus = await checkDatabaseConnection();
   const posts = await getAllPublicPosts();
 
-  // Read the targeted post ID from the URL link query parameter
   const targetPostId = typeof searchParams.post === "string" ? searchParams.post : null;
   const sharedPost = targetPostId ? posts.find((p) => p.id === targetPostId) : null;
 
   return (
     <main className="min-h-screen bg-[radial-gradient(circle_at_top_left,#dbeafe_0,#f8fafc_34%,#ffffff_100%)] text-slate-950 relative">
       
-      {/* Background container panel that blurs out whenever a specific shared post modal overlay is active */}
+      {/* Background feed grid layout */}
       <div className={`transition-all duration-300 ${sharedPost ? "blur-md pointer-events-none brightness-95 opacity-50 select-none" : ""}`}>
-        <Navbar />
-        <div className="mx-auto grid w-full max-w-7xl grid-cols-1 gap-5 px-4 py-6 lg:grid-cols-[240px_minmax(0,1fr)_310px]">
-          <aside className="hidden lg:block">
-            <div className="sticky top-24 rounded-3xl border border-blue-100 bg-white/90 p-3 shadow-sm shadow-blue-950/5 backdrop-blur">
+        {/* Responsive grid system keeping sidebar pinned to the left on mobile */}
+        <div className="mx-auto grid w-full max-w-7xl grid-cols-[60px_1fr] lg:grid-cols-[240px_minmax(0,1fr)_310px] gap-2 sm:gap-5 px-2 sm:px-4 py-6">
+          
+          {/* Left Sidebar Layout (Always visible, changes size responsively) */}
+          <aside>
+            <div className="sticky top-24 rounded-2xl md:rounded-3xl border border-blue-100 bg-white/90 p-1 md:p-3 shadow-sm shadow-blue-950/5 backdrop-blur">
               <Sidebar />
             </div>
           </aside>
 
+          {/* Center Main Feed Column */}
           <section className="space-y-5">
             <div className="overflow-hidden rounded-[2rem] border border-blue-100 bg-white shadow-xl shadow-blue-950/10">
               <div className="bg-gradient-to-r from-[#0f2f88] via-[#1d4ed8] to-[#3b82f6] p-6 text-white">
@@ -82,8 +75,6 @@ export default async function HomePage({ searchParams }: PageProps) {
                   <div className="max-w-2xl space-y-2">
                     <p className="text-xs font-bold uppercase tracking-[0.35em] text-blue-100">Premium Anonymous Knowledge Network</p>
                     <h1 className="text-3xl font-black tracking-tight sm:text-4xl">Ask freely. Answer boldly. Stay anonymous.</h1>
-                    
-                    {/* Replaced outdated description string with your requested tagline */}
                     <p className="text-sm leading-6 text-blue-50">
                       Where questions spark conversations and answers create value.
                     </p>
@@ -126,7 +117,8 @@ export default async function HomePage({ searchParams }: PageProps) {
             </div>
           </section>
 
-          <aside className="hidden xl:block">
+          {/* Right Columns: Automatically hides on smaller screens */}
+          <aside className="hidden lg:block">
             <div className="sticky top-24">
               <RightSidebar />
             </div>
@@ -134,15 +126,12 @@ export default async function HomePage({ searchParams }: PageProps) {
         </div>
       </div>
 
-      {/* 🔮 Focus Card View Layer: Renders crisply on top when matching post query param is active */}
+      {/* Focus Overlays */}
       {sharedPost && (
         <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-slate-950/20 px-4">
           <div className="w-full max-w-2xl rounded-[2.5rem] border border-blue-100 bg-white/95 p-3 shadow-2xl backdrop-blur-md transition-all duration-200">
             <div className="pb-3 pt-1 flex justify-end">
-              <a 
-                href="/" 
-                className="rounded-full bg-blue-50 hover:bg-blue-100 text-[#1d4ed8] px-4 py-2 text-xs font-black tracking-wide shadow-sm transition"
-              >
+              <a href="/" className="rounded-full bg-blue-50 hover:bg-blue-100 text-[#1d4ed8] px-4 py-2 text-xs font-black tracking-wide shadow-sm transition">
                 ✕ Close & View Feed
               </a>
             </div>
@@ -152,7 +141,6 @@ export default async function HomePage({ searchParams }: PageProps) {
           </div>
         </div>
       )}
-
     </main>
   );
 }
