@@ -1,5 +1,6 @@
 import React from "react";
 import "./globals.css";
+import { GoogleAnalytics } from "@next/third-parties/google";
 
 export const metadata = {
   title: "Asklo.Online | The World's Living Room",
@@ -16,6 +17,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
       <body className="bg-slate-50 text-slate-900 antialiased selection:bg-blue-600 selection:text-white">
         {children}
       </body>
+      {/* 🟢 REPLACE G-XXXXXXXXXX WITH YOUR ACTUAL MEASUREMENT ID FROM GOOGLE ANALYTICS */}
+      <GoogleAnalytics gaId="G-HVE82D63F5" />
     </html>
   );
 }
