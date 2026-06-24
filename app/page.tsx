@@ -6,6 +6,9 @@ import QuestionCard from "../components/QuestionCard";
 import RightSidebar from "../components/RightSidebar";
 import Sidebar from "../components/Sidebar";
 
+// Force Next.js to bypass caching and load fresh data on every request
+export const revalidate = 0;
+
 function getSupabaseClient() {
   const supabaseUrl = process.env.SUPABASE_URL;
   const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
