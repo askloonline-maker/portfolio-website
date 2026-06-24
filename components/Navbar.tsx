@@ -6,9 +6,21 @@ export default function Navbar() {
   return (
     <nav className="sticky top-0 z-50 w-full border-b border-blue-100 bg-white/95 shadow-sm shadow-blue-950/5 backdrop-blur-xl">
       <div className="mx-auto flex h-18 max-w-7xl items-center gap-4 px-4 py-3">
+        
+        {/* LOGO LINK CONTAINER */}
         <Link href="/" className="group flex items-center gap-2">
-          <span className="grid h-10 w-10 place-items-center rounded-2xl bg-gradient-to-br from-[#0f2f88] to-[#2563eb] text-lg font-black text-white shadow-lg shadow-blue-900/20">A</span>
-          <span className="text-2xl font-black tracking-tight text-[#123c9c]">Asklo<span className="text-slate-900">.Online</span></span>
+          <span className="grid h-10 w-10 place-items-center rounded-2xl bg-gradient-to-br from-[#0f2f88] to-[#2563eb] text-lg font-black text-white shadow-lg shadow-blue-900/20">
+            A
+          </span>
+          <div className="flex flex-col justify-center">
+            <span className="text-2xl font-black tracking-tight text-[#123c9c] leading-none">
+              Asklo<span className="text-slate-900">.Online</span>
+            </span>
+            {/* ✨ Premium Slogan positioned cleanly below the core text brand */}
+            <span className="text-[9px] font-black uppercase tracking-[0.18em] text-blue-600 pt-1 leading-none">
+              The World's Living Room
+            </span>
+          </div>
         </Link>
 
         <div className="hidden flex-1 md:block">
