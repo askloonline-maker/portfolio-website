@@ -82,8 +82,10 @@ export default async function HomePage({ searchParams }: PageProps) {
                   <div className="max-w-2xl space-y-2">
                     <p className="text-xs font-bold uppercase tracking-[0.35em] text-blue-100">Premium Anonymous Knowledge Network</p>
                     <h1 className="text-3xl font-black tracking-tight sm:text-4xl">Ask freely. Answer boldly. Stay anonymous.</h1>
+                    
+                    {/* Replaced outdated description string with your requested tagline */}
                     <p className="text-sm leading-6 text-blue-50">
-                      A royal-blue and white question hub for public discussions, curious questions, and useful answers — with guest-first anonymous posting for everyone.
+                      Where questions spark conversations and answers create value.
                     </p>
                   </div>
                   {dbStatus.connected ? (
