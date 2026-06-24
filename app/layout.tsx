@@ -15,11 +15,12 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en" className="scroll-smooth">
       <head>
+        {/* Swapped to lazyOnload to fix PageSpeed thread blocking alerts */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-HVE82D63F5"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
         />
-        <Script id="google-analytics" strategy="afterInteractive">
+        <Script id="google-analytics" strategy="lazyOnload">
           {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
