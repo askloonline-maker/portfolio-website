@@ -1,6 +1,8 @@
 import React from "react";
 import "./globals.css";
 import Script from "next/script";
+import Navbar from "@/components/Navbar";
+import MobileNav from "@/components/MobileNav";
 
 export const metadata = {
   title: "Asklo.Online | The World's Living Room",
@@ -29,8 +31,18 @@ export default function RootLayout({ children }: RootLayoutProps) {
           `}
         </Script>
       </head>
-      <body className="bg-slate-50 text-slate-900 antialiased selection:bg-blue-600 selection:text-white">
+      {/* 📱 Added pb-16 to ensure scrolling content never gets permanently blocked by the mobile bar */}
+      <body className="bg-slate-50 text-slate-900 antialiased selection:bg-blue-600 selection:text-white pb-16 md:pb-0">
+        
+        {/* Global Desktop & Mobile Navigation Header */}
+        <Navbar />
+
+        {/* Core Main Web Feed Content */}
         {children}
+
+        {/* Mobile Sticky Navigation Footer Bar */}
+        <MobileNav />
+
       </body>
     </html>
   );
