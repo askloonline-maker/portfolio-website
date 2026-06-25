@@ -29,18 +29,15 @@ export default async function CategoriesPage({ searchParams }: PageProps) {
             {categoryHeaders[targetCategory].desc}
           </p>
         </div>
-        {/* 🎯 This perfectly passes the category string to your updated component! */}
+        {/* Passed category string */}
         <RecentQuestions filterCategory={targetCategory} />
       </div>
     );
   }
 
+  // Clean layout architecture: Old ghost headers removed!
   return (
-    <div className="space-y-4">
-      <div>
-        <h1 className="text-xl font-sans font-black text-[#0f172a] tracking-tight">Explore Spaces & Communities</h1>
-        <p className="text-xs font-sans text-[#64748b]">Select an analytical cluster block below to filter context down to your parameters.</p>
-      </div>
+    <div className="w-full">
       <CategoryGrid />
     </div>
   );
