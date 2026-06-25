@@ -49,7 +49,8 @@ export default function Navbar() {
             Ask
           </Link>
           <span className="inline-flex items-center gap-2 rounded-full bg-[#0f2f88] px-4 py-2 text-xs font-black text-white shadow-lg shadow-blue-950/20">
-            <span className="h-2 w-2 rounded-full bg-white/90" />
+            {/* 💚 Fixed: Changed dot from bg-white/90 to a vibrant green indicator with a clean back-glow shadow */}
+            <span className="h-2 w-2 rounded-full bg-[#10b981] shadow-[0_0_6px_#10b981]" />
             Anonymous On
           </span>
         </div>
