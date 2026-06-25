@@ -24,16 +24,21 @@ export async function POST(req: NextRequest) {
     }
 
     const body = await req.json();
-    const { title, content, author_name, user_id } = body;
+    const { title, content, category, author_name, user_id } = body;
 
     if (!content?.trim()) {
       return NextResponse.json({ error: "Content is required" }, { status: 400 });
+    }
+
+    if (!category) {
+      return NextResponse.json({ error: "Category/topic selection is required" }, { status: 400 });
     }
 
     const { data, error } = await supabase.from("posts").insert([
       {
         title: title || "Anonymous question",
         content: content.trim(),
+        category: category, // Inserts the chosen slug (e.g., 'startups-business') into your database column
         author_name: author_name || "Anonymous",
         user_id: user_id || "00000000-0000-0000-0000-000000000000",
       },
