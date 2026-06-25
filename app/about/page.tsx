@@ -32,8 +32,9 @@ export default function AboutUsPage() {
             <p>
               For legal inquiries, system infrastructure observations, copy removal notifications (DMCA compliance), or corporate network partnership pitches, reach out straight to our operational inbox:
             </p>
+            {/* ✉️ Updated Email Address Container */}
             <div className="inline-block bg-slate-50 border border-slate-200/60 rounded-xl px-4 py-2.5 font-bold text-blue-700 tracking-wide">
-              ✉️ info@asklo.online
+              ✉️ asklo.online@gmail.com
             </div>
             <p className="text-[11px] text-slate-400 font-medium">
               Our data administration team typically reviews and addresses incoming messages within 24 to 48 standard business hours.
