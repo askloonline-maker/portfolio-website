@@ -10,10 +10,13 @@ const TOPICS = [
 
 export default function CategoryGrid() {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-      {TOPICS.map((item) => (
-        <CategoryCard key={item.slug} topic={item} />
-      ))}
+    <div className="mx-auto max-w-5xl px-4 py-8 font-sans antialiased">
+      {/* 4-Column Grid Architecture */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        {TOPICS.map((item) => (
+          <CategoryCard key={item.slug} topic={item} />
+        ))}
+      </div>
     </div>
   );
 }
