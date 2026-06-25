@@ -11,6 +11,12 @@ const TOPICS = [
 export default function CategoryGrid() {
   return (
     <div className="mx-auto max-w-5xl px-4 py-8 font-sans antialiased">
+      
+      {/* Spaces and Communities Title Header */}
+      <h2 className="text-2xl font-black text-slate-950 tracking-tight mb-8">
+        Spaces and Communities
+      </h2>
+
       {/* 4-Column Grid Architecture */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {TOPICS.map((item) => (
