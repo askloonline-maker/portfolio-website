@@ -10,15 +10,20 @@ const TOPICS = [
 
 export default function CategoryGrid() {
   return (
-    <div className="mx-auto max-w-5xl px-4 py-8 font-sans antialiased">
+    <div className="mx-auto max-w-5xl px-4 py-12 font-sans antialiased">
       
-      {/* Spaces and Communities Title Header */}
-      <h2 className="text-2xl font-black text-slate-950 tracking-tight mb-8">
-        Spaces and Communities
-      </h2>
+      {/* Centered Premium Title Header & Subtitle Block */}
+      <div className="text-center mb-12 flex flex-col items-center justify-center">
+        <h2 className="text-3xl font-black text-slate-900 tracking-tight sm:text-4xl">
+          Spaces and Communities
+        </h2>
+        <p className="mt-3 text-sm font-medium text-slate-500 max-w-xl leading-relaxed">
+          Browse to find the spaces that fit your needs and click to explore. Use the targeted contextual hubs to match your research parameters.
+        </p>
+      </div>
 
       {/* 4-Column Grid Architecture */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {TOPICS.map((item) => (
           <CategoryCard key={item.slug} topic={item} />
         ))}
