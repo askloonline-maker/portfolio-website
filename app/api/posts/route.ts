@@ -12,6 +12,7 @@ function getSupabaseClient() {
   return createClient(supabaseUrl, serviceRoleKey);
 }
 
+// Your existing POST route
 export async function POST(req: NextRequest) {
   try {
     const supabase = getSupabaseClient();
@@ -38,7 +39,7 @@ export async function POST(req: NextRequest) {
       {
         title: title || "Anonymous question",
         content: content.trim(),
-        category: category, // Inserts the chosen slug (e.g., 'startups-business') into your database column
+        category: category, 
         author_name: author_name || "Anonymous",
         user_id: user_id || "00000000-0000-0000-0000-000000000000",
       },
@@ -51,5 +52,37 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ post: data }, { status: 201 });
   } catch (err: any) {
     return NextResponse.json({ error: err.message || "Unexpected error" }, { status: 500 });
+  }
+}
+
+// 🎯 ADD THIS GET HANDLER TO FILTER POSTS BY SPACE PARAMETERS
+export async function GET(request: NextRequest) {
+  try {
+    const supabase = getSupabaseClient();
+    if (!supabase) {
+      return NextResponse.json({ error: "Supabase configuration error" }, { status: 500 });
+    }
+
+    const { searchParams } = new URL(request.url);
+    const categoryFilter = searchParams.get("category");
+
+    let query = supabase
+      .from("posts")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+    // If an intentional filter parameter is present, target it directly
+    if (categoryFilter) {
+      query = query.eq("category", categoryFilter);
+    }
+
+    const { data, error } = await query;
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+
+    return NextResponse.json(data);
+  } catch (err: any) {
+    return NextResponse.json({ error: err.message || "Failed to load posts" }, { status: 500 });
   }
 }
