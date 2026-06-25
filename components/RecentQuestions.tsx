@@ -2,22 +2,32 @@
 import React, { useEffect, useState } from "react";
 import QuestionCard from "./QuestionCard";
 
-export default function RecentQuestions() {
+interface RecentQuestionsProps {
+  filterCategory?: string; // Optional target slug prop passed from space router views
+}
+
+export default function RecentQuestions({ filterCategory }: RecentQuestionsProps) {
   const [posts, setPosts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Fetch directly from your public posts API endpoint
-    fetch("/api/posts")
+    // Append routing criteria parameter if active
+    const fetchUrl = filterCategory 
+      ? `/api/posts?category=${filterCategory}`
+      : "/api/posts";
+
+    fetch(fetchUrl)
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data)) {
           setPosts(data);
+        } else if (data && Array.isArray(data.posts)) {
+          setPosts(data.posts);
         }
       })
       .catch((err) => console.error("Error loading recent posts:", err))
       .finally(() => setLoading(false));
-  }, []);
+  }, [filterCategory]);
 
   if (loading) {
     return (
@@ -32,8 +42,8 @@ export default function RecentQuestions() {
   return (
     <div className="space-y-4">
       {posts.length === 0 ? (
-        <div className="text-center py-8 text-slate-400 italic text-sm">
-          No recent discussions found.
+        <div className="text-center py-12 bg-white rounded-2xl border border-blue-50 text-slate-400 italic text-sm font-sans font-medium">
+          No active discussions found inside this space yet.
         </div>
       ) : (
         posts.map((post: any) => (
