@@ -4,6 +4,7 @@ import Link from "next/link";
 export default function RightSidebar() {
   return (
     <div className="space-y-4">
+      {/* Anonymous Promise Card */}
       <div className="overflow-hidden rounded-[2rem] border border-blue-100 bg-white shadow-sm shadow-blue-950/5">
         <div className="bg-gradient-to-r from-[#0f2f88] to-[#2563eb] p-4 text-white">
           <h3 className="text-sm font-black">Anonymous promise</h3>
@@ -17,6 +18,7 @@ export default function RightSidebar() {
         </ul>
       </div>
 
+      {/* Trending Section */}
       <div className="rounded-[2rem] border border-blue-100 bg-white p-4 shadow-sm shadow-blue-950/5">
         <h3 className="text-sm font-black text-slate-950">Trending today</h3>
         <div className="mt-3 space-y-3">
@@ -28,12 +30,21 @@ export default function RightSidebar() {
         </div>
       </div>
 
+      {/* 🌐 UPDATED FOOTER LINKS WITH DEDICATED ROUTES FOR ADSENSE COMPLIANCE */}
       <div className="flex flex-wrap gap-x-2 gap-y-1 px-2 text-[11px] font-semibold text-slate-400">
-        <Link href="/" className="hover:text-blue-700">Rules</Link>
+        <Link href="/terms" className="hover:text-blue-700 transition">
+          Rules
+        </Link>
         <span>•</span>
-        <Link href="/" className="hover:text-blue-700">Privacy</Link>
+        <Link href="/privacy" className="hover:text-blue-700 transition">
+          Privacy
+        </Link>
         <span>•</span>
-        <p>© 2026 Asklo.Online</p>
+        <Link href="/about" className="hover:text-blue-700 transition">
+          About Us
+        </Link>
+        <span>•</span>
+        <p className="text-slate-400/80">© 2026 Asklo.Online</p>
       </div>
     </div>
   );
