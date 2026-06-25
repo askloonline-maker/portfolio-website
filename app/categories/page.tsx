@@ -29,7 +29,7 @@ export default async function CategoriesPage({ searchParams }: PageProps) {
             {categoryHeaders[targetCategory].desc}
           </p>
         </div>
-        {/* Render filtered discussions directly */}
+        {/* 🎯 This perfectly passes the category string to your updated component! */}
         <RecentQuestions filterCategory={targetCategory} />
       </div>
     );
