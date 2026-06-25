@@ -14,30 +14,28 @@ interface TopicProps {
 
 export default function CategoryCard({ topic }: TopicProps) {
   return (
-    <div className="group relative rounded-[2rem] border border-blue-100 bg-white p-6 shadow-xl shadow-blue-950/5 transition-all duration-200 hover:-translate-y-0.5 hover:border-blue-300 hover:shadow-blue-950/10">
+    <div className="group flex flex-col justify-between rounded-[2rem] border border-blue-100 bg-white p-5 shadow-xl shadow-blue-950/5 text-center items-center h-full transition-all duration-200 hover:-translate-y-0.5 hover:border-blue-300 hover:shadow-blue-950/10">
       
-      {/* Dynamic Item Counter Badge */}
-      <span className="absolute top-6 right-6 rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600 font-sans">
-        {topic.count} items
-      </span>
+      {/* Top Section: Icon & Counter Row */}
+      <div className="w-full flex justify-between items-center mb-2">
+        <div className="text-xl p-1 bg-slate-50 rounded-xl">{topic.indicator}</div>
+        <span className="rounded-full bg-slate-100 border border-slate-200/50 px-2.5 py-0.5 text-[10px] font-bold text-slate-500 font-sans">
+          {topic.count} items
+        </span>
+      </div>
 
-      <div className="space-y-3">
-        {/* Render Emoji Indicator cleanly */}
-        <div className="text-2xl">{topic.indicator}</div>
-        
-        {/* Clean, professional title with no "c/" prefix */}
-        <h3 className="text-base font-black text-slate-950 font-sans tracking-tight antialiased">
+      {/* Middle Section: Centered Text Content */}
+      <div className="flex-1 flex flex-col justify-center py-3">
+        <h3 className="text-sm font-black text-slate-950 font-sans tracking-tight antialiased mb-1.5">
           {topic.name}
         </h3>
-        
-        {/* Description Body Text */}
-        <p className="text-xs font-medium leading-relaxed text-slate-500 font-sans antialiased pr-12">
+        <p className="text-xs font-medium leading-relaxed text-slate-500 font-sans antialiased line-clamp-3">
           {topic.description}
         </p>
       </div>
 
-      {/* Explore Trigger Routing Link */}
-      <div className="mt-5 pt-4 border-t border-blue-50">
+      {/* Bottom Section: Explore Action Link Link */}
+      <div className="w-full mt-2 pt-3 border-t border-blue-50">
         <Link 
           href={`/categories?filter=${topic.slug}`}
           className="inline-flex items-center gap-1 text-xs font-black text-blue-700 font-sans tracking-wide transition group-hover:text-blue-800"
