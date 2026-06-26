@@ -19,14 +19,11 @@ async function getSpacePosts(spaceId: string) {
   try {
     const supabase = getSupabaseClient();
     if (!supabase) return [];
-    
-    // Maps the tech slug properly if needed
-    const targetCategory = spaceId === "tech" ? "tech" : spaceId;
 
     const { data, error } = await supabase
       .from("posts")
       .select("*")
-      .eq("category", targetCategory)
+      .eq("category", spaceId)
       .order("created_at", { ascending: false });
 
     if (error) return [];
@@ -36,7 +33,7 @@ async function getSpacePosts(spaceId: string) {
   }
 }
 
-// Helper map to turn URL parameters into clean text headings
+// Helper map to convert URL parameters into clean text headings
 function getSpaceTitle(id: string) {
   const titles: { [key: string]: string } = {
     "digital-marketing": "Digital Marketing",
