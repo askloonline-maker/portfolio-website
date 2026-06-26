@@ -1,8 +1,15 @@
+// Place this right above your export default function
+interface PageProps {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}
+
 export default async function HomePage({ searchParams }: PageProps) {
+  // Await searchParams in Next.js 15+ dynamic environments
+  const resolvedParams = await searchParams;
   const dbStatus = await checkDatabaseConnection();
   const posts = await getAllPublicPosts();
 
-  const targetPostId = typeof searchParams.post === "string" ? searchParams.post : null;
+  const targetPostId = typeof resolvedParams.post === "string" ? resolvedParams.post : null;
   const sharedPost = targetPostId ? posts.find((p) => p.id === targetPostId) : null;
 
   // 🛠️ DYNAMIC SEO HOOK: Compiles real-time structured data schema for crawlers
