@@ -1,10 +1,56 @@
-// Place this right above your export default function
+import React from "react";
+import { createClient } from "@supabase/supabase-js";
+import CreatePost from "../components/CreatePost";
+import QuestionCard from "../components/QuestionCard";
+import RightSidebar from "../components/RightSidebar";
+import Sidebar from "../components/Sidebar";
+
+export const revalidate = 0;
+
+// 🔐 Supabase Client Initialization
+function getSupabaseClient() {
+  const supabaseUrl = process.env.SUPABASE_URL;
+  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!supabaseUrl || !serviceRoleKey) return null;
+  return createClient(supabaseUrl, serviceRoleKey);
+}
+
+// 🌐 Database Connection Check
+async function checkDatabaseConnection() {
+  try {
+    const supabase = getSupabaseClient();
+    if (!supabase) return { connected: false, message: "Supabase environment variables are missing" };
+    const { error } = await supabase.from("posts").select("id").limit(1);
+    if (error) return { connected: false, message: error.message };
+    return { connected: true, message: "Anonymous posting is live" };
+  } catch (err: any) {
+    return { connected: false, message: err.message || "Failed to connect" };
+  }
+}
+
+// 📥 Data Fetcher for Feed
+async function getAllPublicPosts() {
+  try {
+    const supabase = getSupabaseClient();
+    if (!supabase) return [];
+    const { data, error } = await supabase
+      .from("posts")
+      .select("*")
+      .order("created_at", { ascending: false });
+    if (error) return [];
+    return data || [];
+  } catch (err) {
+    return [];
+  }
+}
+
+// 📐 TypeScript Type Definitions
 interface PageProps {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
+// 🏠 Main Server Component Home Page
 export default async function HomePage({ searchParams }: PageProps) {
-  // Await searchParams in Next.js 15+ dynamic environments
   const resolvedParams = await searchParams;
   const dbStatus = await checkDatabaseConnection();
   const posts = await getAllPublicPosts();
