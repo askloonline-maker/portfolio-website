@@ -7,6 +7,52 @@ import Sidebar from "../components/Sidebar";
 
 export const revalidate = 0;
 
+// 🗂️ Spaces Grid Dataset
+const spacesData = [
+  {
+    id: "digital-marketing",
+    title: "Digital Marketing",
+    icon: "📈",
+    count: "Active Hub",
+    description: "SEO structures, growth architectures, and optimization frameworks."
+  },
+  {
+    id: "startups-business",
+    title: "Startups & Business",
+    icon: "💼",
+    count: "Active Hub",
+    description: "Venture strategies, scaling frameworks, business models, and operational systems."
+  },
+  {
+    id: "artificial-intelligence",
+    title: "Artificial Intelligence",
+    icon: "🤖",
+    count: "Active Hub",
+    description: "Large Language Models, deployment patterns, and operational systems."
+  },
+  {
+    id: "tech",
+    title: "General Tech",
+    icon: "💻",
+    count: "Active Hub",
+    description: "Next.js configurations, environment structures, and operational frameworks."
+  },
+  {
+    id: "health-fitness-beauty",
+    title: "Health - Fitness - Beauty",
+    icon: "🌿",
+    count: "Active Hub",
+    description: "Wellness routines, physical preparation, lifestyle choices, and aesthetic self-care."
+  },
+  {
+    id: "others",
+    title: "Others",
+    icon: "✨",
+    count: "Active Hub",
+    description: "Miscellaneous inquiries, general life observations, and unclassified discussions."
+  }
+];
+
 // 🔐 Supabase Client Initialization
 function getSupabaseClient() {
   const supabaseUrl = process.env.SUPABASE_URL;
@@ -121,6 +167,33 @@ export default async function HomePage({ searchParams }: PageProps) {
                 <div className="rounded-2xl bg-white p-3 shadow-sm">🕶️ No account or display name required</div>
                 <div className="rounded-2xl bg-white p-3 shadow-sm">💬 Questions, answers, and opinions welcome</div>
                 <div className="rounded-2xl bg-white p-3 shadow-sm">🛡️ Public, respectful, moderated by community rules</div>
+              </div>
+            </div>
+
+            💡 {/* 🗂️ Communities Grid Injection Point */}
+            <div className="space-y-4 pt-2">
+              <div className="px-1">
+                <h2 className="text-sm font-black uppercase tracking-[0.25em] text-slate-500">Spaces and Communities</h2>
+                <p className="text-xs font-medium text-slate-400 mt-0.5">Select a contextual hub to filter relevant discussions.</p>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {spacesData.map((space) => (
+                  <div key={space.id} className="group bg-white border border-blue-50 rounded-3xl p-5 shadow-sm hover:shadow-md transition-all duration-200 flex flex-col justify-between gap-4">
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between">
+                        <span className="text-2xl bg-blue-50/60 p-2.5 rounded-xl block w-fit">{space.icon}</span>
+                        <span className="text-[10px] font-bold text-slate-400 bg-slate-100 px-2.5 py-1 rounded-full">{space.count}</span>
+                      </div>
+                      <div>
+                        <h3 className="text-sm font-black text-slate-950">{space.title}</h3>
+                        <p className="text-xs leading-relaxed text-slate-500 font-medium mt-0.5">{space.description}</p>
+                      </div>
+                    </div>
+                    <a href={`/space/${space.id}`} className="inline-flex items-center gap-1 text-[11px] font-black text-[#1d4ed8] hover:text-[#0f2f88] transition mt-1">
+                      Explore Space <span className="transform group-hover:translate-x-1 transition-transform">→</span>
+                    </a>
+                  </div>
+                ))}
               </div>
             </div>
 
