@@ -77,6 +77,9 @@ export default function CreatePost() {
             <option value="startups-business" className="text-slate-900 font-sans font-semibold">Startups & Business</option>
             <option value="artificial-intelligence" className="text-slate-900 font-sans font-semibold">Artificial Intelligence</option>
             <option value="tech" className="text-slate-900 font-sans font-semibold">General Tech</option>
+            {/* 👇 New Submissions Additions */}
+            <option value="health-fitness-beauty" className="text-slate-900 font-sans font-semibold">Health - Fitness - Beauty</option>
+            <option value="others" className="text-slate-900 font-sans font-semibold">Others</option>
           </select>
           <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4 text-slate-400 text-xs">
             ▼
