@@ -2,10 +2,49 @@ import React from "react";
 import "./globals.css";
 import Script from "next/script";
 import Navbar from "@/components/Navbar";
+import { Metadata } from "next";
 
-export const metadata = {
-  title: "Asklo.Online | The World's Living Room",
-  description: "A royal-blue anonymous questions and answers platform where everyone can post freely without an account.",
+export const metadata: Metadata = {
+  title: "AskLo.Online | The World's Living Room — Anonymous Q&A Platform",
+  description: "Ask questions, get expert answers, and share honest perspectives entirely anonymously. A premier knowledge network where curiosity overrides usernames.",
+  keywords: ["anonymous Q&A", "ask questions online", "AskLo", "career advice forum", "anonymous confessions", "marketing strategy discussions"],
+  metadataBase: new URL("https://www.asklo.online"),
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    title: "AskLo.Online | The World's Living Room",
+    description: "What question would you ask if your name wasn't attached to it? Join the anonymous conversation safely.",
+    url: "https://www.asklo.online",
+    siteName: "AskLo",
+    locale: "en_US",
+    type: "website",
+    images: [
+      {
+        url: "/logo.png", // Ensure a logo file sits directly inside your /public folder
+        width: 1200,
+        height: 630,
+        alt: "AskLo.Online Premium Anonymous Knowledge Framework",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "AskLo.Online | Anonymous Q&A Platform",
+    description: "What question would you ask if your name wasn't attached to it?",
+    images: ["/logo.png"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
 };
 
 interface RootLayoutProps {
@@ -16,7 +55,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en" className="scroll-smooth">
       <head>
-        {/* Swapped to lazyOnload to fix PageSpeed thread blocking alerts */}
+        {/* LazyOnload effectively skips main thread blocking metrics */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-HVE82D63F5"
           strategy="lazyOnload"
@@ -30,17 +69,9 @@ export default function RootLayout({ children }: RootLayoutProps) {
           `}
         </Script>
       </head>
-      {/* 🧼 Removed 'pb-16' since the mobile navigation footer bar is gone */}
       <body className="bg-slate-50 text-slate-900 antialiased selection:bg-blue-600 selection:text-white">
-        
-        {/* Global Desktop & Mobile Navigation Header */}
         <Navbar />
-
-        {/* Core Main Web Feed Content */}
         {children}
-
-        {/* ❌ Mobile Sticky Navigation Footer Bar has been completely removed from here */}
-
       </body>
     </html>
   );
