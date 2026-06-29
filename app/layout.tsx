@@ -5,23 +5,36 @@ import Navbar from "@/components/Navbar";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "AskLo.Online | The World's Living Room — Anonymous Q&A Platform",
-  description: "Ask questions, get expert answers, and share honest perspectives entirely anonymously. A premier knowledge network where curiosity overrides usernames.",
-  keywords: ["anonymous Q&A", "ask questions online", "AskLo", "career advice forum", "anonymous confessions", "marketing strategy discussions"],
+  title: "AskLo.Online | Premium Anonymous Q&A Platform & Knowledge Sharing Website",
+  description: "Ask questions, get expert answers, and share honest perspectives entirely anonymously. The premier online community and discussion forum where curiosity overrides usernames.",
+  keywords: [
+    "anonymous blog website", 
+    "Q&A platforms", 
+    "knowledge sharing websites", 
+    "discussion forums", 
+    "question answer websites",
+    "online communities",
+    "anonymous Q&A", 
+    "ask questions online", 
+    "AskLo", 
+    "career advice forum", 
+    "marketing strategy discussions",
+    "unfiltered discussions online"
+  ],
   metadataBase: new URL("https://www.asklo.online"),
   alternates: {
     canonical: "/",
   },
   openGraph: {
-    title: "AskLo.Online | The World's Living Room",
-    description: "What question would you ask if your name wasn't attached to it? Join the anonymous conversation safely.",
+    title: "AskLo.Online | The World's Anonymous Living Room",
+    description: "What question would you ask if your name wasn't attached to it? Join high-value professional conversations on a secure knowledge sharing platform.",
     url: "https://www.asklo.online",
     siteName: "AskLo",
     locale: "en_US",
     type: "website",
     images: [
       {
-        url: "/logo.png", // Ensure a logo file sits directly inside your /public folder
+        url: "/logo.png",
         width: 1200,
         height: 630,
         alt: "AskLo.Online Premium Anonymous Knowledge Framework",
@@ -30,8 +43,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "AskLo.Online | Anonymous Q&A Platform",
-    description: "What question would you ask if your name wasn't attached to it?",
+    title: "AskLo.Online | Anonymous Q&A Platform & Forum",
+    description: "What question would you ask if your name wasn't attached to it? Start blogging anonymously.",
     images: ["/logo.png"],
   },
   robots: {
