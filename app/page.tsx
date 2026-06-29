@@ -61,20 +61,26 @@ export default async function HomePage({ searchParams }: PageProps) {
   // 🛠️ DYNAMIC SEO HOOK: Compiles real-time structured data schema for crawlers
   const structuralSchema = {
     "@context": "https://schema.org",
-    "@type": "ItemList",
-    "numberOfItems": posts.length,
-    "itemListElement": posts.slice(0, 15).map((post, index) => ({
-      "@type": "ListItem",
-      "position": index + 1,
-      "item": {
-        "@type": "Question",
-        "name": post.title || post.content?.substring(0, 100) || "Anonymous Question",
-        "text": post.content || post.title,
-        "url": `https://www.asklo.online/?post=${post.id}`,
-        "dateCreated": post.created_at,
-        "answerCount": post.comment_count || 0
-      }
-    }))
+    "@type": "DiscussionForumPosting",
+    "name": "AskLo Online Anonymous Q&A Knowledge Sharing Website",
+    "description": "A public repository of anonymous questions, marketing strategy discussions, career advice, and community discussion boards.",
+    "url": "https://www.asklo.online",
+    "mainEntity": {
+      "@type": "ItemList",
+      "numberOfItems": posts.length,
+      "itemListElement": posts.slice(0, 15).map((post, index) => ({
+        "@type": "ListItem",
+        "position": index + 1,
+        "item": {
+          "@type": "Question",
+          "name": post.title || post.content?.substring(0, 100) || "Anonymous Question",
+          "text": post.content || post.title,
+          "url": `https://www.asklo.online/?post=${post.id}`,
+          "dateCreated": post.created_at,
+          "answerCount": post.comment_count || 0
+        }
+      }))
+    }
   };
 
   return (
@@ -103,7 +109,9 @@ export default async function HomePage({ searchParams }: PageProps) {
                   <div className="max-w-2xl space-y-2">
                     <p className="text-xs font-bold uppercase tracking-[0.35em] text-blue-100">Premium Anonymous Knowledge Network</p>
                     <h1 className="text-3xl font-black tracking-tight sm:text-4xl">Ask freely. Answer boldly. Stay anonymous.</h1>
-                    <p className="text-sm leading-6 text-blue-50">Where questions spark conversations and answers create value.</p>
+                    <p className="text-sm leading-6 text-blue-50">
+                      Welcome to AskLo, a secure **knowledge sharing platform** and public **question answer website**. What insights would you share if your name wasn't attached? Join decentralized online communities talking marketing, tech, and startups today.
+                    </p>
                   </div>
                   {dbStatus.connected ? (
                     <span className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/15 px-4 py-2 text-xs font-bold text-white shadow-sm backdrop-blur">
@@ -118,9 +126,9 @@ export default async function HomePage({ searchParams }: PageProps) {
                 </div>
               </div>
               <div className="grid gap-3 bg-blue-50/60 p-4 text-xs font-semibold text-slate-600 sm:grid-cols-3">
-                <div className="rounded-2xl bg-white p-3 shadow-sm">🕶️ No account or display name required</div>
-                <div className="rounded-2xl bg-white p-3 shadow-sm">💬 Questions, answers, and opinions welcome</div>
-                <div className="rounded-2xl bg-white p-3 shadow-sm">🛡️ Public, respectful, moderated by community rules</div>
+                <div className="rounded-2xl bg-white p-3 shadow-sm">🕶️ No account registration required</div>
+                <div className="rounded-2xl bg-white p-3 shadow-sm">💬 Open question answer website format</div>
+                <div className="rounded-2xl bg-white p-3 shadow-sm">🛡️ Public, safe online community discussion</div>
               </div>
             </div>
 
@@ -128,8 +136,8 @@ export default async function HomePage({ searchParams }: PageProps) {
             <CreatePost />
 
             <div className="flex items-center justify-between px-1">
-              <h2 className="text-sm font-black uppercase tracking-[0.25em] text-slate-500">Top conversations</h2>
-              <span className="rounded-full bg-blue-50 px-3 py-1 text-xs font-bold text-blue-700">{posts.length} live posts</span>
+              <h2 className="text-sm font-black uppercase tracking-[0.25em] text-slate-500">Community Discussion Boards</h2>
+              <span className="rounded-full bg-blue-50 px-3 py-1 text-xs font-bold text-blue-700">{posts.length} active threads</span>
             </div>
 
             <div className="space-y-4">
