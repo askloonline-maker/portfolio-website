@@ -58,11 +58,21 @@ export default async function HomePage({ searchParams }: PageProps) {
   const targetPostId = typeof resolvedParams.post === "string" ? resolvedParams.post : null;
   const sharedPost = targetPostId ? posts.find((p) => p.id === targetPostId) : null;
 
-  // 🛠️ DYNAMIC SEO HOOK: Compiles real-time structured data schema for crawlers
+  // 🕒 Fallback timestamp matching the newest community thread for Google crawlers
+  const latestPostDate = posts[0]?.created_at || new Date().toISOString();
+
+  // 🛠️ COMPLIANT SEO HOOK: Resolves console properties accurately
   const structuralSchema = {
     "@context": "https://schema.org",
     "@type": "DiscussionForumPosting",
     "name": "AskLo Online Anonymous Q&A Knowledge Sharing Website",
+    "headline": "AskLo Premium Anonymous Q&A Platform & Discussion Feed",
+    "datePublished": latestPostDate,
+    "author": {
+      "@type": "Person",
+      "name": "Anonymous"
+    },
+    "text": "Welcome to AskLo, a secure public repository of anonymous questions, marketing strategy discussions, career advice, and community boards.",
     "description": "A public repository of anonymous questions, marketing strategy discussions, career advice, and community discussion boards.",
     "url": "https://www.asklo.online",
     "mainEntity": {
@@ -168,12 +178,4 @@ export default async function HomePage({ searchParams }: PageProps) {
                 ✕ Close & View Feed
               </a>
             </div>
-            <div className="max-h-[75vh] overflow-y-auto p-1">
-              <QuestionCard post={sharedPost} />
-            </div>
-          </div>
-        </div>
-      )}
-    </main>
-  );
-}
+            <div className="max-h-
