@@ -61,37 +61,35 @@ export default async function HomePage({ searchParams }: PageProps) {
   // 🕒 Fallback timestamp matching the newest community thread for Google crawlers
   const latestPostDate = posts[0]?.created_at || new Date().toISOString();
 
-  // 🛠️ COMPLIANT SEO HOOK: Standard clean object declaration
+  // 🛠️ COMPLIANT SEO HOOK: Using CollectionPage container layout for index feeds
   const structuralSchema = {
     "@context": "https://schema.org",
-    "@type": "DiscussionForumPosting",
+    "@type": "CollectionPage",
     "name": "AskLo Online Anonymous Q&A Knowledge Sharing Website",
     "headline": "AskLo Premium Anonymous Q&A Platform & Discussion Feed",
-    "datePublished": latestPostDate,
-    "author": {
-      "@type": "Person",
-      "name": "Anonymous"
-    },
-    "text": "Welcome to AskLo, a secure public repository of anonymous questions, marketing strategy discussions, career advice, and community boards.",
     "description": "A public repository of anonymous questions, marketing strategy discussions, career advice, and community discussion boards.",
     "url": "https://www.asklo.online",
     "mainEntity": {
       "@type": "ItemList",
       "numberOfItems": posts.length,
       "itemListElement": posts.slice(0, 15).map((post, index) => ({
-        "@type": "DiscussionForumPosting",
-        "headline": post.title || (post.content ? post.content.substring(0, 100) : "Anonymous Question"),
-        "datePublished": post.created_at || latestPostDate,
-        "author": {
-          "@type": "Person",
-          "name": "Anonymous"
-        },
-        "text": post.content || post.title || "Anonymous Thread Context",
-        "url": "https://www.asklo.online/?post=" + post.id,
-        "interactionStatistic": {
-          "@type": "InteractionCounter",
-          "interactionType": "https://schema.org/CommentAction",
-          "userInteractionCount": post.comment_count || 0
+        "@type": "ListItem",
+        "position": index + 1,
+        "item": {
+          "@type": "DiscussionForumPosting",
+          "headline": post.title || (post.content ? post.content.substring(0, 100) : "Anonymous Question"),
+          "datePublished": post.created_at || latestPostDate,
+          "author": {
+            "@type": "Person",
+            "name": "Anonymous"
+          },
+          "text": post.content || post.title || "Anonymous Thread Context",
+          "url": "https://www.asklo.online/?post=" + post.id,
+          "interactionStatistic": {
+            "@type": "InteractionCounter",
+            "interactionType": "https://schema.org/CommentAction",
+            "userInteractionCount": post.comment_count || 0
+          }
         }
       }))
     }
