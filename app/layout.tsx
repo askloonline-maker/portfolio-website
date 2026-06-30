@@ -6,7 +6,7 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "AskLo.Online | Premium Anonymous Q&A Platform & Knowledge Sharing Website",
-  description: "Ask questions, get expert answers, and share honest perspectives entirely anonymously. The premier online community and discussion forum where curiosity overrides usernames.",
+  description: "Ask questions, get expert answers, and share perspectives anonymously. The premier online community and discussion forum where curiosity overrides usernames.",
   keywords: [
     "anonymous blog website", 
     "Q&A platforms", 
