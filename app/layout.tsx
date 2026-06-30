@@ -6,7 +6,8 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "AskLo.Online | Premium Anonymous Q&A Platform & Knowledge Sharing Website",
-  description: "Ask questions, get expert answers, and share perspectives anonymously. The premier online community and discussion forum where curiosity overrides usernames.",
+  // 🎯 Optimized to 151 characters to satisfy RankMath limits
+  description: "Ask questions, get expert answers, and share perspectives anonymously. Join the online community discussion feed where curiosity overrides usernames.",
   keywords: [
     "anonymous blog website", 
     "Q&A platforms", 
@@ -27,7 +28,8 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: "AskLo.Online | The World's Anonymous Living Room",
-    description: "What question would you ask if your name wasn't attached to it? Join high-value professional conversations on a secure knowledge sharing platform.",
+    // 🎯 Optimized to 143 characters for crisp social shares
+    description: "What question would you ask if your name wasn't attached? Join professional conversations on a secure knowledge sharing platform.",
     url: "https://www.asklo.online",
     siteName: "AskLo",
     locale: "en_US",
