@@ -85,7 +85,8 @@ export default async function HomePage({ searchParams }: PageProps) {
             "datePublished": post.created_at || latestPostDate,
             "author": {
               "@type": "Person",
-              "name": "Anonymous"
+              "name": "Anonymous",
+              "url": "https://www.asklo.online" // ✨ Added to fix the Search Console non-critical error
             },
             "text": textContent,
             "url": "https://www.asklo.online/?post=" + post.id,
