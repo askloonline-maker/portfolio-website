@@ -3,12 +3,12 @@ import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-const links = [
-  { href: "/", icon: "🏠", label: "Home" },
-  { href: "/ask", icon: "✍️", label: "Ask anonymously" },
-  { href: "/categories", icon: "🌐", label: "Spaces" },
-  { href: "#", icon: "🔥", label: "Trending" },
-  { href: "#", icon: "🔖", label: "Saved" },
+const semanticLinks = [
+  { href: "/", icon: "🏠", label: "Home", type: "link" },
+  { href: "/ask", icon: "✍️", label: "Ask anonymously", type: "link" },
+  { href: "/categories", icon: "🌐", label: "Spaces", type: "link" },
+  { href: "/trending", icon: "🔥", label: "Trending", type: "button" }, // Swapped type to fix empty hash
+  { href: "/saved", icon: "🔖", label: "Saved", type: "button" },     // Swapped type to fix empty hash
 ];
 
 export default function Sidebar() {
@@ -16,20 +16,35 @@ export default function Sidebar() {
 
   return (
     <nav className="space-y-1.5 flex flex-col items-center md:items-stretch">
-      {links.map((link) => {
-        // Simple client checking to see if link is currently active
+      {semanticLinks.map((link) => {
         const isActive = pathname === link.href;
+        const baseStyle = `flex items-center justify-center md:justify-start gap-3 rounded-xl md:rounded-2xl w-full p-3 text-sm font-black transition ${
+          isActive 
+            ? "bg-[#0f2f88] text-white shadow-lg shadow-blue-950/20" 
+            : "text-slate-600 hover:bg-blue-50 hover:text-[#123c9c]"
+        }`;
+
+        if (link.type === "button") {
+          return (
+            <button
+              key={link.label}
+              type="button"
+              title={link.label}
+              onClick={() => alert(`${link.label} feature coming soon!`)}
+              className={baseStyle}
+            >
+              <span className="text-lg">{link.icon}</span>
+              <span className="hidden md:block">{link.label}</span>
+            </button>
+          );
+        }
 
         return (
           <Link
             key={link.label}
             href={link.href}
             title={link.label}
-            className={`flex items-center justify-center md:justify-start gap-3 rounded-xl md:rounded-2xl w-full p-3 text-sm font-black transition ${
-              isActive 
-                ? "bg-[#0f2f88] text-white shadow-lg shadow-blue-950/20" 
-                : "text-slate-600 hover:bg-blue-50 hover:text-[#123c9c]"
-            }`}
+            className={baseStyle}
           >
             <span className="text-lg">{link.icon}</span>
             <span className="hidden md:block">{link.label}</span>
@@ -39,7 +54,6 @@ export default function Sidebar() {
 
       <div className="my-2 w-full h-px bg-blue-100" />
 
-      {/* Title description block: visible only on desktop */}
       <p className="hidden md:block px-4 text-[11px] font-black uppercase tracking-[0.25em] text-slate-400">
         Popular Spaces
       </p>
