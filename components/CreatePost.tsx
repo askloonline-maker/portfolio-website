@@ -4,7 +4,7 @@ import React, { useState } from "react";
 export default function CreatePost() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [category, setCategory] = useState(""); // Tracks the topic dropdown selection
+  const [category, setCategory] = useState(""); 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -12,7 +12,6 @@ export default function CreatePost() {
     e.preventDefault();
     if (!content.trim()) return;
 
-    // Front-end validation enforcement
     if (!category) {
       setError("Please select a relevant space/topic before posting!");
       return;
@@ -28,7 +27,7 @@ export default function CreatePost() {
         body: JSON.stringify({
           title: title.trim() || "Anonymous question",
           content: content.trim(),
-          category: category, // Sends the selected slug string to the API backend
+          category: category, 
           author_name: "Anonymous",
           user_id: "00000000-0000-0000-0000-000000000000",
         }),
@@ -41,7 +40,7 @@ export default function CreatePost() {
 
       setTitle("");
       setContent("");
-      setCategory(""); // Reset dropdown on success
+      setCategory(""); 
       window.location.reload();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Unable to publish anonymously");
@@ -62,12 +61,12 @@ export default function CreatePost() {
 
       <form onSubmit={handleSubmit} className="space-y-3">
         
-        {/* CLEAN PROFESSIONAL TOPIC SELECT MENU */}
         <div className="relative">
           <select
             required
             value={category}
             onChange={(e) => setCategory(e.target.value)}
+            aria-label="Choose a relevant Space or Topic" // ♿️ Fixes Form Input Label warning
             className="w-full appearance-none rounded-2xl border border-blue-100 bg-blue-50/50 px-4 py-3 text-sm font-sans font-semibold text-slate-700 outline-none transition focus:border-blue-400 focus:bg-white focus:ring-4 focus:ring-blue-100 antialiased"
           >
             <option value="" disabled className="text-slate-400 font-sans font-medium">
@@ -77,7 +76,6 @@ export default function CreatePost() {
             <option value="startups-business" className="text-slate-900 font-sans font-semibold">Startups & Business</option>
             <option value="artificial-intelligence" className="text-slate-900 font-sans font-semibold">Artificial Intelligence</option>
             <option value="tech" className="text-slate-900 font-sans font-semibold">General Tech</option>
-            {/* 👇 New Submissions Additions */}
             <option value="health-fitness-beauty" className="text-slate-900 font-sans font-semibold">Health - Fitness - Beauty</option>
             <option value="others" className="text-slate-900 font-sans font-semibold">Others</option>
           </select>
@@ -90,12 +88,14 @@ export default function CreatePost() {
           type="text"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
+          aria-label="Discussion Title" // ♿️ Fixes Form Input Label warning
           placeholder="What do you want to ask or discuss?"
           className="w-full rounded-2xl border border-blue-100 bg-blue-50/50 px-4 py-3 text-base font-bold text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-400 focus:bg-white focus:ring-4 focus:ring-blue-100"
         />
         <textarea
           value={content}
           onChange={(e) => setContent(e.target.value)}
+          aria-label="Discussion Context Content" // ♿️ Fixes Form Input Label warning
           placeholder="Add context, details, opinions, or helpful information..."
           rows={4}
           className="w-full resize-none rounded-2xl border border-blue-100 bg-white px-4 py-3 text-sm leading-6 text-slate-700 outline-none transition placeholder:text-slate-400 focus:border-blue-400 focus:ring-4 focus:ring-blue-100"
