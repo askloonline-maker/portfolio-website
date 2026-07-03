@@ -5,8 +5,8 @@ import Navbar from "@/components/Navbar";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "AskLo.Online | Premium Anonymous Q&A Platform & Knowledge Sharing Website",
-  // 🎯 Optimized to 151 characters to satisfy RankMath limits
+  // 🎯 Shortened to 44 characters to pass the Title Length warning (image_3a9921.png)
+  title: "AskLo | Anonymous Q&A Platform & Forums",
   description: "Ask questions, get expert answers, and share perspectives anonymously. Join the online community discussion feed where curiosity overrides usernames.",
   keywords: [
     "anonymous blog website", 
@@ -28,7 +28,6 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: "AskLo.Online | The World's Anonymous Living Room",
-    // 🎯 Optimized to 143 characters for crisp social shares
     description: "What question would you ask if your name wasn't attached? Join professional conversations on a secure knowledge sharing platform.",
     url: "https://www.asklo.online",
     siteName: "AskLo",
@@ -70,7 +69,6 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en" className="scroll-smooth">
       <head>
-        {/* LazyOnload effectively skips main thread blocking metrics */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-HVE82D63F5"
           strategy="lazyOnload"
@@ -85,8 +83,15 @@ export default function RootLayout({ children }: RootLayoutProps) {
         </Script>
       </head>
       <body className="bg-slate-50 text-slate-900 antialiased selection:bg-blue-600 selection:text-white">
+        {/* ♿️ Fixes Skip Navigation Link warning (image_3a9cc9.png) */}
+        <a href="#main-content" className="sr-only focus:not-sr-only absolute top-4 left-4 bg-blue-600 text-white px-4 py-2 rounded-xl z-50">
+          Skip to content
+        </a>
         <Navbar />
-        {children}
+        {/* Wrap content in main with matching id */}
+        <main id="main-content">
+          {children}
+        </main>
       </body>
     </html>
   );
