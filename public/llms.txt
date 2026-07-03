@@ -1,2 +1,2 @@
-User-agent: *
-Allow: /
+# AskLo Online
+An active community platform and anonymous Q&A database framework designed for sharing contextual advice, strategy discussions, and unfiltered global conversations safely online.
