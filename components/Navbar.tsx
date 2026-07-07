@@ -24,7 +24,6 @@ export default function Navbar() {
 
           <div className="flex flex-col justify-center">
             <span className="text-2xl font-black tracking-tight text-[#123c9c] leading-none">
-              Asklo<span className="text-slate-900">.Online</span>
             </span>
             {/* ✨ Premium Slogan positioned cleanly below the core text brand */}
             <span className="text-[9px] font-black uppercase tracking-[0.18em] text-blue-600 pt-1 leading-none">
