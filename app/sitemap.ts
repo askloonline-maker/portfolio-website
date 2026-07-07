@@ -27,7 +27,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     posts = data || [];
   }
 
-  // 1. Define core platform static routes
+  // 1. Define core platform static routes along with legal and space categories
   const staticRoutes: MetadataRoute.Sitemap = [
     {
       url: `${BASE_URL}`,
@@ -44,8 +44,63 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     {
       url: `${BASE_URL}/ask`,
       lastModified: new Date(),
+      changeFrequency: "daily",
+      priority: 0.8,
+    },
+    {
+      url: `${BASE_URL}/about`,
+      lastModified: new Date(),
       changeFrequency: "monthly",
-      priority: 0.5,
+      priority: 0.8,
+    },
+    {
+      url: `${BASE_URL}/privacy`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    {
+      url: `${BASE_URL}/terms`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    // Category Space Paths
+    {
+      url: `${BASE_URL}/space/digital-marketing`,
+      lastModified: new Date(),
+      changeFrequency: "daily",
+      priority: 0.64,
+    },
+    {
+      url: `${BASE_URL}/space/startups-business`,
+      lastModified: new Date(),
+      changeFrequency: "daily",
+      priority: 0.64,
+    },
+    {
+      url: `${BASE_URL}/space/artificial-intelligence`,
+      lastModified: new Date(),
+      changeFrequency: "daily",
+      priority: 0.64,
+    },
+    {
+      url: `${BASE_URL}/space/tech`,
+      lastModified: new Date(),
+      changeFrequency: "daily",
+      priority: 0.64,
+    },
+    {
+      url: `${BASE_URL}/space/health-fitness-beauty`,
+      lastModified: new Date(),
+      changeFrequency: "daily",
+      priority: 0.64,
+    },
+    {
+      url: `${BASE_URL}/space/others`,
+      lastModified: new Date(),
+      changeFrequency: "daily",
+      priority: 0.64,
     },
   ];
 
