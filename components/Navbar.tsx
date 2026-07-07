@@ -14,7 +14,7 @@ export default function Navbar() {
           <div className="relative h-10 w-10 overflow-hidden rounded-xl">
             <Image
               src="/LOGO.png"
-              alt="Asklo.Online Logo"
+              alt="Asklo Logo"
               width={40}
               height={40}
               className="object-contain"
@@ -23,7 +23,9 @@ export default function Navbar() {
           </div>
 
           <div className="flex flex-col justify-center">
+            {/* 🏷️ Added "Asklo" text here cleanly */}
             <span className="text-2xl font-black tracking-tight text-[#123c9c] leading-none">
+              Asklo
             </span>
             {/* ✨ Premium Slogan positioned cleanly below the core text brand */}
             <span className="text-[9px] font-black uppercase tracking-[0.18em] text-blue-600 pt-1 leading-none">
