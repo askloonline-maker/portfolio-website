@@ -1,16 +1,70 @@
 "use client";
 import React, { useState } from "react";
+import { createClient } from "@supabase/supabase-js";
+
+// Supabase क्लाइंट इनिशियलाइजेशन
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL || "",
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ""
+);
 
 export default function AskCompositionPage() {
   const [mode, setMode] = useState<"QUESTION" | "DISCUSSION">("QUESTION");
   const [title, setTitle] = useState("");
   const [details, setDetails] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handlePublish = (e: React.FormEvent) => {
+  const handlePublish = async (e: React.FormEvent) => {
     e.preventDefault();
-    alert(`Success! Published node type: ${mode}`);
-    setTitle("");
-    setDetails("");
+    setLoading(true);
+
+    try {
+      // 1. LocalStorage से यूज़र की अनोनिमस device_id निकालें
+      const currentDeviceId = localStorage.getItem("asklo_device_id");
+
+      // 2. Supabase के 'posts' टेबल में पोस्ट इन्सर्ट करना
+      const { data: postData, error: postError } = await supabase
+        .from("posts")
+        .insert([
+          {
+            title: title,
+            content: details,
+            type: mode, // QUESTION या DISCUSSION
+            device_id: currentDeviceId // ट्रैकिंग के लिए यदि आवश्यक हो
+          }
+        ]);
+
+      if (postError) {
+        alert(`Error publishing post: ${postError.message}`);
+        return;
+      }
+
+      // 3. यदि पोस्ट सफलतापूर्वक सेव हो गई, तो वॉलेट में ₹0.01 क्रेडिट करें
+      if (currentDeviceId) {
+        const { error: rpcError } = await supabase.rpc('increment_wallet_balance', {
+          target_device_id: currentDeviceId
+        });
+
+        if (rpcError) {
+          console.error("Wallet increment failed:", rpcError.message);
+        } else {
+          alert(`Success! Published node type: ${mode}. ₹0.01 added to your wallet!`);
+        }
+      } else {
+        alert(`Success! Published node type: ${mode}.`);
+      }
+
+      // फॉर्म रीसेट करें और वॉलेट बैलेंस रीफ्रेश करने के लिए होम पर भेजें या रीलोड करें
+      setTitle("");
+      setDetails("");
+      window.location.href = "/";
+      
+    } catch (err) {
+      console.error("Submission Error:", err);
+      alert("Something went wrong while publishing.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -64,8 +118,12 @@ export default function AskCompositionPage() {
         </div>
 
         <div className="flex justify-end pt-1">
-          <button type="submit" className="bg-[#1d4ed8] hover:bg-[#1e40af] text-white text-xs font-bold px-6 py-2.5 rounded-full transition shadow-sm">
-            Publish Live Component
+          <button 
+            type="submit" 
+            disabled={loading}
+            className="bg-[#1d4ed8] hover:bg-[#1e40af] text-white text-xs font-bold px-6 py-2.5 rounded-full transition shadow-sm disabled:bg-slate-400"
+          >
+            {loading ? "Publishing..." : "Publish Live Component"}
           </button>
         </div>
       </form>
