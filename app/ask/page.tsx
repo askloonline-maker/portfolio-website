@@ -16,6 +16,8 @@ export default function AskCompositionPage() {
 
   const handlePublish = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!title.trim()) return alert("Title is required");
+    
     setLoading(true);
 
     try {
@@ -30,13 +32,14 @@ export default function AskCompositionPage() {
             title: title,
             content: details,
             type: mode, // QUESTION या DISCUSSION
-            device_id: currentDeviceId // ट्रैकिंग के लिए यदि आवश्यक हो
+            device_id: currentDeviceId // बैकएंड ट्रैकिंग के लिए अनिवार्य लिंक
           }
-        ]);
+        ])
+        .select(); // .select() यह सुनिश्चित करता है कि डेटा सबमिशन ट्रैक हो सके
 
+      // यदि पोस्ट टेबल में कोई एरर आया है, तो यहीं पर कैच करें
       if (postError) {
-        alert(`Error publishing post: ${postError.message}`);
-        return;
+        throw new Error(`Database insert failed: ${postError.message}`);
       }
 
       // 3. यदि पोस्ट सफलतापूर्वक सेव हो गई, तो वॉलेट में ₹0.01 क्रेडिट करें
@@ -47,21 +50,23 @@ export default function AskCompositionPage() {
 
         if (rpcError) {
           console.error("Wallet increment failed:", rpcError.message);
+          alert(`Post published successfully, but wallet update delayed: ${rpcError.message}`);
         } else {
           alert(`Success! Published node type: ${mode}. ₹0.01 added to your wallet!`);
         }
       } else {
-        alert(`Success! Published node type: ${mode}.`);
+        alert(`Success! Published node type: ${mode}. (No device tracking token found)`);
       }
 
-      // फॉर्म रीसेट करें और वॉलेट बैलेंस रीफ्रेश करने के लिए होम पर भेजें या रीलोड करें
+      // फॉर्म रीसेट करें और सीधे होमपेज पर रीडायरेक्ट करें
       setTitle("");
       setDetails("");
       window.location.href = "/";
       
-    } catch (err) {
+    } catch (err: any) {
       console.error("Submission Error:", err);
-      alert("Something went wrong while publishing.");
+      // यहाँ यूज़र को बिल्कुल सटीक एरर दिखाई देगा ताकि डीबग करना आसान हो
+      alert(`Submission Failed: ${err.message || "Failed to fetch. Check Supabase connection or RLS Policies."}`);
     } finally {
       setLoading(false);
     }
