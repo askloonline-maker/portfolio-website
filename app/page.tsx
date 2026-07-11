@@ -44,12 +44,10 @@ async function getAllPublicPosts() {
   }
 }
 
-// 📐 TypeScript Type Definitions
 interface PageProps {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
-// 🏠 Main Server Component Home Page
 export default async function HomePage({ searchParams }: PageProps) {
   const resolvedParams = await searchParams;
   const dbStatus = await checkDatabaseConnection();
@@ -58,10 +56,8 @@ export default async function HomePage({ searchParams }: PageProps) {
   const targetPostId = typeof resolvedParams.post === "string" ? resolvedParams.post : null;
   const sharedPost = targetPostId ? posts.find((p) => p.id === targetPostId) : null;
 
-  // 🕒 Fallback timestamp matching the newest community thread for Google crawlers
   const latestPostDate = posts[0]?.created_at || new Date().toISOString();
 
-  // 🛠️ COMPLIANT SEO HOOK: Using CollectionPage container layout for index feeds
   const structuralSchema = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
@@ -86,7 +82,7 @@ export default async function HomePage({ searchParams }: PageProps) {
             "author": {
               "@type": "Person",
               "name": "Anonymous",
-              "url": "https://www.asklo.online" // ✨ Added to fix the Search Console non-critical error
+              "url": "https://www.asklo.online"
             },
             "text": textContent,
             "url": "https://www.asklo.online/?post=" + post.id,
@@ -104,13 +100,11 @@ export default async function HomePage({ searchParams }: PageProps) {
   return (
     <main className="min-h-screen bg-[radial-gradient(circle_at_top_left,#dbeafe_0,#f8fafc_34%,#ffffff_100%)] text-slate-950 relative">
       
-      {/* Dynamic JSON-LD Injection Point */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuralSchema) }}
       />
       
-      {/* Background feed grid layout */}
       <div className={`transition-all duration-300 ${sharedPost ? "blur-md pointer-events-none brightness-95 opacity-50 select-none" : ""}`}>
         <div className="mx-auto grid w-full max-w-7xl grid-cols-[60px_1fr] lg:grid-cols-[240px_minmax(0,1fr)_310px] gap-2 sm:gap-5 px-2 sm:px-4 py-6">
           
@@ -150,7 +144,6 @@ export default async function HomePage({ searchParams }: PageProps) {
               </div>
             </div>
 
-            {/* Create Post Input Context Form Component */}
             <CreatePost />
 
             <div className="flex items-center justify-between px-1">
