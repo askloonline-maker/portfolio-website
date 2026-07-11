@@ -3,7 +3,7 @@ import React from "react";
 import Link from "next/link";
 import { createClient } from "@supabase/supabase-js";
 import { SEO_SUB_TOPICS } from "@/utils/seoKeywords";
-import QuestionCard from "@/app/components/QuestionCard"; // सुनिश्चित करें कि आपका QuestionCard कॉम्पोनेंट इसी पाथ पर हो
+import QuestionCard from "@/components/QuestionCard"; // इम्पोर्ट पाथ को यहाँ ठीक कर दिया गया है
 
 export const revalidate = 1800; // हर 30 मिनट में पेज बैकएंड पर ऑटो-अपडेट होगा
 
@@ -89,7 +89,7 @@ export default async function ProgrammaticSeoPage({ params }: { params: Promise<
       {/* Discussion List */}
       <div className="space-y-4 pt-2">
         <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-          <h2 className="text-xs font-black uppercase tracking-wider text-slate-400">Active Live Boards</h2>
+          <h2 className="text-xs font-black uppercase tracking-wider text-slate-400">Live Community Boards</h2>
           <span className="text-xs font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded-full">
             {posts?.length || 0} Open Threads
           </span>
