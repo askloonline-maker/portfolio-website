@@ -1,50 +1,83 @@
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import { createClient } from "@supabase/supabase-js";
+
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL || "",
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ""
+);
+
+interface TopicMetric {
+  id: string;
+  name: string;
+  slug: string;
+  question_count: number;
+}
 
 export default function RightSidebar() {
+  const [topics, setTopics] = useState<TopicMetric[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchTrendingTopics() {
+      try {
+        // 📈 टॉपिक्स टेबल से डेटा लाना जहाँ सबसे ज़्यादा प्रश्न हैं
+        const { data, error } = await supabase
+          .from("topics")
+          .select("id, name, slug, question_count")
+          .order("question_count", { ascending: false })
+          .limit(6);
+
+        if (!error && data) setTopics(data);
+      } catch (err) {
+        console.error("Error shifting topics layout:", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchTrendingTopics();
+  }, []);
+
   return (
-    <div className="space-y-4">
-      {/* Anonymous Promise Card */}
-      <div className="overflow-hidden rounded-[2rem] border border-blue-100 bg-white shadow-sm shadow-blue-950/5">
-        <div className="bg-gradient-to-r from-[#0f2f88] to-[#2563eb] p-4 text-white">
-          <h3 className="text-sm font-black">Anonymous promise</h3>
-          <p className="mt-1 text-xs leading-5 text-blue-50">Everyone can publish as Anonymous without account friction.</p>
+    <div className="w-full space-y-6">
+      {/* केवल हॉट टॉपिक्स बॉक्स दिखेगा - पॉपुलर स्पेस और ट्रेंडिंग टुडे पूरी तरह गायब */}
+      <div className="w-full bg-white border border-blue-100 rounded-[2rem] p-5 shadow-sm space-y-4">
+        <div className="flex items-center justify-between border-b border-slate-50 pb-2">
+          <h3 className="text-xs font-black uppercase tracking-wider text-slate-400">🔥 Hot Topics</h3>
+          <span className="bg-red-50 text-red-600 text-[9px] font-black px-2 py-0.5 rounded-full animate-pulse">Live Shift</span>
         </div>
-        <ul className="space-y-3 p-4 text-xs font-semibold leading-5 text-slate-600">
-          <li>✅ Do not add personal details you do not want public.</li>
-          <li>✅ Keep questions clear and useful.</li>
-          <li>✅ Debate ideas, not people.</li>
-          <li>🚫 Spam, abuse, and harmful links are not welcome.</li>
-        </ul>
-      </div>
 
-      {/* Trending Section */}
-      <div className="rounded-[2rem] border border-blue-100 bg-white p-4 shadow-sm shadow-blue-950/5">
-        <h3 className="text-sm font-black text-slate-950">Trending today</h3>
-        <div className="mt-3 space-y-3">
-          {["How do anonymous communities stay high quality?", "Best AI tools for small creators", "Career advice people rarely say out loud"].map((item) => (
-            <Link key={item} href="/" className="block rounded-2xl bg-blue-50/70 p-3 text-xs font-bold leading-5 text-slate-700 transition hover:bg-blue-100 hover:text-blue-800">
-              {item}
-            </Link>
-          ))}
-        </div>
-      </div>
-
-      {/* 🌐 UPDATED FOOTER LINKS WITH DEDICATED ROUTES FOR ADSENSE COMPLIANCE */}
-      <div className="flex flex-wrap gap-x-2 gap-y-1 px-2 text-[11px] font-semibold text-slate-400">
-        <Link href="/terms" className="hover:text-blue-700 transition">
-          Rules
-        </Link>
-        <span>•</span>
-        <Link href="/privacy" className="hover:text-blue-700 transition">
-          Privacy
-        </Link>
-        <span>•</span>
-        <Link href="/about" className="hover:text-blue-700 transition">
-          About Us
-        </Link>
-        <span>•</span>
-        <p className="text-slate-400/80">© 2026 Asklo.Online</p>
+        {loading ? (
+          <div className="space-y-2 py-2">
+            {[...Array(4)].map((_, i) => (
+              <div key={i} className="h-8 bg-slate-50 rounded-xl animate-pulse" />
+            ))}
+          </div>
+        ) : topics.length === 0 ? (
+          <div className="text-center py-4 text-xs text-slate-400">No active topics found.</div>
+        ) : (
+          <div className="flex flex-col gap-1.5">
+            {topics.map((topic) => (
+              <Link
+                key={topic.id}
+                href={`/topics/${topic.slug}`}
+                className="group flex items-center justify-between p-2.5 rounded-xl hover:bg-blue-50/70 transition-all duration-150 border border-transparent hover:border-blue-100"
+              >
+                {/* आकर्षक हैशटैग स्टाइल नेम */}
+                <span className="text-xs font-bold text-slate-700 group-hover:text-blue-700 transition-colors flex items-center gap-1.5">
+                  <span className="text-blue-500 font-black text-sm">#</span>
+                  {topic.name}
+                </span>
+                
+                {/* काउंट शिफ्ट होने वाला सुंदर बैज */}
+                <span className="bg-slate-100 text-slate-600 group-hover:bg-blue-600 group-hover:text-white text-[10px] font-black px-2 py-0.5 rounded-md transition-all">
+                  {topic.question_count || 0} Qs
+                </span>
+              </Link>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
