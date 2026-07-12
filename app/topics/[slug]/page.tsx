@@ -4,7 +4,7 @@ import Link from "next/link";
 import { createClient } from "@supabase/supabase-js";
 import { SEO_SUB_TOPICS } from "@/utils/seoKeywords";
 import QuestionCard from "../../../components/QuestionCard";
-import CreatePost from "../../../components/CreatePost"; // 👈 न्यू इम्पोर्ट
+import CreatePost from "../../../components/CreatePost";
 
 export const revalidate = 1800; 
 
@@ -59,6 +59,7 @@ export default async function ProgrammaticSeoPage({ params }: { params: Promise<
         }}
       />
 
+      {/* Breadcrumb Navigation */}
       <nav className="text-xs font-semibold text-slate-400 flex items-center gap-1.5">
         <Link href="/" className="hover:underline hover:text-blue-600 transition">Home</Link>
         <span>/</span>
@@ -67,23 +68,37 @@ export default async function ProgrammaticSeoPage({ params }: { params: Promise<
         <span className="text-slate-600 capitalize truncate max-w-[200px] sm:max-w-none">{keywordLabel}</span>
       </nav>
 
-      {/* ऊपरी आकर्षक बैनर */}
-      <div className="rounded-[2rem] bg-gradient-to-br from-[#0b1b4f] via-[#0f2f88] to-[#1d4ed8] p-6 sm:p-8 text-white shadow-xl relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full blur-2xl pointer-events-none"></div>
-        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-300 bg-blue-950/40 px-3 py-1 rounded-full border border-blue-800/50">
-          Decentralized SEO Database
-        </span>
-        <h1 className="text-2xl font-black mt-3 sm:text-3xl tracking-tight leading-none text-white drop-shadow-sm">
-          {keywordLabel}
-        </h1>
-        <p className="text-xs sm:text-sm text-blue-100/90 mt-3 leading-relaxed max-w-2xl">
-          Welcome to the public directory for <strong>{keywordLabel}</strong>. This stream actively aggregates real-time footprints, submission platforms, and anonymous discussions cataloged inside the <strong>{parentCategory}</strong> zone.
+      {/* 🔮 Enhanced Premium Hero Layout (Matches the Image Style) */}
+      <div className="rounded-2xl bg-gradient-to-r from-[#0d25b9] via-[#0a58ca] to-[#0d6efd] p-6 sm:p-8 text-white shadow-lg relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-40 h-40 bg-white/5 rounded-full blur-3xl pointer-events-none"></div>
+        
+        <p className="text-sm sm:text-base leading-relaxed tracking-normal font-normal max-w-3xl text-blue-50/95">
+          Welcome to Asklo, a secure{" "}
+          <span className="font-bold underline underline-offset-4 decoration-2 decoration-blue-300/70 hover:text-blue-100 transition duration-200">
+            knowledge sharing platform
+          </span>{" "}
+          and public{" "}
+          <span className="font-bold underline underline-offset-4 decoration-2 decoration-blue-300/70 hover:text-blue-100 transition duration-200">
+            question answer website
+          </span>
+          . What insights would you share if your name wasn't attached? Join decentralized online communities talking marketing, tech, and startups today.
         </p>
+
+        {/* Dynamic Context Tag */}
+        <div className="mt-4 pt-4 border-t border-white/10 flex flex-wrap items-center gap-2">
+          <span className="text-[10px] font-bold uppercase tracking-wider text-blue-200 bg-blue-900/40 px-2.5 py-0.5 rounded-md border border-blue-700/30">
+            Target Space: {parentCategory}
+          </span>
+          <span className="text-[10px] font-bold uppercase tracking-wider text-white/90 bg-white/10 px-2.5 py-0.5 rounded-md">
+            Focus: {keywordLabel}
+          </span>
+        </div>
       </div>
 
-      {/* 📥 न्यू 'Post Anonymously' सब-टैब बॉक्स जो यहाँ भी काम करेगा */}
+      {/* 📥 'Post Anonymously' Action Box */}
       <CreatePost />
 
+      {/* Feed Stream */}
       <div className="space-y-4 pt-2">
         <div className="flex items-center justify-between border-b border-slate-100 pb-3">
           <h2 className="text-xs font-black uppercase tracking-wider text-slate-400">Live Community Boards</h2>
@@ -95,7 +110,7 @@ export default async function ProgrammaticSeoPage({ params }: { params: Promise<
         {posts && posts.length > 0 ? (
           posts.map((post: any) => <QuestionCard key={post.id} post={post} />)
         ) : (
-          <div className="text-center py-16 border border-dashed border-slate-200 rounded-[2rem] bg-slate-50/50 text-xs text-slate-400">
+          <div className="text-center py-16 border border-dashed border-slate-200 rounded-2xl bg-slate-50/50 text-xs text-slate-400">
             No active anonymous threads in {parentCategory} right now. Be the first to start a discussion!
           </div>
         )}
