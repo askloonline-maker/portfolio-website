@@ -68,21 +68,19 @@ export default async function ProgrammaticSeoPage({ params }: { params: Promise<
         <span className="text-slate-600 capitalize truncate max-w-[200px] sm:max-w-none">{keywordLabel}</span>
       </nav>
 
-      {/* 🔮 Premium Hero Layout (Shortened to 1 Line) */}
+      {/* 🔮 Premium Hero Layout (Matches Image Design Exactly) */}
       <div className="rounded-2xl bg-gradient-to-r from-[#0d25b9] via-[#0a58ca] to-[#0d6efd] p-6 sm:p-8 text-white shadow-lg relative overflow-hidden">
         <div className="absolute top-0 right-0 w-40 h-40 bg-white/5 rounded-full blur-3xl pointer-events-none"></div>
         
-        <p className="text-sm sm:text-base leading-relaxed tracking-normal font-normal max-w-3xl text-blue-50/95">
-          Welcome to Asklo, a secure{" "}
-          <span className="font-bold underline underline-offset-4 decoration-2 decoration-blue-300/70 hover:text-blue-100 transition duration-200">
-            knowledge sharing platform
-          </span>{" "}
-          and anonymous{" "}
-          <span className="font-bold underline underline-offset-4 decoration-2 decoration-blue-300/70 hover:text-blue-100 transition duration-200">
-            question answer website
-          </span>{" "}
-          for marketing, tech, and startups.
+        {/* Uppercase Small Tagline */}
+        <p className="text-[10px] sm:text-xs font-black uppercase tracking-[0.25em] text-blue-200/90 drop-shadow-sm">
+          Premium Anonymous Knowledge Network
         </p>
+
+        {/* Core Bold Heading */}
+        <h1 className="text-2xl sm:text-4xl font-black tracking-tight mt-2.5 mb-4 text-white leading-tight drop-shadow-sm">
+          {keywordLabel}
+        </h1>
 
         {/* Dynamic Context Tag */}
         <div className="mt-4 pt-4 border-t border-white/10 flex flex-wrap items-center gap-2">
@@ -90,7 +88,7 @@ export default async function ProgrammaticSeoPage({ params }: { params: Promise<
             Target Space: {parentCategory}
           </span>
           <span className="text-[10px] font-bold uppercase tracking-wider text-white/90 bg-white/10 px-2.5 py-0.5 rounded-md">
-            Focus: {keywordLabel}
+            Live Stream Node Active
           </span>
         </div>
       </div>
