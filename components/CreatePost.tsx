@@ -1,117 +1,121 @@
 "use client";
 import React, { useState } from "react";
+import { createClient } from "@supabase/supabase-js";
+
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL || "",
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ""
+);
 
 export default function CreatePost() {
+  const [submissionType, setSubmissionType] = useState<"QUESTION" | "DISCUSSION">("QUESTION");
   const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  const [category, setCategory] = useState(""); 
+  const [details, setDetails] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handlePublish = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!content.trim()) return;
-
-    if (!category) {
-      setError("Please select a relevant space/topic before posting!");
-      return;
-    }
-
+    if (!title.trim()) return alert("Title is required");
+    
     setLoading(true);
-    setError("");
 
     try {
-      const res = await fetch("/api/posts", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          title: title.trim() || "Anonymous question",
-          content: content.trim(),
-          category: category, 
-          author_name: "Anonymous",
-          user_id: "00000000-0000-0000-0000-000000000000",
-        }),
-      });
+      const currentDeviceId = localStorage.getItem("asklo_device_id");
 
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        throw new Error(data.error || "Unable to publish anonymously");
+      const { error: postError } = await supabase
+        .from("posts")
+        .insert([
+          {
+            title: title,
+            content: details,
+            type: submissionType, 
+            device_id: currentDeviceId 
+          }
+        ]);
+
+      if (postError) throw new Error(postError.message);
+
+      if (currentDeviceId) {
+        await supabase.rpc('increment_wallet_balance', { target_device_id: currentDeviceId });
       }
 
+      alert(`Success! Published as ${submissionType}`);
       setTitle("");
-      setContent("");
-      setCategory(""); 
+      setDetails("");
       window.location.reload();
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Unable to publish anonymously");
+    } catch (err: any) {
+      alert(`Submission Failed: ${err.message}`);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <section className="rounded-[2rem] border border-blue-100 bg-white p-5 shadow-xl shadow-blue-950/10">
-      <div className="mb-4 flex items-center gap-3">
-        <div className="grid h-12 w-12 place-items-center rounded-2xl bg-blue-50 text-2xl">🕶️</div>
+    <div className="bg-white border border-blue-100 rounded-[2rem] p-5 shadow-sm space-y-5">
+      <div className="flex items-start gap-3">
+        <div className="bg-blue-50 p-2 rounded-xl text-base">😎</div>
         <div>
-          <h2 className="text-lg font-black text-slate-950">Post anonymously</h2>
-          <p className="text-xs font-medium text-slate-500">Your post is published as Anonymous. No sign-up, profile, or identity field.</p>
+          <h2 className="text-sm font-black text-slate-900 tracking-tight">Post anonymously</h2>
+          <p className="text-[11px] text-slate-500">Your post is published as Anonymous. No sign-up, profile, or identity field required.</p>
         </div>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-3">
-        
-        <div className="relative">
-          <select
-            required
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            aria-label="Choose a relevant Space or Topic" // ♿️ Fixes Form Input Label warning
-            className="w-full appearance-none rounded-2xl border border-blue-100 bg-blue-50/50 px-4 py-3 text-sm font-sans font-semibold text-slate-700 outline-none transition focus:border-blue-400 focus:bg-white focus:ring-4 focus:ring-blue-100 antialiased"
-          >
-            <option value="" disabled className="text-slate-400 font-sans font-medium">
-              -- Choose a Relevant Space/Topic * --
-            </option>
-            <option value="digital-marketing" className="text-slate-900 font-sans font-semibold">Digital Marketing</option>
-            <option value="startups-business" className="text-slate-900 font-sans font-semibold">Startups & Business</option>
-            <option value="artificial-intelligence" className="text-slate-900 font-sans font-semibold">Artificial Intelligence</option>
-            <option value="tech" className="text-slate-900 font-sans font-semibold">General Tech</option>
-            <option value="health-fitness-beauty" className="text-slate-900 font-sans font-semibold">Health - Fitness - Beauty</option>
-            <option value="others" className="text-slate-900 font-sans font-semibold">Others</option>
-          </select>
-          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4 text-slate-400 text-xs">
-            ▼
-          </div>
-        </div>
+      {/* 🚀 4th फोटो जैसा क्लीनर सब-टैब सिस्टम */}
+      <div className="flex border border-slate-100 text-xs font-bold w-full bg-slate-50/50 p-1 rounded-xl">
+        <button
+          type="button"
+          onClick={() => setSubmissionType("QUESTION")}
+          className={`flex-1 py-2.5 text-center transition-all rounded-lg ${
+            submissionType === "QUESTION"
+              ? "bg-white text-blue-600 shadow-sm font-black"
+              : "text-slate-400 hover:text-slate-600"
+          }`}
+        >
+          ❓ Ask a Question
+        </button>
+        <button
+          type="button"
+          onClick={() => setSubmissionType("DISCUSSION")}
+          className={`flex-1 py-2.5 text-center transition-all rounded-lg ${
+            submissionType === "DISCUSSION"
+              ? "bg-white text-blue-600 shadow-sm font-black"
+              : "text-slate-400 hover:text-slate-600"
+          }`}
+        >
+          💬 Post a Discussion
+        </button>
+      </div>
 
-        <input
-          type="text"
+      {/* Action Form */}
+      <form onSubmit={handlePublish} className="space-y-4">
+        <input 
+          type="text" 
+          required 
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          aria-label="Discussion Title" // ♿️ Fixes Form Input Label warning
-          placeholder="What do you want to ask or discuss?"
-          className="w-full rounded-2xl border border-blue-100 bg-blue-50/50 px-4 py-3 text-base font-bold text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-400 focus:bg-white focus:ring-4 focus:ring-blue-100"
+          placeholder={submissionType === "QUESTION" ? "What do you want to ask?" : "What do you want to discuss?"}
+          className="w-full bg-white border border-blue-50 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-600 focus:ring-4 focus:ring-blue-50 transition text-slate-900"
         />
-        <textarea
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          aria-label="Discussion Context Content" // ♿️ Fixes Form Input Label warning
-          placeholder="Add context, details, opinions, or helpful information..."
-          rows={4}
-          className="w-full resize-none rounded-2xl border border-blue-100 bg-white px-4 py-3 text-sm leading-6 text-slate-700 outline-none transition placeholder:text-slate-400 focus:border-blue-400 focus:ring-4 focus:ring-blue-100"
+
+        <textarea 
+          rows={4} 
+          value={details}
+          onChange={(e) => setDetails(e.target.value)}
+          placeholder="Add context, parameters, or descriptive metrics here..."
+          className="w-full bg-white border border-blue-50 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-600 focus:ring-4 focus:ring-blue-50 transition text-slate-900 font-sans resize-none"
         />
-        {error && <p className="rounded-2xl bg-rose-50 px-4 py-2 text-xs font-bold text-rose-700">{error}</p>}
-        <div className="flex flex-wrap items-center justify-between gap-3 border-t border-blue-50 pt-3">
-          <span className="text-xs font-bold text-blue-700">Anonymous by default · public feed · be respectful</span>
-          <button
-            type="submit"
-            disabled={loading || !content.trim()}
-            className="rounded-full bg-gradient-to-r from-[#0f2f88] to-[#2563eb] px-6 py-3 text-xs font-black text-white shadow-lg shadow-blue-950/20 transition hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-50"
+
+        <div className="flex items-center justify-between pt-1 border-t border-slate-50">
+          <span className="text-[10px] text-slate-400 font-medium">Anonymous by default · Public feed</span>
+          <button 
+            type="submit" 
+            disabled={loading}
+            className="bg-blue-600 hover:bg-blue-700 text-white text-xs font-black px-5 py-2.5 rounded-full transition shadow-md disabled:bg-slate-400"
           >
             {loading ? "Publishing..." : "Publish anonymously"}
           </button>
         </div>
       </form>
-    </section>
+    </div>
   );
 }
