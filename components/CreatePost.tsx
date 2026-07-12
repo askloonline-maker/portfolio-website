@@ -35,6 +35,7 @@ export default function CreatePost() {
 
       if (postError) throw new Error(postError.message);
 
+      // Keep Wallet Logic functional
       if (currentDeviceId) {
         await supabase.rpc('increment_wallet_balance', { target_device_id: currentDeviceId });
       }
@@ -51,24 +52,24 @@ export default function CreatePost() {
   };
 
   return (
-    <div className="bg-white border border-blue-100 rounded-[2rem] p-5 shadow-sm space-y-5">
+    <div className="bg-white border border-black/[0.05] rounded-[2rem] p-6 shadow-[0_4px_20px_-2px_rgba(0,0,0,0.05)] space-y-5">
       <div className="flex items-start gap-3">
-        <div className="bg-blue-50 p-2 rounded-xl text-base">😎</div>
+        <div className="bg-blue-50 p-2.5 rounded-xl text-base">😎</div>
         <div>
           <h2 className="text-sm font-black text-slate-900 tracking-tight">Post anonymously</h2>
-          <p className="text-[11px] text-slate-500">Your post is published as Anonymous. No sign-up, profile, or identity field required.</p>
+          <p className="text-[11px] text-slate-500 mt-0.5">Your post is published as Anonymous. No sign-up, profile, or identity field required.</p>
         </div>
       </div>
 
-      {/* 🚀 4th फोटो जैसा क्लीनर सब-टैब सिस्टम */}
-      <div className="flex border border-slate-100 text-xs font-bold w-full bg-slate-50/50 p-1 rounded-xl">
+      {/* 🎯 Chapter 4: Premium Active vs Inactive Tab Controls */}
+      <div className="flex border border-slate-100 text-xs font-bold w-full bg-slate-50 p-1 rounded-xl">
         <button
           type="button"
           onClick={() => setSubmissionType("QUESTION")}
-          className={`flex-1 py-2.5 text-center transition-all rounded-lg ${
+          className={`flex-1 py-2.5 text-center transition-all duration-200 rounded-lg ${
             submissionType === "QUESTION"
-              ? "bg-white text-blue-600 shadow-sm font-black"
-              : "text-slate-400 hover:text-slate-600"
+              ? "bg-[#0046cd] text-white shadow-md font-black scale-[1.01]"
+              : "text-slate-400 hover:text-slate-600 bg-transparent"
           }`}
         >
           ❓ Ask a Question
@@ -76,10 +77,10 @@ export default function CreatePost() {
         <button
           type="button"
           onClick={() => setSubmissionType("DISCUSSION")}
-          className={`flex-1 py-2.5 text-center transition-all rounded-lg ${
+          className={`flex-1 py-2.5 text-center transition-all duration-200 rounded-lg ${
             submissionType === "DISCUSSION"
-              ? "bg-white text-blue-600 shadow-sm font-black"
-              : "text-slate-400 hover:text-slate-600"
+              ? "bg-[#0046cd] text-white shadow-md font-black scale-[1.01]"
+              : "text-slate-400 hover:text-slate-600 bg-transparent"
           }`}
         >
           💬 Post a Discussion
@@ -88,13 +89,14 @@ export default function CreatePost() {
 
       {/* Action Form */}
       <form onSubmit={handlePublish} className="space-y-4">
+        {/* ⚡ Focus State Outer Glow Ring Upgrade */}
         <input 
           type="text" 
           required 
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           placeholder={submissionType === "QUESTION" ? "What do you want to ask?" : "What do you want to discuss?"}
-          className="w-full bg-white border border-blue-50 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-600 focus:ring-4 focus:ring-blue-50 transition text-slate-900"
+          className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-slate-900 shadow-sm placeholder:text-slate-400"
         />
 
         <textarea 
@@ -102,15 +104,15 @@ export default function CreatePost() {
           value={details}
           onChange={(e) => setDetails(e.target.value)}
           placeholder="Add context, parameters, or descriptive metrics here..."
-          className="w-full bg-white border border-blue-50 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-600 focus:ring-4 focus:ring-blue-50 transition text-slate-900 font-sans resize-none"
+          className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-slate-900 resize-none shadow-sm placeholder:text-slate-400"
         />
 
-        <div className="flex items-center justify-between pt-1 border-t border-slate-50">
+        <div className="flex items-center justify-between pt-2 border-t border-slate-50">
           <span className="text-[10px] text-slate-400 font-medium">Anonymous by default · Public feed</span>
           <button 
             type="submit" 
             disabled={loading}
-            className="bg-blue-600 hover:bg-blue-700 text-white text-xs font-black px-5 py-2.5 rounded-full transition shadow-md disabled:bg-slate-400"
+            className="bg-[#0046cd] hover:bg-blue-700 text-white text-xs font-black px-6 py-2.5 rounded-full transition shadow-md disabled:bg-slate-400"
           >
             {loading ? "Publishing..." : "Publish anonymously"}
           </button>
