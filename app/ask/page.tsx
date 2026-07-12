@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { createClient } from "@supabase/supabase-js";
 
@@ -8,7 +8,8 @@ const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ""
 );
 
-export default function AskCompositionPage() {
+// 🛠️ मुख्य फॉर्म कॉम्पोनेंट जो URL params को रीड करेगा
+function AskFormContent() {
   const searchParams = useSearchParams();
   const [mode, setMode] = useState<"QUESTION" | "DISCUSSION">("QUESTION");
   const [title, setTitle] = useState("");
@@ -148,5 +149,18 @@ export default function AskCompositionPage() {
         </div>
       </form>
     </div>
+  );
+}
+
+// 📦 मुख्य डिफॉल्ट एक्सपोर्ट जो पूरे फॉर्म को Suspense के साथ रैप करेगा (Vercel Build फिक्स)
+export default function AskCompositionPage() {
+  return (
+    <Suspense fallback={
+      <div className="text-center py-20 text-xs font-bold text-slate-400">
+        Loading Creation Terminal...
+      </div>
+    }>
+      <AskFormContent />
+    </Suspense>
   );
 }
