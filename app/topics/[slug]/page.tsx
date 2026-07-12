@@ -68,7 +68,7 @@ export default async function ProgrammaticSeoPage({ params }: { params: Promise<
         <span className="text-slate-600 capitalize truncate max-w-[200px] sm:max-w-none">{keywordLabel}</span>
       </nav>
 
-      {/* 🔮 Enhanced Premium Hero Layout (Matches the Image Style) */}
+      {/* 🔮 Premium Hero Layout (Shortened to 1 Line) */}
       <div className="rounded-2xl bg-gradient-to-r from-[#0d25b9] via-[#0a58ca] to-[#0d6efd] p-6 sm:p-8 text-white shadow-lg relative overflow-hidden">
         <div className="absolute top-0 right-0 w-40 h-40 bg-white/5 rounded-full blur-3xl pointer-events-none"></div>
         
@@ -77,11 +77,11 @@ export default async function ProgrammaticSeoPage({ params }: { params: Promise<
           <span className="font-bold underline underline-offset-4 decoration-2 decoration-blue-300/70 hover:text-blue-100 transition duration-200">
             knowledge sharing platform
           </span>{" "}
-          and public{" "}
+          and anonymous{" "}
           <span className="font-bold underline underline-offset-4 decoration-2 decoration-blue-300/70 hover:text-blue-100 transition duration-200">
             question answer website
-          </span>
-          . What insights would you share if your name wasn't attached? Join decentralized online communities talking marketing, tech, and startups today.
+          </span>{" "}
+          for marketing, tech, and startups.
         </p>
 
         {/* Dynamic Context Tag */}
