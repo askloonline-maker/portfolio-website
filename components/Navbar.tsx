@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useRef, useEffect } from "react";
-import Link from "next/navigation"; // Next.js 13/14 App Router के अनुसार बदलें (या "next/link" रखें)
+import Link from "next/link"; // यहाँ सुधार कर दिया गया है (Correct Import)
 import Image from "next/image";
 
 export default function Navbar() {
@@ -73,6 +73,7 @@ export default function Navbar() {
             {/* ड्रॉपडाउन एरो बटन */}
             <button
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              type="button"
               className="bg-[#1d4ed8] hover:bg-[#1e40af] text-white p-2 rounded-r-full transition-colors duration-150 shadow-sm focus:outline-none"
               aria-label="Toggle ask options"
             >
@@ -88,7 +89,7 @@ export default function Navbar() {
 
             {/* छोटा सुंदर पॉपअप ड्रॉपडाउन */}
             {isDropdownOpen && (
-              <div className="absolute right-0 top-full mt-2 w-40 bg-white rounded-xl shadow-xl border border-slate-100 z-50 overflow-hidden animate-in fade-in slide-in-from-top-1 duration-150">
+              <div className="absolute right-0 top-full mt-2 w-40 bg-white rounded-xl shadow-xl border border-slate-100 z-50 overflow-hidden">
                 <div className="relative bg-white py-1">
                   <Link
                     href="/ask?type=post"
@@ -106,7 +107,7 @@ export default function Navbar() {
           </div>
 
           {/* ANONYMOUS STATUS */}
-          <span className="inline-flex items-center gap-2 rounded-full bg-[#0f2f88] px-4 py-2 text-xs font-black text-white shadow-lg shadow-blue-950/20和">
+          <span className="inline-flex items-center gap-2 rounded-full bg-[#0f2f88] px-4 py-2 text-xs font-black text-white shadow-lg shadow-blue-950/20">
             <span className="h-2 w-2 rounded-full bg-[#10b981] shadow-[0_0_6px_#10b981]" />
             Anonymous On
           </span>
