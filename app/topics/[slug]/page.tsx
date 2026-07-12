@@ -3,7 +3,8 @@ import React from "react";
 import Link from "next/link";
 import { createClient } from "@supabase/supabase-js";
 import { SEO_SUB_TOPICS } from "@/utils/seoKeywords";
-import QuestionCard from "../../../components/QuestionCard"; // पाथ को 100% सटीक रिलेटिव फॉर्मेट में बदला गया है
+import QuestionCard from "../../../components/QuestionCard";
+import CreatePost from "../../../components/CreatePost"; // 👈 न्यू इम्पोर्ट
 
 export const revalidate = 1800; 
 
@@ -66,6 +67,7 @@ export default async function ProgrammaticSeoPage({ params }: { params: Promise<
         <span className="text-slate-600 capitalize truncate max-w-[200px] sm:max-w-none">{keywordLabel}</span>
       </nav>
 
+      {/* ऊपरी आकर्षक बैनर */}
       <div className="rounded-[2rem] bg-gradient-to-br from-[#0b1b4f] via-[#0f2f88] to-[#1d4ed8] p-6 sm:p-8 text-white shadow-xl relative overflow-hidden">
         <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full blur-2xl pointer-events-none"></div>
         <span className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-300 bg-blue-950/40 px-3 py-1 rounded-full border border-blue-800/50">
@@ -78,6 +80,9 @@ export default async function ProgrammaticSeoPage({ params }: { params: Promise<
           Welcome to the public directory for <strong>{keywordLabel}</strong>. This stream actively aggregates real-time footprints, submission platforms, and anonymous discussions cataloged inside the <strong>{parentCategory}</strong> zone.
         </p>
       </div>
+
+      {/* 📥 न्यू 'Post Anonymously' सब-टैब बॉक्स जो यहाँ भी काम करेगा */}
+      <CreatePost />
 
       <div className="space-y-4 pt-2">
         <div className="flex items-center justify-between border-b border-slate-100 pb-3">
