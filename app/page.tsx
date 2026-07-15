@@ -110,7 +110,6 @@ export default async function HomePage({ searchParams }: PageProps) {
   };
 
   return (
-    // 🎨 Clean Background (No red header in this file anymore)
     <main className="min-h-screen bg-[#f1f2f2] text-slate-800 relative font-sans antialiased">
       
       <script
@@ -120,16 +119,16 @@ export default async function HomePage({ searchParams }: PageProps) {
       
       <div className={`transition-all duration-300 ${sharedPost ? "blur-md pointer-events-none brightness-95 opacity-50 select-none" : ""}`}>
         
-        {/* 📐 Master Grid Layout matching Quora max-w-5xl structure perfectly */}
+        {/* 📐 Master Layout Grid */}
         <div className="mx-auto grid w-full max-w-5xl grid-cols-1 md:grid-cols-[180px_1fr] lg:grid-cols-[180px_1fr_240px] gap-6 px-4 py-6">
           
-          {/* 🚪 Left Directory Sidebar */}
+          {/* 🚪 Left Sidebar */}
           <aside className="hidden md:block sticky top-6 self-start space-y-4 text-slate-600 text-xs font-medium">
             <div className="space-y-1">
               <Sidebar />
             </div>
 
-            {/* Quora-Style Mini Footer Links */}
+            {/* Quora-Style Footer */}
             <div className="pt-4 border-t border-slate-200/80 text-[10px] text-slate-400 space-y-1.5 px-2">
               <div className="flex flex-wrap gap-1.5">
                 <a href="#about" className="hover:underline">About</a>
@@ -142,22 +141,21 @@ export default async function HomePage({ searchParams }: PageProps) {
             </div>
           </aside>
 
-          {/* ⚡ Center Stream Feed */}
+          {/* ⚡ Center Feed */}
           <section className="space-y-4">
             
-            {/* System Error Alert Banner */}
             {!dbStatus.connected && (
               <div className="rounded-lg border border-rose-100 bg-rose-50 p-3.5 text-xs font-bold text-rose-700 shadow-sm">
                 🚨 Sync Notice: {dbStatus.message}
               </div>
             )}
 
-            {/* 📥 2. Clean Single Input Form (Double/Duplicate Box Removed) */}
+            {/* 📥 Single Clean Create Post Box */}
             <div id="ask-section" className="scroll-mt-20 rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
               <CreatePost />
             </div>
 
-            {/* Feed Header (Live Thread Count Badge Removed!) */}
+            {/* Feed Section Title */}
             <div className="flex items-center justify-between px-1">
               <h2 className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
                 Questions for you
@@ -177,9 +175,9 @@ export default async function HomePage({ searchParams }: PageProps) {
             </div>
           </section>
 
-          {/* 🏆 Right Widget Column (Passing real unique topics down) */}
+          {/* 🏆 Right Sidebar Widget */}
           <aside className="hidden lg:block sticky top-6 self-start">
-            <div className="rounded-xl border border-slate-200 bg-white p-1 shadow-sm">
+            <div className="rounded-xl border border-slate-200 bg-white shadow-sm">
               <RightSidebar customTopics={latestUniqueTopics} />
             </div>
           </aside>
@@ -187,7 +185,7 @@ export default async function HomePage({ searchParams }: PageProps) {
         </div>
       </div>
 
-      {/* Shared Post Spotlight Overlay Modals */}
+      {/* Shared Post Overlay Modal */}
       {sharedPost && (
         <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-slate-950/20 px-4 backdrop-blur-xs">
           <div className="w-full max-w-2xl rounded-xl border border-slate-200 bg-white p-3 shadow-2xl transition-all duration-200">
