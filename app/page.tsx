@@ -57,6 +57,19 @@ export default async function HomePage({ searchParams }: PageProps) {
   const sharedPost = targetPostId ? posts.find((p) => p.id === targetPostId) : null;
   const latestPostDate = posts[0]?.created_at || new Date().toISOString();
 
+  // 🏷️ Extract Latest 5 Unique Topics dynamically from posts
+  const uniqueTopicsSet = new Set<string>();
+  posts.forEach((post) => {
+    if (post.tags && Array.isArray(post.tags)) {
+      post.tags.forEach((tag: string) => {
+        if (tag) uniqueTopicsSet.add(tag.trim());
+      });
+    } else if (post.category) {
+      uniqueTopicsSet.add(post.category.trim());
+    }
+  });
+  const latestUniqueTopics = Array.from(uniqueTopicsSet).slice(0, 5);
+
   const structuralSchema = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
@@ -97,69 +110,21 @@ export default async function HomePage({ searchParams }: PageProps) {
   };
 
   return (
-    // 🎨 Quora-Like Soft Off-White Clean Background
+    // 🎨 Clean Background (No red header in this file anymore)
     <main className="min-h-screen bg-[#f1f2f2] text-slate-800 relative font-sans antialiased">
       
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuralSchema) }}
       />
-
-      {/* 🏛️ 1. Quora-Style Top Navigation Bar */}
-      <header className="sticky top-0 z-50 w-full border-b border-slate-200 bg-white shadow-sm px-4 py-2">
-        <div className="mx-auto flex max-w-5xl items-center justify-between gap-4">
-          
-          {/* Brand Logo */}
-          <div className="flex items-center gap-6">
-            <a href="/" className="text-2xl font-black tracking-tight text-[#b92b27] hover:opacity-90 transition">
-              AskLo
-            </a>
-            
-            {/* Quick Navigation Icons (Desktop) */}
-            <nav className="hidden md:flex items-center gap-6 text-slate-500 font-semibold">
-              <a href="/" className="flex items-center gap-1.5 text-[#b92b27] border-b-2 border-[#b92b27] pb-1 pt-1 px-1 transition">
-                🏠 <span className="text-sm">Home</span>
-              </a>
-              <a href="#spaces" className="flex items-center gap-1.5 hover:text-slate-800 transition pb-1 pt-1 px-1">
-                👥 <span className="text-sm">Spaces</span>
-              </a>
-              <a href="#notifications" className="flex items-center gap-1.5 hover:text-slate-800 transition pb-1 pt-1 px-1 relative">
-                🔔 <span className="text-sm">Notifications</span>
-                <span className="absolute -top-1 -right-2 bg-[#b92b27] text-white text-[9px] font-bold px-1 rounded-full">3</span>
-              </a>
-            </nav>
-          </div>
-
-          {/* Search Bar Input */}
-          <div className="flex-1 max-w-md relative">
-            <input 
-              type="text" 
-              placeholder="Search AskLo..." 
-              className="w-full bg-[#f1f2f2] border border-slate-200 hover:border-slate-300 focus:border-blue-500 focus:bg-white outline-none rounded-md py-1.5 pl-9 pr-4 text-xs text-slate-800 font-medium transition"
-            />
-            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs">🔍</span>
-          </div>
-
-          {/* Right Action buttons */}
-          <div className="flex items-center gap-3">
-            <button className="hidden sm:inline-flex items-center gap-1 px-3 py-1.5 border border-slate-200 hover:bg-slate-50 text-xs font-bold text-slate-600 rounded-full transition">
-              🌐 EN
-            </button>
-            <a href="#ask-section" className="bg-[#b92b27] hover:bg-[#a12320] text-white px-4 py-1.5 text-xs font-black rounded-full transition shadow-sm flex items-center gap-1">
-              Add Question
-            </a>
-          </div>
-
-        </div>
-      </header>
       
       <div className={`transition-all duration-300 ${sharedPost ? "blur-md pointer-events-none brightness-95 opacity-50 select-none" : ""}`}>
         
-        {/* 📐 Master Grid Layout (Width matches Quora max-w-5xl structure perfectly) */}
+        {/* 📐 Master Grid Layout matching Quora max-w-5xl structure perfectly */}
         <div className="mx-auto grid w-full max-w-5xl grid-cols-1 md:grid-cols-[180px_1fr] lg:grid-cols-[180px_1fr_240px] gap-6 px-4 py-6">
           
           {/* 🚪 Left Directory Sidebar */}
-          <aside className="hidden md:block sticky top-16 self-start space-y-4 text-slate-600 text-xs font-medium">
+          <aside className="hidden md:block sticky top-6 self-start space-y-4 text-slate-600 text-xs font-medium">
             <div className="space-y-1">
               <Sidebar />
             </div>
@@ -187,43 +152,16 @@ export default async function HomePage({ searchParams }: PageProps) {
               </div>
             )}
 
-            {/* 📥 2. Clean 'What do you want to ask or share' Input Box */}
-            <div id="ask-section" className="scroll-mt-20 rounded-xl border border-slate-200 bg-white p-4 shadow-sm space-y-3">
-              <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-sm font-bold text-slate-500">
-                  🕶️
-                </div>
-                <div className="flex-1 bg-slate-50 hover:bg-slate-100 border border-slate-200/80 rounded-full py-2 px-4 text-xs text-slate-400 font-medium cursor-pointer transition">
-                  What do you want to ask or share?
-                </div>
-              </div>
-              
-              <div className="pt-2.5 border-t border-slate-100 flex items-center justify-around text-xs font-bold text-slate-500">
-                <button className="flex items-center gap-1.5 hover:text-blue-600 transition">
-                  ❓ Ask Question
-                </button>
-                <div className="h-4 w-px bg-slate-200"></div>
-                <button className="flex items-center gap-1.5 hover:text-green-600 transition">
-                  ✍️ Write Answer
-                </button>
-                <div className="h-4 w-px bg-slate-200"></div>
-                <button className="flex items-center gap-1.5 hover:text-orange-500 transition">
-                  🚀 Post Secret
-                </button>
-              </div>
-
-              {/* Collapsible Supabase Form inside styling wrapper */}
-              <div className="pt-2">
-                <CreatePost />
-              </div>
+            {/* 📥 2. Clean Single Input Form (Double/Duplicate Box Removed) */}
+            <div id="ask-section" className="scroll-mt-20 rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+              <CreatePost />
             </div>
 
-            {/* Live Feed Header */}
+            {/* Feed Header (Live Thread Count Badge Removed!) */}
             <div className="flex items-center justify-between px-1">
-              <h2 className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Questions for you</h2>
-              <span className="rounded-full bg-slate-200 px-2.5 py-0.5 text-[10px] font-bold text-slate-600">
-                {posts.length} Threads
-              </span>
+              <h2 className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
+                Questions for you
+              </h2>
             </div>
 
             {/* Questions Stream */}
@@ -239,10 +177,10 @@ export default async function HomePage({ searchParams }: PageProps) {
             </div>
           </section>
 
-          {/* 🏆 Right Widget Column */}
-          <aside className="hidden lg:block sticky top-16 self-start">
+          {/* 🏆 Right Widget Column (Passing real unique topics down) */}
+          <aside className="hidden lg:block sticky top-6 self-start">
             <div className="rounded-xl border border-slate-200 bg-white p-1 shadow-sm">
-              <RightSidebar />
+              <RightSidebar customTopics={latestUniqueTopics} />
             </div>
           </aside>
 
