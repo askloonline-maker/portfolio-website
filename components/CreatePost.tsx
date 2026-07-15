@@ -8,9 +8,7 @@ const supabase = createClient(
 );
 
 export default function CreatePost() {
-  const [submissionType, setSubmissionType] = useState<"QUESTION" | "DISCUSSION">("QUESTION");
   const [title, setTitle] = useState("");
-  const [details, setDetails] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handlePublish = async (e: React.FormEvent) => {
@@ -27,8 +25,8 @@ export default function CreatePost() {
         .insert([
           {
             title: title,
-            content: details,
-            type: submissionType, 
+            content: "", // No supporting context details anymore
+            type: "QUESTION", // Defaulted to QUESTION
             device_id: currentDeviceId 
           }
         ]);
@@ -40,9 +38,8 @@ export default function CreatePost() {
         await supabase.rpc('increment_wallet_balance', { target_device_id: currentDeviceId });
       }
 
-      alert(`Success! Published as ${submissionType}`);
+      alert("Success! Published your question.");
       setTitle("");
-      setDetails("");
       window.location.reload();
     } catch (err: any) {
       alert(`Submission Failed: ${err.message}`);
@@ -61,58 +58,30 @@ export default function CreatePost() {
         </div>
       </div>
 
-      {/* 🎯 Chapter 4: Premium Active vs Inactive Tab Controls */}
-      <div className="flex border border-slate-100 text-xs font-bold w-full bg-slate-50 p-1 rounded-xl">
-        <button
-          type="button"
-          onClick={() => setSubmissionType("QUESTION")}
-          className={`flex-1 py-2.5 text-center transition-all duration-200 rounded-lg ${
-            submissionType === "QUESTION"
-              ? "bg-[#0046cd] text-white shadow-md font-black scale-[1.01]"
-              : "text-slate-400 hover:text-slate-600 bg-transparent"
-          }`}
-        >
-          ❓ Ask a Question
-        </button>
-        <button
-          type="button"
-          onClick={() => setSubmissionType("DISCUSSION")}
-          className={`flex-1 py-2.5 text-center transition-all duration-200 rounded-lg ${
-            submissionType === "DISCUSSION"
-              ? "bg-[#0046cd] text-white shadow-md font-black scale-[1.01]"
-              : "text-slate-400 hover:text-slate-600 bg-transparent"
-          }`}
-        >
-          💬 Post a Discussion
-        </button>
-      </div>
-
       {/* Action Form */}
       <form onSubmit={handlePublish} className="space-y-4">
-        {/* ⚡ Focus State Outer Glow Ring Upgrade */}
-        <input 
-          type="text" 
-          required 
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          placeholder={submissionType === "QUESTION" ? "What do you want to ask?" : "What do you want to discuss?"}
-          className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-slate-900 shadow-sm placeholder:text-slate-400"
-        />
+        {/* 🎯 "Add question" Label and Single Input Block */}
+        <div className="space-y-2">
+          <label className="text-[10px] font-black uppercase tracking-wider text-slate-400 block">
+            Add question
+          </label>
+          <input 
+            type="text" 
+            required 
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="e.g., What is the baseline execution difference between linear and logistic models?"
+            className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-slate-900 shadow-sm placeholder:text-slate-400"
+          />
+        </div>
 
-        <textarea 
-          rows={4} 
-          value={details}
-          onChange={(e) => setDetails(e.target.value)}
-          placeholder="Add context, parameters, or descriptive metrics here..."
-          className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-slate-900 resize-none shadow-sm placeholder:text-slate-400"
-        />
-
+        {/* Action Footer */}
         <div className="flex items-center justify-between pt-2 border-t border-slate-50">
           <span className="text-[10px] text-slate-400 font-medium">Anonymous by default · Public feed</span>
           <button 
             type="submit" 
-            disabled={loading}
-            className="bg-[#0046cd] hover:bg-blue-700 text-white text-xs font-black px-6 py-2.5 rounded-full transition shadow-md disabled:bg-slate-400"
+            disabled={loading || !title.trim()}
+            className="bg-[#0046cd] hover:bg-blue-700 text-white text-xs font-black px-6 py-2.5 rounded-full transition shadow-md disabled:bg-slate-400 disabled:cursor-not-allowed"
           >
             {loading ? "Publishing..." : "Publish anonymously"}
           </button>
