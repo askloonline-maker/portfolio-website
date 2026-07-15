@@ -75,11 +75,11 @@ export default async function HomePage({ searchParams }: PageProps) {
         {/* Master Layout Grid */}
         <div className="mx-auto grid w-full max-w-[1400px] grid-cols-1 md:grid-cols-[240px_1fr] lg:grid-cols-[240px_1fr_320px] gap-6 px-6 py-6">
           
-          {/* 🚪 Left Sidebar (Fully expanded & matching mockup style) */}
+          {/* Left Sidebar */}
           <aside className="hidden md:block sticky top-6 self-start space-y-6">
             <Sidebar />
 
-            {/* Sidebar Promo Card "Ask freely. Answer boldly." */}
+            {/* Sidebar Promo Card */}
             <div className="rounded-2xl bg-gradient-to-br from-blue-50 to-indigo-50 p-5 border border-blue-100/50 relative overflow-hidden shadow-sm">
               <div className="absolute right-[-10px] bottom-[-10px] w-16 h-16 bg-blue-600/10 rounded-full blur-xl"></div>
               <h4 className="font-extrabold text-slate-800 text-sm leading-snug">
@@ -107,67 +107,58 @@ export default async function HomePage({ searchParams }: PageProps) {
             </div>
           </aside>
 
-          {/* ⚡ Center Feed (Main Content) */}
-          <section className="space-y-6">
+          {/* Center Feed */}
+          <section className="space-y-5">
             
-            {/* 🟦 1. Premium Blue Hero Banner */}
-            <div className="rounded-3xl bg-gradient-to-r from-[#0d1b2a] via-[#1b263b] to-[#415a77] text-white p-8 relative overflow-hidden shadow-xl border border-slate-800/20 flex flex-col justify-between min-h-[260px]">
-              {/* Background Artful Elements */}
-              <div className="absolute right-12 top-1/2 -translate-y-1/2 hidden lg:flex items-center justify-center w-[240px] h-[200px]">
-                {/* Visual Placeholder representing the cozy room sofa concept with glowing lamp */}
-                <div className="relative w-full h-full opacity-90">
-                  <div className="absolute bottom-4 left-6 w-40 h-20 bg-blue-950/40 rounded-t-3xl border-t border-blue-500/20 shadow-inner"></div> {/* Sofa Base */}
-                  <div className="absolute bottom-20 left-32 w-12 h-12 bg-yellow-100/10 rounded-full blur-md animate-pulse"></div> {/* Glowing Lamp effect */}
-                  <div className="absolute bottom-6 left-36 w-1 h-14 bg-slate-400"></div> {/* Lamp Stand */}
-                  <div className="absolute bottom-20 left-34 w-5 h-5 bg-slate-300 rounded-t-full"></div> {/* Shade */}
-                  <div className="absolute top-2 left-16 bg-blue-500/20 backdrop-blur-md px-3 py-2 rounded-2xl border border-white/10 flex items-center gap-1.5">
-                    <span className="text-sm">?</span>
-                  </div>
-                </div>
+            {/* 🟦 1. Smaller/Compact Blue Hero Banner */}
+            <div className="rounded-2xl bg-gradient-to-r from-[#0d1b2a] via-[#1b263b] to-[#2e3e52] text-white p-6 relative overflow-hidden shadow-md border border-slate-800/20 flex flex-col justify-between min-h-[170px]">
+              
+              {/* Minimalist ambient lamp/glow on the right side */}
+              <div className="absolute right-8 bottom-0 top-0 hidden lg:flex items-center justify-center opacity-30 pointer-events-none">
+                <div className="relative w-24 h-24 bg-blue-400/20 rounded-full blur-2xl"></div>
               </div>
 
-              <div className="space-y-2 z-10 max-w-lg">
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-white/10 backdrop-blur-md rounded-full text-[10px] font-bold uppercase tracking-wider text-blue-300 border border-white/5">
+              <div className="space-y-1 z-10 max-w-xl">
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-white/10 backdrop-blur-md rounded-full text-[9px] font-bold uppercase tracking-wider text-blue-300 border border-white/5">
                   🌐 The World's Living <span className="text-yellow-400">Room</span>
                 </div>
-                <h1 className="text-3xl lg:text-4xl font-extrabold tracking-tight leading-tight mt-1">
+                <h1 className="text-2xl lg:text-3xl font-extrabold tracking-tight leading-snug mt-1">
                   Ask anything.<br />Share what you can't say anywhere else.
                 </h1>
                 
                 {/* Stats indicators inside banner */}
-                <div className="flex gap-4 pt-2 text-xs text-slate-300 font-medium">
+                <div className="flex gap-4 pt-1.5 text-[11px] text-slate-300 font-medium">
                   <div><strong className="text-white">5,246</strong> Questions Today</div>
                   <div><strong className="text-white">18,743</strong> Discussions</div>
                   <div><strong className="text-white">100%</strong> Anonymous</div>
                 </div>
               </div>
 
-              <div className="flex gap-3 mt-6 z-10">
-                <a href="#ask-section" className="bg-white hover:bg-slate-100 text-slate-900 px-5 py-2.5 rounded-xl text-xs font-bold transition shadow-md">
+              <div className="flex gap-2.5 mt-4 z-10">
+                <a href="#ask-section" className="bg-white hover:bg-slate-100 text-slate-900 px-4 py-2 rounded-lg text-xs font-bold transition shadow-xs">
                   Ask Anonymously
                 </a>
-                <button className="bg-white/15 hover:bg-white/20 text-white px-5 py-2.5 rounded-xl text-xs font-bold transition border border-white/10">
+                <button className="bg-white/15 hover:bg-white/20 text-white px-4 py-2 rounded-lg text-xs font-bold transition border border-white/10">
                   Explore Topics
                 </button>
               </div>
             </div>
 
-            {/* 🟢 2. Live Platform Stats Row */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 bg-white p-4 rounded-2xl border border-slate-100 shadow-sm">
+            {/* 🟢 2. Platform Stats Row (Without 18 Questions Option & Compact 5 Columns) */}
+            <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 bg-white p-3 rounded-xl border border-slate-100 shadow-xs">
               {[
-                { label: "People Online", value: "1,248", color: "text-emerald-500", dot: "bg-emerald-500" },
-                { label: "Questions in 5m", value: "18", color: "text-rose-500", dot: "bg-rose-500" },
-                { label: "New Answers", value: "3", color: "text-blue-500", dot: "bg-blue-500" },
-                { label: "Answer Rate", value: "92%", color: "text-violet-500", dot: "bg-violet-500" },
-                { label: "Countries", value: "126", color: "text-indigo-500", dot: "bg-indigo-500" },
-                { label: "Community Rating", value: "4.9/5", color: "text-amber-500", dot: "bg-amber-500" },
+                { label: "People Online", value: "1,248", dot: "bg-emerald-500" },
+                { label: "New Answers", value: "3", dot: "bg-blue-500" },
+                { label: "Answer Rate", value: "92%", dot: "bg-violet-500" },
+                { label: "Countries", value: "126", dot: "bg-indigo-500" },
+                { label: "Community Rating", value: "4.9/5", dot: "bg-amber-500" },
               ].map((stat, idx) => (
-                <div key={idx} className="flex flex-col items-center justify-center p-2 rounded-xl bg-slate-50/50 text-center">
+                <div key={idx} className="flex flex-col items-center justify-center p-2 rounded-lg bg-slate-50/50 text-center">
                   <div className="flex items-center gap-1.5">
                     <span className={`w-1.5 h-1.5 rounded-full ${stat.dot}`}></span>
                     <span className="text-xs font-black text-slate-800">{stat.value}</span>
                   </div>
-                  <span className="text-[10px] font-medium text-slate-400 mt-0.5">{stat.label}</span>
+                  <span className="text-[10px] font-semibold text-slate-400 mt-0.5">{stat.label}</span>
                 </div>
               ))}
             </div>
@@ -179,12 +170,12 @@ export default async function HomePage({ searchParams }: PageProps) {
               </div>
             )}
 
-            {/* 📥 3. Premium Interactive Post Creator */}
+            {/* 📥 3. Interactive Post Creator */}
             <div id="ask-section" className="scroll-mt-20">
               <CreatePost />
             </div>
 
-            {/* 📑 4. Feed Filter Tab Navigation */}
+            {/* Feed Filter Tab Navigation */}
             <div className="flex items-center gap-1 border-b border-slate-100 pb-1">
               {[
                 { name: "For You", active: true },
@@ -218,7 +209,7 @@ export default async function HomePage({ searchParams }: PageProps) {
             </div>
           </section>
 
-          {/* 🏆 Right Sidebar Widget */}
+          {/* Right Sidebar */}
           <aside className="hidden lg:block sticky top-6 self-start">
             <RightSidebar {...({ customTopics: latestUniqueTopics } as any)} />
           </aside>
