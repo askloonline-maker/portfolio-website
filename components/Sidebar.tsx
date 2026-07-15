@@ -7,8 +7,7 @@ const semanticLinks = [
   { href: "/", icon: "🏠", label: "Home", type: "link" },
   { href: "/ask", icon: "✍️", label: "Ask anonymously", type: "link" },
   { href: "/categories", icon: "🌐", label: "Spaces", type: "link" },
-  { href: "/trending", icon: "🔥", label: "Trending", type: "button" }, // Swapped type to fix empty hash
-  { href: "/saved", icon: "🔖", label: "Saved", type: "button" },     // Swapped type to fix empty hash
+  { href: "/trending", icon: "🔥", label: "Trending", type: "button" }, // Saved option has been removed from here
 ];
 
 export default function Sidebar() {
