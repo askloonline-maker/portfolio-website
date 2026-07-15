@@ -97,7 +97,7 @@ export default async function HomePage({ searchParams }: PageProps) {
   };
 
   return (
-    // 🎨 Chapter 2: Soft Contrast Neutral Background & Modern Typography
+    // 🎨 Soft Contrast Neutral Background & Modern Typography
     <main className="min-h-screen bg-[#f8fafc] text-slate-950 relative font-sans antialiased">
       
       <script
@@ -106,7 +106,7 @@ export default async function HomePage({ searchParams }: PageProps) {
       />
       
       <div className={`transition-all duration-300 ${sharedPost ? "blur-md pointer-events-none brightness-95 opacity-50 select-none" : ""}`}>
-        {/* 📐 Chapter 2: Balanced 24px Grid Spacing (gap-6) everywhere */}
+        {/* 📐 Balanced 24px Grid Spacing (gap-6) everywhere */}
         <div className="mx-auto grid w-full max-w-7xl grid-cols-[60px_1fr] lg:grid-cols-[240px_minmax(0,1fr)_310px] gap-6 px-4 py-6">
           
           <aside>
@@ -119,24 +119,19 @@ export default async function HomePage({ searchParams }: PageProps) {
             {/* 💎 Premium Elevated Hero Box */}
             <div className="overflow-hidden rounded-[2rem] border border-black/[0.05] bg-white shadow-[0_4px_20px_-2px_rgba(0,0,0,0.05)]">
               <div className="bg-gradient-to-r from-[#0f2f88] via-[#1d4ed8] to-[#3b82f6] p-6 sm:p-8 text-white relative">
-                <div className="max-w-2xl space-y-3">
-                  <p className="text-[10px] font-black uppercase tracking-[0.35em] text-blue-200">Premium Anonymous Knowledge Network</p>
+                <div className="max-w-2xl space-y-2.5">
+                  <p className="text-[10px] font-black uppercase tracking-[0.35em] text-blue-200">
+                    Premium Anonymous Knowledge Network
+                  </p>
                   
-                  {/* ✍️ Chapter 1: Line-Height spacing adjusted (leading-tight) */}
+                  {/* ✍️ Clean Title with no description paragraph below */}
                   <h1 className="text-3xl font-black tracking-tight sm:text-4xl leading-tight text-white drop-shadow-sm">
                     Ask freely. Answer boldly. Stay anonymous.
                   </h1>
-                  
-                  {/* 🛠️ Chapter 1: Converted Markdown to clean HTML bold layout */}
-                  <p className="text-sm leading-relaxed text-blue-50/90 font-medium">
-                    Welcome to AskLo, a secure <strong className="text-white font-extrabold underline decoration-blue-400 decoration-2 underline-offset-2">knowledge sharing platform</strong> and public <strong className="text-white font-extrabold underline decoration-blue-400 decoration-2 underline-offset-2">question answer website</strong>. What insights would you share if your name wasn't attached? Join decentralized online communities talking marketing, tech, and startups today.
-                  </p>
                 </div>
-                
-                {/* 🛡️ Chapter 3: Duplicate badge removed to maintain high-end web layout cleanliness */}
               </div>
 
-              {/* 🎯 Chapter 4: Value Prop Cards centered alignment and dark text */}
+              {/* 🎯 Value Prop Cards */}
               <div className="grid gap-4 bg-slate-50/50 p-5 text-xs font-bold text-slate-700 sm:grid-cols-3 border-t border-slate-100">
                 <div className="rounded-2xl bg-white p-3.5 shadow-[0_2px_8px_rgba(0,0,0,0.04)] border border-slate-100/80 flex items-center justify-center gap-2 text-center">
                   <span>🕶️</span> No account registration required
