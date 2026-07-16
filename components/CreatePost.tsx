@@ -1,13 +1,51 @@
 "use client";
 import React, { useState } from "react";
+import { createClient } from "@supabase/supabase-js";
+import { useRouter } from "next/navigation";
+
+// 🔐 Initialize Supabase Client (Browser Friendly)
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "";
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 export default function CreatePost() {
   const [inputText, setInputText] = useState("");
+  const [isPublishing, setIsPublishing] = useState(false);
+  const router = useRouter();
 
-  const handlePublish = () => {
-    if (!inputText.trim()) return;
-    alert("Anonymous Post Submitted Successfully!");
-    setInputText("");
+  const handlePublish = async () => {
+    if (!inputText.trim() || isPublishing) return;
+
+    setIsPublishing(true);
+
+    try {
+      // 📤 Supabase Database में डेटा इन्सर्ट करना
+      const { error } = await supabase
+        .from("posts")
+        .insert([
+          {
+            title: inputText.substring(0, 60), // पहला कुछ हिस्सा टाइटल मान लेते हैं
+            content: inputText,
+            category: "General", // डिफ़ॉल्ट कैटेगरी
+            created_at: new Date().toISOString(),
+          }
+        ]);
+
+      if (error) {
+        console.error("Supabase Error:", error.message);
+        alert(`Failed to post: ${error.message}`);
+      } else {
+        setInputText(""); // इनपुट बॉक्स खाली करें
+        
+        // 🔄 फीड को तुरंत अपडेट करने के लिए Next.js Router को रिफ्रेश करें
+        router.refresh(); 
+      }
+    } catch (err: any) {
+      console.error("Submit Error:", err);
+      alert("Something went wrong while publishing.");
+    } finally {
+      setIsPublishing(false);
+    }
   };
 
   return (
@@ -29,18 +67,19 @@ export default function CreatePost() {
           value={inputText}
           onChange={(e) => setInputText(e.target.value)}
           placeholder="Ask anonymously..."
-          className="w-full min-h-[50px] text-xs font-medium text-slate-600 placeholder-slate-400 focus:outline-none resize-none bg-slate-50/50 p-2.5 rounded-lg border border-slate-100"
+          disabled={isPublishing}
+          className="w-full min-h-[50px] text-xs font-medium text-slate-600 placeholder-slate-400 focus:outline-none resize-none bg-slate-50/50 p-2.5 rounded-lg border border-slate-100 disabled:opacity-50"
         />
         <button
           onClick={handlePublish}
-          disabled={!inputText.trim()}
+          disabled={!inputText.trim() || isPublishing}
           className={`px-4 py-2 rounded-lg text-xs font-black tracking-wide flex items-center gap-1.5 transition-all self-end ${
-            inputText.trim()
+            inputText.trim() && !isPublishing
               ? "bg-blue-600 text-white hover:bg-blue-700 shadow-sm"
               : "bg-slate-100 text-slate-400 cursor-not-allowed"
           }`}
         >
-          Publish 🚀
+          {isPublishing ? "Publishing..." : "Publish 🚀"}
         </button>
       </div>
     </div>
