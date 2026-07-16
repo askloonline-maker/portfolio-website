@@ -110,7 +110,7 @@ export default async function HomePage({ searchParams }: PageProps) {
           {/* Center Feed */}
           <section className="space-y-5">
             
-            {/* 🟦 1. Smaller/Compact Blue Hero Banner */}
+            {/* 🟦 Smaller/Compact Blue Hero Banner (With Stats Removed) */}
             <div className="rounded-2xl bg-gradient-to-r from-[#0d1b2a] via-[#1b263b] to-[#2e3e52] text-white p-6 relative overflow-hidden shadow-md border border-slate-800/20 flex flex-col justify-between min-h-[170px]">
               
               {/* Minimalist ambient lamp/glow on the right side */}
@@ -125,13 +125,6 @@ export default async function HomePage({ searchParams }: PageProps) {
                 <h1 className="text-2xl lg:text-3xl font-extrabold tracking-tight leading-snug mt-1">
                   Ask anything.<br />Share what you can't say anywhere else.
                 </h1>
-                
-                {/* Stats indicators inside banner */}
-                <div className="flex gap-4 pt-1.5 text-[11px] text-slate-300 font-medium">
-                  <div><strong className="text-white">5,246</strong> Questions Today</div>
-                  <div><strong className="text-white">18,743</strong> Discussions</div>
-                  <div><strong className="text-white">100%</strong> Anonymous</div>
-                </div>
               </div>
 
               <div className="flex gap-2.5 mt-4 z-10">
@@ -144,25 +137,6 @@ export default async function HomePage({ searchParams }: PageProps) {
               </div>
             </div>
 
-            {/* 🟢 2. Platform Stats Row (Without 18 Questions Option & Compact 5 Columns) */}
-            <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 bg-white p-3 rounded-xl border border-slate-100 shadow-xs">
-              {[
-                { label: "People Online", value: "1,248", dot: "bg-emerald-500" },
-                { label: "New Answers", value: "3", dot: "bg-blue-500" },
-                { label: "Answer Rate", value: "92%", dot: "bg-violet-500" },
-                { label: "Countries", value: "126", dot: "bg-indigo-500" },
-                { label: "Community Rating", value: "4.9/5", dot: "bg-amber-500" },
-              ].map((stat, idx) => (
-                <div key={idx} className="flex flex-col items-center justify-center p-2 rounded-lg bg-slate-50/50 text-center">
-                  <div className="flex items-center gap-1.5">
-                    <span className={`w-1.5 h-1.5 rounded-full ${stat.dot}`}></span>
-                    <span className="text-xs font-black text-slate-800">{stat.value}</span>
-                  </div>
-                  <span className="text-[10px] font-semibold text-slate-400 mt-0.5">{stat.label}</span>
-                </div>
-              ))}
-            </div>
-
             {/* Sync Alert if Offline */}
             {!dbStatus.connected && (
               <div className="rounded-xl border border-rose-100 bg-rose-50 p-3.5 text-xs font-bold text-rose-700 shadow-sm">
@@ -170,7 +144,7 @@ export default async function HomePage({ searchParams }: PageProps) {
               </div>
             )}
 
-            {/* 📥 3. Interactive Post Creator */}
+            {/* 📥 Interactive Post Creator */}
             <div id="ask-section" className="scroll-mt-20">
               <CreatePost />
             </div>
@@ -217,21 +191,4 @@ export default async function HomePage({ searchParams }: PageProps) {
         </div>
       </div>
 
-      {/* Shared Post Overlay Modal */}
-      {sharedPost && (
-        <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-slate-950/20 px-4 backdrop-blur-xs">
-          <div className="w-full max-w-2xl rounded-2xl border border-slate-200 bg-white p-3 shadow-2xl transition-all duration-200">
-            <div className="pb-3 pt-1 flex justify-end">
-              <a href="/" className="rounded-full bg-blue-50 hover:bg-blue-100 text-blue-600 px-4 py-2 text-xs font-bold tracking-wide shadow-sm transition">
-                ✕ Close & View Feed
-              </a>
-            </div>
-            <div className="max-h-[75vh] overflow-y-auto p-1">
-              <QuestionCard post={sharedPost} />
-            </div>
-          </div>
-        </div>
-      )}
-    </main>
-  );
-}
+      {/* Shared Post Overlay
