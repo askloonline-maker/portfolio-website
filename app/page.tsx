@@ -69,7 +69,6 @@ export default async function HomePage({ searchParams }: PageProps) {
 
   return (
     <main className="min-h-screen bg-[#f8fafc] text-slate-800 relative font-sans antialiased">
-      
       <div className={`transition-all duration-300 ${sharedPost ? "blur-md pointer-events-none brightness-95 opacity-50 select-none" : ""}`}>
         
         {/* Master Layout Grid */}
@@ -110,7 +109,7 @@ export default async function HomePage({ searchParams }: PageProps) {
           {/* Center Feed */}
           <section className="space-y-5">
             
-            {/* 🟦 Smaller/Compact Blue Hero Banner (With Stats Removed) */}
+            {/* 🟦 Compact Blue Hero Banner (Without Stats Indicators) */}
             <div className="rounded-2xl bg-gradient-to-r from-[#0d1b2a] via-[#1b263b] to-[#2e3e52] text-white p-6 relative overflow-hidden shadow-md border border-slate-800/20 flex flex-col justify-between min-h-[170px]">
               
               {/* Minimalist ambient lamp/glow on the right side */}
@@ -191,4 +190,6 @@ export default async function HomePage({ searchParams }: PageProps) {
         </div>
       </div>
 
-      {/* Shared Post Overlay
+      {/* Shared Post Overlay Modal */}
+      {sharedPost && (
+        <div className="fixed inset-0 z-50 flex flex-col items-center
