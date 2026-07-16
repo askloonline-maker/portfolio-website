@@ -1,55 +1,27 @@
 "use client";
 import React, { useState } from "react";
-import { createClient } from "@supabase/supabase-js";
-import { useRouter } from "next/navigation";
-
-// 🔐 Vercel में मौजूद आपके सटीक वैरिएबल नामों का उपयोग करना
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL || "";
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SU_BASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY || "";
-
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
+import { createAnonymousPost } from "../app/actions";
 
 export default function CreatePost() {
   const [inputText, setInputText] = useState("");
   const [isPublishing, setIsPublishing] = useState(false);
-  const router = useRouter();
 
   const handlePublish = async () => {
     if (!inputText.trim() || isPublishing) return;
 
     setIsPublishing(true);
 
-    try {
-      // 📤 Supabase 'posts' टेबल में डेटा इन्सर्ट करना
-      const { error } = await supabase
-        .from("posts")
-        .insert([
-          {
-            title: inputText.substring(0, 60), 
-            content: inputText,
-            category: "General", 
-            created_at: new Date().toISOString(),
-          }
-        ]);
+    // 🚀 Server Action को कॉल कर रहे हैं (No browser network fetch errors!)
+    const result = await createAnonymousPost(inputText);
 
-      if (error) {
-        console.error("Supabase Error:", error.message);
-        alert(`Failed to post: ${error.message}`);
-      } else {
-        setInputText(""); // इनपुट फील्ड को क्लियर करें
-        
-        // 🔄 फ़ीड को बिना पेज रीलोड किए तुरंत अपडेट करने के लिए रीफ्रेश
-        router.refresh(); 
-        
-        // एक छोटा सा कन्फर्मेशन (वैकल्पिक)
-        alert("Post Live Successfully! 🚀");
-      }
-    } catch (err: any) {
-      console.error("Submit Error:", err);
-      alert("Something went wrong while publishing.");
-    } finally {
-      setIsPublishing(false);
+    if (result.success) {
+      setInputText(""); // इनपुट बॉक्स खाली करें
+      alert("Post Live Successfully! 🚀");
+    } else {
+      alert(`Failed to post: ${result.error}`);
     }
+
+    setIsPublishing(false);
   };
 
   return (
