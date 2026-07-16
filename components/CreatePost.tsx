@@ -3,9 +3,10 @@ import React, { useState } from "react";
 import { createClient } from "@supabase/supabase-js";
 import { useRouter } from "next/navigation";
 
-// 🔐 Initialize Supabase Client (Browser Friendly)
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "";
+// 🔐 Vercel में मौजूद आपके सटीक वैरिएबल नामों का उपयोग करना
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL || "";
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SU_BASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY || "";
+
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 export default function CreatePost() {
@@ -19,14 +20,14 @@ export default function CreatePost() {
     setIsPublishing(true);
 
     try {
-      // 📤 Supabase Database में डेटा इन्सर्ट करना
+      // 📤 Supabase 'posts' टेबल में डेटा इन्सर्ट करना
       const { error } = await supabase
         .from("posts")
         .insert([
           {
-            title: inputText.substring(0, 60), // पहला कुछ हिस्सा टाइटल मान लेते हैं
+            title: inputText.substring(0, 60), 
             content: inputText,
-            category: "General", // डिफ़ॉल्ट कैटेगरी
+            category: "General", 
             created_at: new Date().toISOString(),
           }
         ]);
@@ -35,10 +36,13 @@ export default function CreatePost() {
         console.error("Supabase Error:", error.message);
         alert(`Failed to post: ${error.message}`);
       } else {
-        setInputText(""); // इनपुट बॉक्स खाली करें
+        setInputText(""); // इनपुट फील्ड को क्लियर करें
         
-        // 🔄 फीड को तुरंत अपडेट करने के लिए Next.js Router को रिफ्रेश करें
+        // 🔄 फ़ीड को बिना पेज रीलोड किए तुरंत अपडेट करने के लिए रीफ्रेश
         router.refresh(); 
+        
+        // एक छोटा सा कन्फर्मेशन (वैकल्पिक)
+        alert("Post Live Successfully! 🚀");
       }
     } catch (err: any) {
       console.error("Submit Error:", err);
