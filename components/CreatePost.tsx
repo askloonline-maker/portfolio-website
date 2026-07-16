@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { createAnonymousPost } from "../app/actions";
+import { createAnonymousPost } from "../app/actions"; // 👈 इम्पोर्ट पाथ बिल्कुल सही है
 
 export default function CreatePost() {
   const [inputText, setInputText] = useState("");
@@ -11,17 +11,22 @@ export default function CreatePost() {
 
     setIsPublishing(true);
 
-    // 🚀 Server Action को कॉल कर रहे हैं (No browser network fetch errors!)
-    const result = await createAnonymousPost(inputText);
+    try {
+      // 🚀 सुरक्षित सर्वर एक्शन को कॉल करना
+      const result = await createAnonymousPost(inputText);
 
-    if (result.success) {
-      setInputText(""); // इनपुट बॉक्स खाली करें
-      alert("Post Live Successfully! 🚀");
-    } else {
-      alert(`Failed to post: ${result.error}`);
+      if (result.success) {
+        setInputText(""); // पोस्ट सफल होने पर इनपुट बॉक्स खाली करें
+        alert("Post Live Successfully! 🚀");
+      } else {
+        alert(`Failed to post: ${result.error}`);
+      }
+    } catch (err) {
+      console.error("Publishing Handler Error:", err);
+      alert("Something went wrong while publishing.");
+    } finally {
+      setIsPublishing(false);
     }
-
-    setIsPublishing(false);
   };
 
   return (
