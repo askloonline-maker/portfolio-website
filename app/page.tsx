@@ -19,7 +19,7 @@ export default function HomePage() {
         setLoading(true);
 
         const supabaseUrl = "https://yyxaxcqlrxawdtloucwx.supabase.co";
-        const supabaseKey = "sb_publishable_eXzrOqilWFw1Pd5q1xeTYg_exKGk_wP";
+        const supabaseKey = "sb_publishable_eXzrOqilWFw1Pd5q1xeTYg_exKGkl5C";
 
         const supabase = createClient(supabaseUrl, supabaseKey, {
           auth: { persistSession: false }
