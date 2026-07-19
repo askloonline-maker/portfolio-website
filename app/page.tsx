@@ -1,18 +1,10 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { createClient } from "@supabase/supabase-js";
 import CreatePost from "../components/CreatePost";
 import QuestionCard from "../components/QuestionCard";
 import RightSidebar from "../components/RightSidebar";
 import Sidebar from "../components/Sidebar";
-
-// ब्राउज़र में सेफली एक्सेस करने के लिए पब्लिक वेरिएबल्स का इस्तेमाल
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "https://dmcbbpusnruwopdkkiom.supabase.co";
-// यहाँ स्क्रीनशॉट वाली Secret key (sb_secret_...) या Anon key पेस्ट कर सकते हैं अगर वेरिएबल काम न करे
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || "";
-
-const supabase = createClient(supabaseUrl.replace(/\/$/, ""), supabaseKey.trim());
 
 export default function HomePage() {
   const [posts, setPosts] = useState<any[]>([]);
@@ -24,26 +16,22 @@ export default function HomePage() {
     async function fetchData() {
       try {
         setLoading(true);
-        
-        // 1. डेटाबेस से पोस्ट्स लेकर आएँ
-        const { data, error } = await supabase
-          .from("posts")
-          .select("*")
-          .order("created_at", { ascending: false });
+        // हमारे बनाए गए सुरक्षित API रूट से डेटा फेच करना
+        const res = await fetch("/api/posts", { cache: "no-store" });
+        const data = await res.json();
 
-        if (error) {
-          setDbStatus({ connected: false, message: error.message });
+        if (data.error) {
+          setDbStatus({ connected: false, message: data.error });
           setLoading(false);
           return;
         }
 
-        const fetchedPosts = data || [];
-        setPosts(fetchedPosts);
+        setPosts(data);
         setDbStatus({ connected: true, message: "Anonymous posting is live" });
 
-        // 2. टॉपिक्स (Tags) निकालें
+        // टॉपिक्स/टैग्स फ़िल्टर करें
         const uniqueTopicsSet = new Set<string>();
-        fetchedPosts.forEach((post: any) => {
+        data.forEach((post: any) => {
           if (post.tags && Array.isArray(post.tags)) {
             post.tags.forEach((tag: string) => {
               if (tag) uniqueTopicsSet.add(tag.trim());
@@ -54,18 +42,15 @@ export default function HomePage() {
         });
         setLatestUniqueTopics(Array.from(uniqueTopicsSet).slice(0, 5));
       } catch (err: any) {
-        setDbStatus({ connected: false, message: err.message || "Connection failed" });
+        setDbStatus({ connected: false, message: err.message || "Failed to fetch live feed" });
+      } bits {
+        setLoading(false);
       } finally {
         setLoading(false);
       }
     }
 
-    if (supabaseUrl && supabaseKey) {
-      fetchData();
-    } else {
-      setDbStatus({ connected: false, message: "Supabase Environment Variables missing!" });
-      setLoading(false);
-    }
+    fetchData();
   }, []);
 
   return (
