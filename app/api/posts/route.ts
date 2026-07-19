@@ -5,15 +5,18 @@ export const dynamic = "force-dynamic";
 
 export async function GET() {
   try {
-    // यहाँ Vercel के सर्वर वेरिएबल्स का इस्तेमाल हो रहा है, जो बिल्कुल सुरक्षित है
-    const supabaseUrl = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
+    // 1. URL को सीधे यहाँ फिक्स कर दिया ताकि 'Invalid URL' का झंझट हमेशा के लिए खत्म हो जाए
+    const supabaseUrl = "https://dmcbbpusnruwopdkkiom.supabase.co";
+    
+    // 2. सीक्रेट की को Vercel Environment Variables से सुरक्षित तरीके से उठा रहे हैं
     const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY;
 
-    if (!supabaseUrl || !supabaseKey) {
-      return NextResponse.json({ error: "Supabase credentials missing on server" }, { status: 500 });
+    if (!supabaseKey) {
+      return NextResponse.json({ error: "Supabase Secret Key missing on server" }, { status: 500 });
     }
 
-    const supabase = createClient(supabaseUrl.replace(/\/$/, ""), supabaseKey.trim(), {
+    // क्लाइंट इनिशियलाइज करना
+    const supabase = createClient(supabaseUrl, supabaseKey.trim(), {
       auth: { persistSession: false }
     });
 
