@@ -10,24 +10,28 @@ const supabase = createClient(
 
 export async function createAnonymousPost(content: string) {
   try {
-    const { error } = await supabase
+    // यहाँ हम वो सब कुछ भेज रहे हैं जो आपकी टेबल में है
+    const postData = {
+      title: content.substring(0, 50),
+      content: content,
+      author_name: "Anonymous",
+      category: "General",
+      // created_at और id को Supabase खुद संभाल लेगा अगर वे डिफॉल्ट हैं
+    };
+
+    const { data, error } = await supabase
       .from("posts")
-      .insert([{ 
-        title: content.substring(0, 50), 
-        content: content,
-        category: "General",
-        author_name: "Anonymous", // 👈 यह जोड़ना बहुत ज़रूरी था!
-        created_at: new Date().toISOString() 
-      }]);
+      .insert([postData]);
 
     if (error) {
-      console.error("SUPABASE INSERT ERROR:", error);
+      console.error("SUPABASE ERROR DETAILS:", error); // यह Vercel Logs में दिखेगा
       return { success: false, error: error.message };
     }
 
     revalidatePath("/");
     return { success: true };
   } catch (err: any) {
-    return { success: false, error: err.toString() };
+    console.error("CATCH ERROR:", err);
+    return { success: false, error: "System error, please check logs." };
   }
 }
