@@ -3,22 +3,16 @@
 import { createClient } from "@supabase/supabase-js";
 import { revalidatePath } from "next/cache";
 
-// एनवायरनमेंट वेरिएबल्स को सुरक्षित तरीके से लोड करना
-const supabaseUrl = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+// Vercel वेरिएबल्स से सुरक्षित लोडिंग
+const supabaseUrl = process.env.SUPABASE_URL!;
+const supabaseKey = process.env.SUPABASE_ANON_KEY!;
 
-// अगर वेरिएबल्स गायब हैं, तो सर्वर क्रैश होने से बचाएं
-const supabase = supabaseUrl && supabaseKey 
-  ? createClient(supabaseUrl, supabaseKey) 
-  : null;
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 export async function createAnonymousPost(content: string) {
-  if (!supabase) {
-    return { success: false, error: "Database configuration is missing." };
-  }
-
-  if (!content || !content.trim()) {
-    return { success: false, error: "Content cannot be empty." };
+  // अगर URL या Key ही गलत है, तो यही पकड़ लें
+  if (!supabaseUrl.startsWith("http")) {
+    return { success: false, error: "Invalid Database URL configuration." };
   }
 
   try {
@@ -28,16 +22,14 @@ export async function createAnonymousPost(content: string) {
         title: content.substring(0, 50),
         content: content.trim(),
         author_name: "Anonymous",
-        category: "General",
-        created_at: new Date().toISOString()
+        category: "General"
       }]);
 
     if (error) throw error;
 
-    revalidatePath("/"); // होमपेज रिफ्रेश करें
+    revalidatePath("/");
     return { success: true };
   } catch (err: any) {
-    console.error("Action Error:", err);
-    return { success: false, error: err.message || "Failed to publish." };
+    return { success: false, error: err.message };
   }
 }
