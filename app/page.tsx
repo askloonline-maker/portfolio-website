@@ -8,8 +8,10 @@ import Sidebar from "../components/Sidebar";
 export const revalidate = 0;
 
 function getSupabaseClient() {
-  const supabaseUrl = process.env.SUPABASE_URL;
-  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  // ✅ पुराने और नए दोनों वेरिएबल्स को सपोर्ट करने के लिए फालबैक लगाया गया है
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL;
+  const serviceRoleKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY;
+  
   if (!supabaseUrl || !serviceRoleKey) return null;
   return createClient(supabaseUrl, serviceRoleKey);
 }
@@ -120,6 +122,7 @@ export default async function HomePage({ searchParams }: PageProps) {
               </div>
             </div>
 
+            {/* 🚨 यह बैनर अब सिर्फ तब दिखेगा जब सच में कीज़ मिसिंग होंगी */}
             {!dbStatus.connected && (
               <div className="rounded-xl border border-rose-100 bg-rose-50 p-3.5 text-xs font-bold text-rose-700 shadow-sm">
                 🚨 Sync Notice: {dbStatus.message}
