@@ -5,18 +5,32 @@ import QuestionCard from "../components/QuestionCard";
 import RightSidebar from "../components/RightSidebar";
 import Sidebar from "../components/Sidebar";
 
+// पेज को पूरी तरह डायनामिक रखने के लिए
+export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 function getSupabaseClient() {
-  // ✅ सर्वर एनवायरनमेंट वेरिएबल्स को प्राथमिकता दी गई है और फालबैक मजबूत किया गया है
   const supabaseUrl = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
   const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY;
   
   if (!supabaseUrl || !serviceRoleKey) return null;
   
-  return createClient(supabaseUrl, serviceRoleKey, {
+  // URL के आखिर से एक्स्ट्रा स्लैश हटाने के लिए सेफ्टी चेक
+  const cleanUrl = supabaseUrl.replace(/\/$/, "");
+
+  return createClient(cleanUrl, serviceRoleKey.trim(), {
     auth: {
-      persistSession: false // Next.js सर्वर कंपोनेंट में एरर रोकने के लिए ज़रुरी है
+      persistSession: false
+    },
+    global: {
+      // फ़ेच रिक्वेस्ट में नो-कैश जोड़ना ताकि डेटा अटके नहीं
+      fetch: (url, options) => {
+        return fetch(url, {
+          ...options,
+          cache: "no-store",
+          next: { revalidate: 0 }
+        });
+      }
     }
   });
 }
@@ -24,8 +38,14 @@ function getSupabaseClient() {
 async function checkDatabaseConnection() {
   try {
     const supabase = getSupabaseClient();
-    if (!supabase) return { connected: false, message: "Supabase key missing" };
-    const { error } = await supabase.from("posts").select("id").limit(1);
+    if (!supabase) return { connected: false, message: "Supabase key or URL missing in Environment Variables" };
+    
+    // Timeout हैंडल करने के लिए 4 सेकंड की लिमिट लगाना
+    const { error } = await Promise.race([
+      supabase.from("posts").select("id").limit(1),
+      new Promise<any>((_, reject) => setTimeout(() => reject(new Error("Database connection timeout (4s)")), 4000))
+    ]);
+
     if (error) return { connected: false, message: error.message };
     return { connected: true, message: "Anonymous posting is live" };
   } catch (err: any) {
@@ -37,13 +57,16 @@ async function getAllPublicPosts() {
   try {
     const supabase = getSupabaseClient();
     if (!supabase) return [];
-    const { data, error } = await supabase
-      .from("posts")
-      .select("*")
-      .order("created_at", { ascending: false });
+    
+    const { data, error } = await Promise.race([
+      supabase.from("posts").select("*").order("created_at", { ascending: false }),
+      new Promise<any>((_, reject) => setTimeout(() => reject(new Error("Timeout")), 4000))
+    ]);
+
     if (error) return [];
     return data || [];
   } catch (err) {
+    console.error("Fetch error:", err);
     return [];
   }
 }
@@ -60,7 +83,6 @@ export default async function HomePage({ searchParams }: PageProps) {
   const targetPostId = typeof resolvedParams.post === "string" ? resolvedParams.post : null;
   const sharedPost = targetPostId ? posts.find((p) => p.id === targetPostId) : null;
 
-  // Extract latest unique tags
   const uniqueTopicsSet = new Set<string>();
   posts.forEach((post) => {
     if (post.tags && Array.isArray(post.tags)) {
@@ -127,7 +149,7 @@ export default async function HomePage({ searchParams }: PageProps) {
               </div>
             </div>
 
-            {/* 🚨 Sync Notice बैनर */}
+            {/* Sync Notice बैनर */}
             {!dbStatus.connected && (
               <div className="rounded-xl border border-rose-100 bg-rose-50 p-3.5 text-xs font-bold text-rose-700 shadow-sm">
                 🚨 Sync Notice: {dbStatus.message}
