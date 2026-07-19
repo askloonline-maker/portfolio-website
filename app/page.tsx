@@ -18,14 +18,13 @@ export default function HomePage() {
       try {
         setLoading(true);
 
-        // 1. आपका बिल्कुल सही और लाइव प्रोजेक्ट URL
+        // 1. आपका बिल्कुल सही प्रोजेक्ट URL
         const supabaseUrl = "https://yyxaxcqlrxawdtloucwx.supabase.co";
         
-        // 2. 🚨 यहाँ अपने डैशबोर्ड से कॉपी की हुई नई Publishable Key पेस्ट करें!
-        // (जो पुराने 'sb_publishable_eXzrOqil...' को हटाकर नई वाली डालनी है)
-        const supabaseKey = "यहाँ_अपनी_नई_PUBLISHABLE_KEY_पेस्ट_करें";
+        // 2. 🚨 इन नीचे दिए गए खाली डबल कोट्स "" के ठीक बीच में अपनी Publishable Key पेस्ट करें!
+        const supabaseKey = "";
 
-        // नए क्रेडेंशियल्स के साथ क्लाइंट इनिशियलाइज करना
+        // क्रेडेंशियल्स के साथ क्लाइंट इनिशियलाइज करना
         const supabase = createClient(supabaseUrl, supabaseKey, {
           auth: { persistSession: false }
         });
