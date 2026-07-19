@@ -23,7 +23,6 @@ function getSupabaseClient() {
       persistSession: false
     },
     global: {
-      // फ़ेच रिक्वेस्ट में नो-कैश जोड़ना ताकि डेटा अटके नहीं
       fetch: (url, options) => {
         return fetch(url, {
           ...options,
@@ -81,10 +80,11 @@ export default async function HomePage({ searchParams }: PageProps) {
   const posts = await getAllPublicPosts();
 
   const targetPostId = typeof resolvedParams.post === "string" ? resolvedParams.post : null;
-  const sharedPost = targetPostId ? posts.find((p) => p.id === targetPostId) : null;
+  // ✅ यहाँ 'p' को 'p: any' कर दिया है जिससे TypeScript एरर नहीं देगा
+  const sharedPost = targetPostId ? posts.find((p: any) => p.id === targetPostId) : null;
 
   const uniqueTopicsSet = new Set<string>();
-  posts.forEach((post) => {
+  posts.forEach((post: any) => {
     if (post.tags && Array.isArray(post.tags)) {
       post.tags.forEach((tag: string) => {
         if (tag) uniqueTopicsSet.add(tag.trim());
