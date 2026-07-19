@@ -18,19 +18,18 @@ export default function HomePage() {
       try {
         setLoading(true);
 
-        // 1. आपका सही और पूरा Supabase URL
-        const supabaseUrl = "https://dmcbbpusnruwopdkkiom.supabase.co";
+        // 1. Data API से मिला हुआ आपका बिल्कुल सही और असली Supabase URL
+        const supabaseUrl = "https://yyxaxcqlrxawdtloucwx.supabase.co";
         
         // 2. आपकी सुरक्षित Publishable Key (यह ब्राउज़र के लिए पूरी तरह से सेफ है)
-        // गिटहब स्कैनर इसे ब्लॉक नहीं करेगा क्योंकि यह एक पब्लिक/पब्लिशेबल की है।
         const supabaseKey = "sb_publishable_eXzrOqilWFw1Pd5q1xeTYg_exKGk_wP";
 
-        // सही की (Key) के साथ ब्राउज़र में क्लाइंट बनाना
+        // सही क्रेडेंशियल्स के साथ ब्राउज़र में Supabase क्लाइंट बनाना
         const supabase = createClient(supabaseUrl, supabaseKey, {
           auth: { persistSession: false }
         });
 
-        // सीधे टेबल से डेटा फेच करना
+        // सीधे टेबल से लाइव डेटा फेच करना
         const { data, error } = await supabase
           .from("posts")
           .select("*")
