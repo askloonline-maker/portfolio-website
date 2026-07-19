@@ -3,9 +3,9 @@
 import { createClient } from "@supabase/supabase-js";
 import { revalidatePath } from "next/cache";
 
-// ✅ स्पेलिंग मिस्टेक ठीक कर दी गई है (NEXT_PUBLIC_SUPABASE_ANON_KEY)
-const supabaseUrl = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || "";
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY || "";
+// ✅ Vercel के नए variables को प्राथमिकता देते हुए नेटवर्क फ़ेच एरर फिक्स
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL || "";
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || "";
 
 const supabase = createClient(supabaseUrl, supabaseKey);
 
