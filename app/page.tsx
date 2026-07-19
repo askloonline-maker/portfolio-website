@@ -43,8 +43,6 @@ export default function HomePage() {
         setLatestUniqueTopics(Array.from(uniqueTopicsSet).slice(0, 5));
       } catch (err: any) {
         setDbStatus({ connected: false, message: err.message || "Failed to fetch live feed" });
-      } bits {
-        setLoading(false);
       } finally {
         setLoading(false);
       }
