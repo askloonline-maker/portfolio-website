@@ -18,18 +18,19 @@ export default function HomePage() {
       try {
         setLoading(true);
 
-        // 1. Data API से मिला हुआ आपका बिल्कुल सही और असली Supabase URL
+        // 1. आपका बिल्कुल सही और लाइव प्रोजेक्ट URL
         const supabaseUrl = "https://yyxaxcqlrxawdtloucwx.supabase.co";
         
-        // 2. आपकी सुरक्षित Publishable Key (यह ब्राउज़र के लिए पूरी तरह से सेफ है)
-        const supabaseKey = "sb_publishable_eXzrOqilWFw1Pd5q1xeTYg_exKGk_wP";
+        // 2. 🚨 यहाँ अपने डैशबोर्ड से कॉपी की हुई नई Publishable Key पेस्ट करें!
+        // (जो पुराने 'sb_publishable_eXzrOqil...' को हटाकर नई वाली डालनी है)
+        const supabaseKey = "यहाँ_अपनी_नई_PUBLISHABLE_KEY_पेस्ट_करें";
 
-        // सही क्रेडेंशियल्स के साथ ब्राउज़र में Supabase क्लाइंट बनाना
+        // नए क्रेडेंशियल्स के साथ क्लाइंट इनिशियलाइज करना
         const supabase = createClient(supabaseUrl, supabaseKey, {
           auth: { persistSession: false }
         });
 
-        // सीधे टेबल से लाइव डेटा फेच करना
+        // लाइव फीड डेटा फेच करना
         const { data, error } = await supabase
           .from("posts")
           .select("*")
@@ -44,7 +45,7 @@ export default function HomePage() {
         setPosts(data || []);
         setDbStatus({ connected: true, message: "Anonymous posting is live" });
 
-        // टॉपिक्स/टैग्स फ़िल्टर करें
+        // टॉपिक्स/टैग्स फ़िल्टर करना
         const uniqueTopicsSet = new Set<string>();
         if (data) {
           data.forEach((post: any) => {
