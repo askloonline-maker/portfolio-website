@@ -6,11 +6,8 @@ import { SEO_SUB_TOPICS } from "@/utils/seoKeywords";
 import QuestionCard from "../../../components/QuestionCard";
 import CreatePost from "../../../components/CreatePost";
 
-export const revalidate = 1800; 
-
-export async function generateStaticParams() {
-  return SEO_SUB_TOPICS.map((topic) => ({ slug: topic.slug }));
-}
+// 👇 यह लाइन Vercel बिल्ड एरर को 100% रोक देगी
+export const dynamic = 'force-dynamic';
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = await params;
@@ -32,8 +29,9 @@ export default async function ProgrammaticSeoPage({ params }: { params: Promise<
   const keywordLabel = currentTopic ? currentTopic.label : resolvedParams.slug.replace(/-/g, " ");
   const parentCategory = currentTopic ? currentTopic.parentSpace : "Digital Marketing";
 
+  // 👇 यहाँ हमने NEXT_PUBLIC_SUPABASE_URL कर दिया है जो आपने Vercel में डाला था
   const supabase = createClient(
-    process.env.SUPABASE_URL || "",
+    process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL || "",
     process.env.SUPABASE_SERVICE_ROLE_KEY || ""
   );
 
@@ -72,7 +70,6 @@ export default async function ProgrammaticSeoPage({ params }: { params: Promise<
       <div className="rounded-2xl bg-gradient-to-r from-[#0d25b9] via-[#0a58ca] to-[#0d6efd] p-6 sm:p-8 text-white shadow-lg relative overflow-hidden">
         <div className="absolute top-0 right-0 w-40 h-40 bg-white/5 rounded-full blur-3xl pointer-events-none"></div>
         
-        {/* Only show the requested slogan here */}
         <h1 className="text-2xl sm:text-4xl font-black tracking-tight text-white leading-tight drop-shadow-sm">
           Ask freely. Answer boldly. Stay anonymous.
         </h1>
