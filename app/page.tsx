@@ -21,8 +21,8 @@ export default function HomePage() {
         // 1. आपका बिल्कुल सही प्रोजेक्ट URL
         const supabaseUrl = "https://yyxaxcqlrxawdtloucwx.supabase.co";
         
-        // 2. 🚨 इन नीचे दिए गए खाली डबल कोट्स "" के ठीक बीच में अपनी Publishable Key पेस्ट करें!
-        const supabaseKey = "";
+        // 2. आपकी सही Publishable Key जो पहले स्क्रीनशॉट में दिख रही थी
+        const supabaseKey = "sb_publishable_eXzrOqilWFw1Pd5q1xeTYg_exKGk_wP";
 
         // क्रेडेंशियल्स के साथ क्लाइंट इनिशियलाइज करना
         const supabase = createClient(supabaseUrl, supabaseKey, {
