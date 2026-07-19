@@ -16,8 +16,16 @@ export default function HomePage() {
     async function fetchData() {
       try {
         setLoading(true);
-        // हमारे बनाए गए सुरक्षित API रूट से डेटा फेच करना
-        const res = await fetch("/api/posts", { cache: "no-store" });
+        
+        // डायनामिक यूआरएल जनरेट करना ताकि सर्वर और क्लाइंट दोनों पर फ़ेच काम करे
+        const baseUrl = typeof window !== "undefined" 
+          ? window.location.origin 
+          : process.env.NEXT_PUBLIC_VERCEL_URL 
+            ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}` 
+            : "https://asklo.online";
+
+        // पूरे एब्सोल्यूट पाथ के साथ फ़ेच करना
+        const res = await fetch(`${baseUrl}/api/posts`, { cache: "no-store" });
         const data = await res.json();
 
         if (data.error) {
