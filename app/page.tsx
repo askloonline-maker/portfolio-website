@@ -18,18 +18,13 @@ export default function HomePage() {
       try {
         setLoading(true);
 
-        // 1. आपका बिल्कुल सही प्रोजेक्ट URL
         const supabaseUrl = "https://yyxaxcqlrxawdtloucwx.supabase.co";
-        
-        // 2. आपकी सही Publishable Key जो पहले स्क्रीनशॉट में दिख रही थी
         const supabaseKey = "sb_publishable_eXzrOqilWFw1Pd5q1xeTYg_exKGk_wP";
 
-        // क्रेडेंशियल्स के साथ क्लाइंट इनिशियलाइज करना
         const supabase = createClient(supabaseUrl, supabaseKey, {
           auth: { persistSession: false }
         });
 
-        // लाइव फीड डेटा फेच करना
         const { data, error } = await supabase
           .from("posts")
           .select("*")
@@ -44,7 +39,6 @@ export default function HomePage() {
         setPosts(data || []);
         setDbStatus({ connected: true, message: "Anonymous posting is live" });
 
-        // टॉपिक्स/टैग्स फ़िल्टर करना
         const uniqueTopicsSet = new Set<string>();
         if (data) {
           data.forEach((post: any) => {
@@ -110,10 +104,9 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Sync Notice बैनर */}
           {!dbStatus.connected && (
             <div className="rounded-xl border border-rose-100 bg-rose-50 p-3.5 text-xs font-bold text-rose-700 shadow-sm">
-              🚨 Sync Notice: {dbStatus.message}
+              Sync Notice: {dbStatus.message}
             </div>
           )}
 
