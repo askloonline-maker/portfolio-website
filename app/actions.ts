@@ -3,11 +3,11 @@
 import { createClient } from "@supabase/supabase-js";
 import { revalidatePath } from "next/cache";
 
-// सर्वर-साइड और क्लाइंट-साइड दोनों फ़ॉलबैक क्रेडेंशियल्स का उपयोग करना
+// ✅ स्पेलिंग मिस्टेक ठीक कर दी गई है (NEXT_PUBLIC_SUPABASE_ANON_KEY)
 const supabaseUrl = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || "";
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SU_BASE_ANON_KEY || "";
+const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY || "";
 
-const supabase = createClient(supabaseUrl, supabaseServiceKey);
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 export async function createAnonymousPost(content: string) {
   if (!content || !content.trim()) {
