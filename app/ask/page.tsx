@@ -32,9 +32,7 @@ function AskFormContent() {
     setLoading(true);
 
     try {
-      const currentDeviceId = localStorage.getItem("asklo_device_id");
-
-      // Insert aligned strictly with your database schema columns
+      // Insert matching your clean schema without wallet or device dependencies
       const { error: postError } = await supabase
         .from("posts")
         .insert([
@@ -42,8 +40,7 @@ function AskFormContent() {
             title: title,
             content: details,
             author_name: "Anonymous",
-            category: category,
-            device_id: currentDeviceId
+            category: category
           }
         ]);
 
@@ -51,17 +48,7 @@ function AskFormContent() {
         throw new Error(`Database insert failed: ${postError.message}`);
       }
 
-      if (currentDeviceId) {
-        const { error: rpcError } = await supabase.rpc('increment_wallet_balance', {
-          target_device_id: currentDeviceId
-        });
-
-        if (rpcError) {
-          console.error("Wallet increment failed:", rpcError.message);
-        }
-      }
-
-      alert(`Success! Published node. ₹0.01 added to your wallet!`);
+      alert("Successfully published!");
       setTitle("");
       setDetails("");
       window.location.href = "/";
