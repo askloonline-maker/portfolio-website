@@ -3,12 +3,56 @@ import React, { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { createClient } from "@supabase/supabase-js";
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL || "",
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ""
-);
+// 🛠️ सर्वर एक्शन (अब यह इसी फाइल के अंदर सुरक्षित रूप से काम करेगा)
+async function submitPostToServer(formData: {
+  title: string;
+  content: string;
+  type: string;
+  deviceId: string | null;
+}) {
+  "use server";
+  
+  const url = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-// 🛠️ मुख्य फॉर्म कॉम्पोनेंट जो URL params को रीड करेगा
+  if (!url || !key) {
+    return { success: false, error: "Supabase credentials missing on server configuration." };
+  }
+
+  const supabase = createClient(url, key);
+
+  try {
+    const { error: postError } = await supabase
+      .from("posts")
+      .insert([
+        {
+          title: formData.title,
+          content: formData.content,
+          type: formData.type,
+          device_id: formData.deviceId,
+        },
+      ]);
+
+    if (postError) {
+      return { success: false, error: postError.message };
+    }
+
+    if (formData.deviceId) {
+      const { error: rpcError } = await supabase.rpc('increment_wallet_balance', {
+        target_device_id: formData.deviceId,
+      });
+      if (rpcError) {
+        console.error("Wallet increment warning:", rpcError.message);
+      }
+    }
+
+    return { success: true };
+  } catch (err: any) {
+    return { success: false, error: err?.message || "Internal Server Error" };
+  }
+}
+
+// 🖥️ मुख्य फॉर्म कॉम्पोनेंट
 function AskFormContent() {
   const searchParams = useSearchParams();
   const [mode, setMode] = useState<"QUESTION" | "DISCUSSION">("QUESTION");
@@ -16,7 +60,6 @@ function AskFormContent() {
   const [details, setDetails] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // URL Query Param (?type=post या ?type=question) को ट्रैक और सिंक करना
   useEffect(() => {
     const type = searchParams.get("type");
     if (type === "post") {
@@ -35,44 +78,26 @@ function AskFormContent() {
     try {
       const currentDeviceId = localStorage.getItem("asklo_device_id");
 
-      const { data: postData, error: postError } = await supabase
-        .from("posts")
-        .insert([
-          {
-            title: title,
-            content: details,
-            type: mode, 
-            device_id: currentDeviceId 
-          }
-        ])
-        .select(); 
+      // सीधे इसी फाइल के अंदर बने सर्वर एक्शन को कॉल करना
+      const result = await submitPostToServer({
+        title,
+        content: details,
+        type: mode,
+        deviceId: currentDeviceId,
+      });
 
-      if (postError) {
-        throw new Error(`Database insert failed: ${postError.message}`);
+      if (!result.success) {
+        throw new Error(result.error || "Database insert failed");
       }
 
-      if (currentDeviceId) {
-        const { error: rpcError } = await supabase.rpc('increment_wallet_balance', {
-          target_device_id: currentDeviceId
-        });
-
-        if (rpcError) {
-          console.error("Wallet increment failed:", rpcError.message);
-          alert(`Post published successfully, but wallet update delayed: ${rpcError.message}`);
-        } else {
-          alert(`Success! Published node type: ${mode}. ₹0.01 added to your wallet!`);
-        }
-      } else {
-        alert(`Success! Published node type: ${mode}. (No device tracking token found)`);
-      }
-
+      alert(`Success! Published node type: ${mode}. ₹0.01 added to your wallet!`);
       setTitle("");
       setDetails("");
       window.location.href = "/";
       
     } catch (err: any) {
       console.error("Submission Error:", err);
-      alert(`Submission Failed: ${err.message || "Failed to fetch. Check Supabase connection or RLS Policies."}`);
+      alert(`Submission Failed: ${err.message || "Failed to fetch."}`);
     } finally {
       setLoading(false);
     }
@@ -85,7 +110,6 @@ function AskFormContent() {
         <p className="text-xs text-[#64748b] mt-1">Formulate inquiries or launch discussion threads safely into the network stream.</p>
       </div>
 
-      {/* क्लीनर मॉड स्विच सब-टैब सिस्टम */}
       <div className="flex border-b border-slate-200 text-xs font-bold max-w-xs">
         <button
           type="button"
@@ -111,7 +135,6 @@ function AskFormContent() {
         </button>
       </div>
 
-      {/* Action Form */}
       <form onSubmit={handlePublish} className="space-y-5">
         <div>
           <label className="block text-[10px] font-black uppercase tracking-wider text-[#64748b] mb-1.5">
@@ -152,7 +175,6 @@ function AskFormContent() {
   );
 }
 
-// 📦 मुख्य डिफॉल्ट एक्सपोर्ट जो पूरे फॉर्म को Suspense के साथ रैप करेगा (Vercel Build फिक्स)
 export default function AskCompositionPage() {
   return (
     <Suspense fallback={
