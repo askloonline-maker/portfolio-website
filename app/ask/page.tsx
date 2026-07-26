@@ -13,6 +13,7 @@ function AskFormContent() {
   const [mode, setMode] = useState<"QUESTION" | "DISCUSSION">("QUESTION");
   const [title, setTitle] = useState("");
   const [details, setDetails] = useState("");
+  const [category, setCategory] = useState("General");
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -33,14 +34,16 @@ function AskFormContent() {
     try {
       const currentDeviceId = localStorage.getItem("asklo_device_id");
 
+      // Insert aligned strictly with your database schema columns
       const { error: postError } = await supabase
         .from("posts")
         .insert([
           {
             title: title,
             content: details,
-            type: mode, 
-            device_id: currentDeviceId 
+            author_name: "Anonymous",
+            category: category,
+            device_id: currentDeviceId
           }
         ]);
 
@@ -58,7 +61,7 @@ function AskFormContent() {
         }
       }
 
-      alert(`Success! Published node type: ${mode}. ₹0.01 added to your wallet!`);
+      alert(`Success! Published node. ₹0.01 added to your wallet!`);
       setTitle("");
       setDetails("");
       window.location.href = "/";
