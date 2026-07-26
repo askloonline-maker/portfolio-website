@@ -3,56 +3,11 @@ import React, { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { createClient } from "@supabase/supabase-js";
 
-// 🛠️ सर्वर एक्शन (अब यह इसी फाइल के अंदर सुरक्षित रूप से काम करेगा)
-async function submitPostToServer(formData: {
-  title: string;
-  content: string;
-  type: string;
-  deviceId: string | null;
-}) {
-  "use server";
-  
-  const url = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key = process.env.SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL || "",
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ""
+);
 
-  if (!url || !key) {
-    return { success: false, error: "Supabase credentials missing on server configuration." };
-  }
-
-  const supabase = createClient(url, key);
-
-  try {
-    const { error: postError } = await supabase
-      .from("posts")
-      .insert([
-        {
-          title: formData.title,
-          content: formData.content,
-          type: formData.type,
-          device_id: formData.deviceId,
-        },
-      ]);
-
-    if (postError) {
-      return { success: false, error: postError.message };
-    }
-
-    if (formData.deviceId) {
-      const { error: rpcError } = await supabase.rpc('increment_wallet_balance', {
-        target_device_id: formData.deviceId,
-      });
-      if (rpcError) {
-        console.error("Wallet increment warning:", rpcError.message);
-      }
-    }
-
-    return { success: true };
-  } catch (err: any) {
-    return { success: false, error: err?.message || "Internal Server Error" };
-  }
-}
-
-// 🖥️ मुख्य फॉर्म कॉम्पोनेंट
 function AskFormContent() {
   const searchParams = useSearchParams();
   const [mode, setMode] = useState<"QUESTION" | "DISCUSSION">("QUESTION");
@@ -78,16 +33,29 @@ function AskFormContent() {
     try {
       const currentDeviceId = localStorage.getItem("asklo_device_id");
 
-      // सीधे इसी फाइल के अंदर बने सर्वर एक्शन को कॉल करना
-      const result = await submitPostToServer({
-        title,
-        content: details,
-        type: mode,
-        deviceId: currentDeviceId,
-      });
+      const { error: postError } = await supabase
+        .from("posts")
+        .insert([
+          {
+            title: title,
+            content: details,
+            type: mode, 
+            device_id: currentDeviceId 
+          }
+        ]);
 
-      if (!result.success) {
-        throw new Error(result.error || "Database insert failed");
+      if (postError) {
+        throw new Error(`Database insert failed: ${postError.message}`);
+      }
+
+      if (currentDeviceId) {
+        const { error: rpcError } = await supabase.rpc('increment_wallet_balance', {
+          target_device_id: currentDeviceId
+        });
+
+        if (rpcError) {
+          console.error("Wallet increment failed:", rpcError.message);
+        }
       }
 
       alert(`Success! Published node type: ${mode}. ₹0.01 added to your wallet!`);
