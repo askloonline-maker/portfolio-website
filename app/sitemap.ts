@@ -1,33 +1,42 @@
 import { MetadataRoute } from "next";
 import { createClient } from "@supabase/supabase-js";
 
-// Forces the sitemap to update dynamically whenever Google crawls it
 export const revalidate = 0;
 export const dynamic = "force-dynamic";
 
 const BASE_URL = "https://www.asklo.online";
 
 function getSupabaseClient() {
-  const supabaseUrl = process.env.SUPABASE_URL;
-  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  if (!supabaseUrl || !serviceRoleKey) return null;
-  return createClient(supabaseUrl, serviceRoleKey);
+  const supabaseUrl =
+    process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseKey =
+    process.env.SUPABASE_SERVICE_ROLE_KEY ||
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+  if (!supabaseUrl || !supabaseKey) return null;
+  return createClient(supabaseUrl, supabaseKey);
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const supabase = getSupabaseClient();
   let posts: any[] = [];
 
-  // Fetch live posts from Supabase
   if (supabase) {
-    const { data } = await supabase
-      .from("posts")
-      .select("id, created_at")
-      .order("created_at", { ascending: false });
-    posts = data || [];
+    try {
+      const { data, error } = await supabase
+        .from("posts")
+        .select("id, created_at")
+        .order("created_at", { ascending: false });
+
+      if (!error && data) {
+        posts = data;
+      }
+    } catch (err) {
+      console.error("Sitemap fetch error:", err);
+    }
   }
 
-  // 1. Define core platform static routes along with legal and space categories
+  // 1. Core static routes and category spaces
   const staticRoutes: MetadataRoute.Sitemap = [
     {
       url: `${BASE_URL}`,
@@ -65,7 +74,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "monthly",
       priority: 0.8,
     },
-    // Category Space Paths
     {
       url: `${BASE_URL}/space/digital-marketing`,
       lastModified: new Date(),
@@ -104,7 +112,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ];
 
-  // 2. Map dynamic posts directly into the official object type layout
+  // 2. Map dynamic posts
   const dynamicPostRoutes: MetadataRoute.Sitemap = posts.map((post) => ({
     url: `${BASE_URL}/?post=${post.id}`,
     lastModified: post.created_at ? new Date(post.created_at) : new Date(),
@@ -112,6 +120,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }));
 
-  // Combine both sets and export cleanly back to Next.js
   return [...staticRoutes, ...dynamicPostRoutes];
 }
