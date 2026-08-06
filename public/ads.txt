@@ -1,0 +1,11 @@
+# ads.txt for asklo.online
+# This is a placeholder ads.txt file. Replace the example publisher ID below with your actual publisher ID(s).
+# Example entry format:
+# <ad-system-domain>, <publisher-id>, <relationship>, <certification-authority-id>
+# For Google AdSense the line typically looks like:
+# google.com, pub-0000000000000000, DIRECT, f08c47fec0942fa0
+
+# Replace pub-0000000000000000 with your publisher ID and add any other authorized sellers here.
+# See: https://iabtechlab.com/ads-txt/
+
+google.com, pub-0000000000000000, DIRECT, f08c47fec0942fa0
