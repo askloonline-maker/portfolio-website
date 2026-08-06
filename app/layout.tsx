@@ -60,7 +60,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className="scroll-smooth">
       <head>
-        {/* AdSense verification tag can be placed here */}
+        {/* Google AdSense Verification Script */}
+        <Script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3450105086918583"
+          crossOrigin="anonymous"
+          strategy="afterInteractive"
+        />
+
+        {/* Google Analytics Tag */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-HVE82D63F5"
           strategy="afterInteractive"
