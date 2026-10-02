@@ -12,7 +12,8 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: "AskLo | Anonymous Q&A Platform & Forums",
-  description: "Ask questions, get expert answers, and share perspectives anonymously. Join the online community discussion feed where curiosity overrides usernames.",
+  description:
+    "Ask questions, get expert answers, and share perspectives anonymously. Join the online community discussion feed where curiosity overrides usernames.",
   metadataBase: new URL("https://www.asklo.online"),
   alternates: {
     canonical: "/",
@@ -26,24 +27,41 @@ export const metadata: Metadata = {
     apple: "/favicon.ico",
   },
   keywords: [
-    "anonymous blog website", "Q&A platforms", "knowledge sharing websites",
-    "discussion forums", "question answer websites", "online communities",
-    "anonymous Q&A", "ask questions online", "AskLo", "career advice forum",
-    "marketing strategy discussions", "unfiltered discussions online"
+    "anonymous blog website",
+    "Q&A platforms",
+    "knowledge sharing websites",
+    "discussion forums",
+    "question answer websites",
+    "online communities",
+    "anonymous Q&A",
+    "ask questions online",
+    "AskLo",
+    "career advice forum",
+    "marketing strategy discussions",
+    "unfiltered discussions online",
   ],
   openGraph: {
     title: "AskLo.Online | The World's Anonymous Living Room",
-    description: "What question would you ask if your name wasn't attached? Join professional conversations on a secure knowledge sharing platform.",
+    description:
+      "What question would you ask if your name wasn't attached? Join professional conversations on a secure knowledge sharing platform.",
     url: "https://www.asklo.online",
     siteName: "AskLo",
     locale: "en_US",
     type: "website",
-    images: [{ url: "/logo.png", width: 1200, height: 630, alt: "AskLo.Online Premium Anonymous Knowledge Framework" }],
+    images: [
+      {
+        url: "/logo.png",
+        width: 1200,
+        height: 630,
+        alt: "AskLo.Online Premium Anonymous Knowledge Framework",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "AskLo.Online | Anonymous Q&A Platform & Forum",
-    description: "What question would you ask if your name wasn't attached to it? Start blogging anonymously.",
+    description:
+      "What question would you ask if your name wasn't attached to it? Start blogging anonymously.",
     images: ["/logo.png"],
   },
   robots: {
@@ -59,7 +77,11 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en" className="scroll-smooth">
       <head>
@@ -86,13 +108,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </Script>
       </head>
       <body className="bg-slate-50 text-slate-900 antialiased selection:bg-blue-600 selection:text-white">
-        <a href="#main-content" className="sr-only focus:not-sr-only absolute top-4 left-4 bg-blue-600 text-white px-4 py-2 rounded-xl z-50">
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only absolute top-4 left-4 bg-blue-600 text-white px-4 py-2 rounded-xl z-50"
+        >
           Skip to content
         </a>
         <Navbar />
-        <main id="main-content">
-          {children}
-        </main>
+        <main id="main-content">{children}</main>
       </body>
     </html>
   );
