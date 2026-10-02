@@ -8,10 +8,10 @@ const BASE_URL = "https://www.asklo.online";
 
 function getSupabaseClient() {
   const supabaseUrl =
-    process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
+    process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || "https://yyxaxcqlrxawdtloucwx.supabase.co";
   const supabaseKey =
     process.env.SUPABASE_SERVICE_ROLE_KEY ||
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "sb_publishable_eXzrOqilWFw1Pd5q1xeTYg_exKGkl5C";
 
   if (!supabaseUrl || !supabaseKey) return null;
   return createClient(supabaseUrl, supabaseKey);
