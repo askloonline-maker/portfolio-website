@@ -12,6 +12,16 @@ interface PostProps {
   };
 }
 
+// Utility function to convert URLs into clickable HTML links
+function linkify(text: string): string {
+  if (!text) return "";
+  const urlPattern = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+  return text.replace(
+    urlPattern,
+    '<a href="$1" target="_blank" rel="noopener noreferrer" class="text-blue-600 underline break-all hover:text-blue-800">$1</a>'
+  );
+}
+
 export default function QuestionCard({ post }: PostProps) {
   const [votes, setVotes] = useState(post.upvotes || 0);
   const [hasVoted, setHasVoted] = useState(false);
@@ -71,7 +81,11 @@ export default function QuestionCard({ post }: PostProps) {
 
           {post.title && <h2 className="text-xl font-black leading-snug text-slate-950 transition group-hover:text-[#123c9c]">{post.title}</h2>}
 
-          <p className="whitespace-pre-wrap text-sm leading-7 text-slate-600">{post.content}</p>
+          {/* Post Content with Auto-Link Enabled */}
+          <p 
+            className="whitespace-pre-wrap text-sm leading-7 text-slate-600"
+            dangerouslySetInnerHTML={{ __html: linkify(post.content) }}
+          />
 
           <div className="flex flex-wrap gap-2 pt-1 text-xs font-black text-blue-700">
             <button 
@@ -116,7 +130,11 @@ export default function QuestionCard({ post }: PostProps) {
                   {localReplies.map((reply, index) => (
                     <div key={index} className="rounded-xl bg-white p-3 border border-blue-50 shadow-2xs">
                       <p className="text-xs font-bold text-[#0f2f88] mb-1">Anonymous reply</p>
-                      <p className="text-sm text-slate-700 whitespace-pre-wrap">{reply}</p>
+                      {/* Reply Content with Auto-Link Enabled */}
+                      <p 
+                        className="text-sm text-slate-700 whitespace-pre-wrap"
+                        dangerouslySetInnerHTML={{ __html: linkify(reply) }}
+                      />
                     </div>
                   ))}
                 </div>
