@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from "react";
+import ReplySection from "./ReplySection";
 
 interface PostProps {
   post: {
@@ -48,10 +49,17 @@ export default function QuestionCard({ post }: PostProps) {
           <p className="whitespace-pre-wrap text-sm leading-7 text-slate-650 text-slate-600">{post.content}</p>
 
           <div className="flex flex-wrap gap-2 pt-1 text-xs font-black text-blue-700">
-            <button className="rounded-full bg-blue-50 px-3 py-1.5 transition hover:bg-blue-100">Answer</button>
-            <button className="rounded-full bg-blue-50 px-3 py-1.5 transition hover:bg-blue-100">Follow</button>
-            <button className="rounded-full bg-blue-50 px-3 py-1.5 transition hover:bg-blue-100">Share</button>
+            <button
+              type="button"
+              onClick={() => document.getElementById(`reply-${post.id}`)?.focus()}
+              className="rounded-full bg-blue-50 px-3 py-1.5 transition hover:bg-blue-100"
+            >
+              Answer
+            </button>
+            <button type="button" className="rounded-full bg-blue-50 px-3 py-1.5 transition hover:bg-blue-100">Follow</button>
+            <button type="button" className="rounded-full bg-blue-50 px-3 py-1.5 transition hover:bg-blue-100">Share</button>
           </div>
+          <ReplySection postId={post.id} />
         </div>
       </div>
     </article>
